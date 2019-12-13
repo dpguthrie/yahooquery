@@ -90,7 +90,6 @@ class _YahooBase(object):
         if response.status_code == requests.codes.ok:
             return self._validate_response(response.json())
         for key in ['quoteSummary', 'chart']:
-            print(response.json())
             if response.json().get(key):
                 error = response.json().get(key).get('error')
         if error:
@@ -111,7 +110,6 @@ class _YahooBase(object):
 
     def fetch(self, **kwargs):
         url = self._prepare_query(**kwargs)
-        print(url)
         data = self._execute_yahoo_query(url, **kwargs)
         return self._output_format(data)
 

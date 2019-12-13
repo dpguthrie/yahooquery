@@ -54,8 +54,8 @@ class Ticker(_YahooBase):
 
     _CHART_BASE_URL = 'https://query1.finance.yahoo.com/'
 
-    def __init__(self, symbol=None, **kwargs):
-        self.symbol = symbol
+    def __init__(self, symbols=None, **kwargs):
+        self.symbols = symbols
         self.endpoints = []
         self._expiration_dates = {}
         self.period = kwargs.get('period', 'ytd')
@@ -64,24 +64,24 @@ class Ticker(_YahooBase):
 
     @property
     def url(self):
-        if isinstance(self.symbol, list):
+        if isinstance(self.symbols, list):
             return [f"v10/finance/quoteSummary/{symbol}" for symbol in self.symbols]
         else:
-            return f'v10/finance/quoteSummary/{self.symbol}'
+            return f'v10/finance/quoteSummary/{self.symbols}'
 
     @property
     def _options_url(self):
-        if isinstance(self.symbol, list):
+        if isinstance(self.symbols, list):
             return [f'v7/finance/options/{symbol}' for symbol in self.symbols]
         else:
-            return f'v7/finance/options/{self.symbol}'
+            return f'v7/finance/options/{self.symbols}'
 
     @property
     def _chart_url(self):
-        if isinstance(self.symbol, list):
+        if isinstance(self.symbols, list):
             return [f'v8/finance/chart/{symbol}' for symbol in self.symbols]
         else:
-            return f'v8/finance/chart/{self.symbol}'
+            return f'v8/finance/chart/{self.symbols}'
 
     @property
     def params(self):
@@ -99,11 +99,15 @@ class Ticker(_YahooBase):
     def _get_endpoint(self, endpoint, params={}, **kwargs):
         self.optional_params = params
         self.endpoints = [endpoint]
-        json = self.fetch(**kwargs)
-        try:
+        if isinstance(self.url, list):
+            data = {}
+            for i, url in enumerate(self.url):
+                json = self.fetch(new_url=url, **kwargs)
+                data[self.symbols[i]] = \
+                    json['quoteSummary']['result'][0][endpoint]
+        else:
+            json = self.fetch(**kwargs)
             data = json['quoteSummary']['result'][0][endpoint]
-        except KeyError:
-            data = json['chart']['result'][0]
         return data
 
     def _list_to_dataframe(
@@ -121,26 +125,34 @@ class Ticker(_YahooBase):
             df.drop(drop_cols, axis=1, inplace=True)
         return df
 
-    def _retrieve_relevant_data(
-            self, endpoint, exclude_cols=[], convert_dates=[]):
+    def _retrieve_relevant_data(self, endpoint, exclude_cols=[], convert_dates=[]):
         data = self._get_endpoint(endpoint)
-        ls = []
-        for k, v in data.items():
-            if v and k not in exclude_cols:
-                try:
+        if isinstance(self.url, list):
+            for symbol in self.symbols:
+                for k, v in data[symbol].items():
+                    if v:
+                        if k.lower() in [x.lower() for x in convert_dates]:
+                            if isinstance(v, dict):
+                                data[symbol][k] = v.get('fmt', v)
+                            else:
+                                data[symbol][k] = datetime.fromtimestamp(v).strftime('%Y-%m-%d')
+                        else:
+                            if isinstance(v, dict):
+                                data[symbol][k] = v.get('raw', v)
+                [data[symbol].pop(k) for k in exclude_cols]
+        else:
+            for k, v in data.items():
+                if v:
                     if k.lower() in [x.lower() for x in convert_dates]:
                         if isinstance(v, dict):
-                            ls.append([k, v.get('fmt')])
+                            data[k] = v.get('fmt', v)
                         else:
-                            ls.append([k, datetime.fromtimestamp(v).strftime(
-                                '%Y-%m-%d')])
+                            data[k] = datetime.fromtimestamp(v).strftime('%Y-%m-%d')
                     else:
-                        ls.append([k, v.get('raw', v)])
-                except AttributeError:
-                    ls.append([k, v])
-        df = pd.DataFrame(ls, columns=['label', 'value'])
-        df.set_index('label', inplace=True)
-        return df.to_dict()['value']
+                        if isinstance(v, dict):
+                            data[k] = v.get('raw', v)
+            [data.pop(k) for k in exclude_cols]
+        return data
 
     # RETURN DICTIONARY
     @property
