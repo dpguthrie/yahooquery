@@ -13,9 +13,9 @@ class _YahooBase(object):
     """
 
     # Base URL
-    _YAHOO_API_URL = "https://query2.finance.yahoo.com/"
+    _YAHOO_API_URL = "https://query2.finance.yahoo.com"
 
-    _CHART_API_URL = "https://query1.finance.yahoo.com/"
+    _CHART_API_URL = "https://query1.finance.yahoo.com"
 
     _VALID_FORMATS = ('json', 'pandas')
 
@@ -29,7 +29,7 @@ class _YahooBase(object):
         return {}
 
     @property
-    def url(self):
+    def urls(self):
         pass
 
     def _validate_response(self, response):
@@ -93,25 +93,12 @@ class _YahooBase(object):
             if response.json().get(key):
                 error = response.json().get(key).get('error')
         if error:
-            raise YahooQueryError(error.get('code'), error.get('description'))
+            return error.get('description')
         raise YahooQueryError()
 
-    def _prepare_query(self, **kwargs):
-        """Prepares the query URL
-
-        Returns
-        -------
-        url: str
-            A formatted URL
-        """
-        base_url = kwargs.get('new_base_url', self._YAHOO_API_URL)
-        url = kwargs.get('new_url', self.url)
-        return f'{base_url}{url}'
-
-    def fetch(self, **kwargs):
-        url = self._prepare_query(**kwargs)
+    def fetch(self, url, **kwargs):
         data = self._execute_yahoo_query(url, **kwargs)
-        return self._output_format(data)
+        return data
 
     def _output_format(self, data, **kwargs):
         if self.output_format == 'json':

@@ -11,7 +11,7 @@ class Ticker(_YahooBase):
         'balanceSheetHistory', 'cashflowStatementHistory', 'financialData'
         'defaultKeyStatistics', 'calendarEvents', 'secFilings',
         'recommendationTrend', 'upgradeDowngradeHistory',
-        'institutionOwnership', 'fundOwnership', 'majorDirectHolders',
+        'institutionOwnership', 'fundOwnership',
         'majorHoldersBreakdown', 'insiderTransactions', 'insiderHolders',
         'netSharePurchaseActivity', 'earnings', 'earningsHistory',
         'earningsTrend', 'industryTrend', 'indexTrend', 'sectorTrend',
@@ -40,6 +40,10 @@ class Ticker(_YahooBase):
             ('Small Cap Stocks', 'Growth')
     }
 
+    _FUND_DETAILS = [
+        'holdings', 'equityHoldings', 'bondHoldings', 'bondRatings',
+        'sectorWeightings']
+
     _INTERVALS = [
         '1m', '2m', '5m', '15m',
         '30m', '60m', '90m', '1h',
@@ -52,10 +56,8 @@ class Ticker(_YahooBase):
         '10y', 'ytd', 'max'
     ]
 
-    _CHART_BASE_URL = 'https://query1.finance.yahoo.com/'
-
     def __init__(self, symbols=None, **kwargs):
-        self.symbols = symbols
+        self.symbols = symbols if isinstance(symbols, list) else [symbols]
         self.endpoints = []
         self._expiration_dates = {}
         self.period = kwargs.get('period', 'ytd')
@@ -63,25 +65,27 @@ class Ticker(_YahooBase):
         super(Ticker, self).__init__(**kwargs)
 
     @property
-    def url(self):
-        if isinstance(self.symbols, list):
-            return [f"v10/finance/quoteSummary/{symbol}" for symbol in self.symbols]
-        else:
-            return f'v10/finance/quoteSummary/{self.symbols}'
+    def _base_urls(self):
+        return [f"{self._YAHOO_API_URL}/v10/finance/quoteSummary/{symbol}"
+                for symbol in self.symbols]
 
     @property
-    def _options_url(self):
-        if isinstance(self.symbols, list):
-            return [f'v7/finance/options/{symbol}' for symbol in self.symbols]
-        else:
-            return f'v7/finance/options/{self.symbols}'
+    def _options_urls(self):
+        return [f'{self._YAHOO_API_URL}/v7/finance/options/{symbol}'
+                for symbol in self.symbols]
 
     @property
-    def _chart_url(self):
-        if isinstance(self.symbols, list):
-            return [f'v8/finance/chart/{symbol}' for symbol in self.symbols]
-        else:
-            return f'v8/finance/chart/{self.symbols}'
+    def _chart_urls(self):
+        return [f'{self._CHART_API_URL}/v8/finance/chart/{symbol}'
+                for symbol in self.symbols]
+
+    @property
+    def _urls_dict(self):
+        return {
+            'base': self._base_urls,
+            'options': self._options_urls,
+            'chart': self._chart_urls
+        }
 
     @property
     def params(self):
@@ -99,59 +103,61 @@ class Ticker(_YahooBase):
     def _get_endpoint(self, endpoint, params={}, **kwargs):
         self.optional_params = params
         self.endpoints = [endpoint]
-        if isinstance(self.url, list):
-            data = {}
-            for i, url in enumerate(self.url):
-                json = self.fetch(new_url=url, **kwargs)
+        data = {}
+        for i, url in enumerate(
+                self._urls_dict[kwargs.pop('url_key', 'base')]):
+            json = self.fetch(url, **kwargs)
+            try:
                 data[self.symbols[i]] = \
                     json['quoteSummary']['result'][0][endpoint]
-        else:
-            json = self.fetch(**kwargs)
-            data = json['quoteSummary']['result'][0][endpoint]
+            except TypeError:
+                data[self.symbols[i]] = json
         return data
 
     def _list_to_dataframe(
             self, endpoint, key, date_fields=['reportDate'],
-            drop_cols=['maxAge']):
+            drop_cols=['maxAge'], combine_dataframes=True):
         data = self._get_endpoint(endpoint)
-        df = pd.DataFrame(data[key])
-        for date in date_fields:
-            try:
-                df[date] = df[date].apply(lambda x: x.get('fmt'))
-            except AttributeError:
-                df[date] = pd.to_datetime(df[date], unit='s')
-        df = df.applymap(lambda x: x.get('raw') if isinstance(x, dict) else x)
-        if drop_cols:
-            df.drop(drop_cols, axis=1, inplace=True)
+        df = pd.DataFrame()
+        for symbol in self.symbols:
+            temp_df = pd.DataFrame(data[symbol][key])
+            for date in date_fields:
+                try:
+                    temp_df[date] = temp_df[date].apply(lambda x: x.get('fmt'))
+                except AttributeError:
+                    temp_df[date] = pd.to_datetime(temp_df[date], unit='s')
+            temp_df = temp_df.applymap(lambda x:  x.get('raw') if isinstance(x, dict) else x)
+            if drop_cols:
+                temp_df.drop(drop_cols, axis=1, inplace=True)
+            temp_df['ticker'] = symbol.upper()
+            df = df.append(temp_df)
         return df
 
-    def _retrieve_relevant_data(self, endpoint, exclude_cols=[], convert_dates=[]):
+    def _retrieve_relevant_data(
+            self, endpoint, exclude_cols=[], convert_dates=[], key=None):
         data = self._get_endpoint(endpoint)
-        if isinstance(self.url, list):
-            for symbol in self.symbols:
-                for k, v in data[symbol].items():
+        for symbol in self.symbols:
+            try:
+                iterator = data[symbol][key] if key else data[symbol]
+                for k, v in iterator.items():
                     if v:
                         if k.lower() in [x.lower() for x in convert_dates]:
                             if isinstance(v, dict):
                                 data[symbol][k] = v.get('fmt', v)
                             else:
-                                data[symbol][k] = datetime.fromtimestamp(v).strftime('%Y-%m-%d')
+                                data[symbol][k] = \
+                                    datetime.fromtimestamp(v).strftime('%Y-%m-%d')
                         else:
                             if isinstance(v, dict):
                                 data[symbol][k] = v.get('raw', v)
                 [data[symbol].pop(k) for k in exclude_cols]
-        else:
-            for k, v in data.items():
-                if v:
-                    if k.lower() in [x.lower() for x in convert_dates]:
-                        if isinstance(v, dict):
-                            data[k] = v.get('fmt', v)
-                        else:
-                            data[k] = datetime.fromtimestamp(v).strftime('%Y-%m-%d')
-                    else:
-                        if isinstance(v, dict):
-                            data[k] = v.get('raw', v)
-            [data.pop(k) for k in exclude_cols]
+            except AttributeError:
+                pass
+        if key:
+            new_data = {}
+            for symbol in self.symbols:
+                new_data[symbol] = data[symbol][key]
+            return new_data
         return data
 
     # RETURN DICTIONARY
@@ -163,15 +169,18 @@ class Ticker(_YahooBase):
 
     @property
     def esg_scores(self):
-        return self._retrieve_relevant_data("esgScores", ['maxAge'])
+        return self._retrieve_relevant_data(
+            "esgScores", exclude_cols=['maxAge'])
 
     @property
     def financial_data(self):
-        return self._retrieve_relevant_data("financialData", ['maxAge'])
+        return self._retrieve_relevant_data(
+            "financialData", exclude_cols=['maxAge'])
 
     @property
     def fund_profile(self):
-        return self._retrieve_relevant_data("fundProfile", ['maxAge'])
+        return self._retrieve_relevant_data(
+            "fundProfile", exclude_cols=['maxAge'])
 
     @property
     def key_stats(self):
@@ -183,27 +192,29 @@ class Ticker(_YahooBase):
 
     @property
     def price(self):
-        return self._retrieve_relevant_data("price", ['maxAge'])
+        return self._retrieve_relevant_data("price", exclude_cols=['maxAge'])
 
     @property
     def quote_type(self):
         return self._retrieve_relevant_data(
-            "quoteType", ['maxAge'], convert_dates=['firstTradeDateEpochUtc'])
+            "quoteType", exclude_cols=['maxAge'],
+            convert_dates=['firstTradeDateEpochUtc'])
 
     @property
     def share_purchase_activity(self):
         return self._retrieve_relevant_data(
-            "netSharePurchaseActivity", ['maxAge'])
+            "netSharePurchaseActivity", exclude_cols=['maxAge'])
 
     @property
     def summary_detail(self):
         return self._retrieve_relevant_data(
-            "summaryDetail", ['maxAge'],
+            "summaryDetail", exclude_cols=['maxAge'],
             convert_dates=['exDividendDate', 'expireDate', 'startDate'])
 
     @property
     def summary_profile(self):
-        return self._retrieve_relevant_data("summaryProfile", ['maxAge'])
+        return self._retrieve_relevant_data(
+            "summaryProfile", exclude_cols=['maxAge'])
 
     # RETURN DATAFRAMES
     @property
@@ -291,19 +302,36 @@ class Ticker(_YahooBase):
     # FUND SPECIFIC
 
     def _fund_dataframe(self, endpoint, key):
-        data = self._get_endpoint(endpoint)[key]
-        ls = []
-        for item in data:
-            for k, v in item.items():
-                ls.append([k, v.get('raw')])
-        return pd.DataFrame(ls, columns=['label', 'value'])
+        data = self._get_endpoint(endpoint)
+        df = pd.DataFrame()
+        for symbol in self.symbols:
+            temp_df = pd.DataFrame(data[symbol][key])
+            temp_df['ticker'] = symbol.upper()
+            df = df.append(temp_df)
+        df = df.applymap(lambda x:  x.get('raw') if isinstance(x, dict) else x)
+        return df
+
+    def _fund_dataframe_concat(self, endpoint, key):
+        data = self._get_endpoint(endpoint)
+        dataframes = []
+        for symbol in self.symbols:
+            d = {}
+            for item in data[symbol][key]:
+                for k, v in item.items():
+                    d[k] = v.get('raw')
+            df = pd.DataFrame.from_dict(d, orient='index', columns=[symbol])
+            dataframes.append(df)
+        return pd.concat(dataframes, axis=1, sort=False)
 
     @property
     def fund_category_holdings(self):
         data_dict = self._retrieve_relevant_data("topHoldings", ['maxAge'])
-        for key in ["holdings", "bondRatings", "sectorWeightings"]:
-            del data_dict[key]
-        return pd.DataFrame.from_dict(data_dict, orient='index')
+        for symbol in self.symbols:
+            for key in self._FUND_DETAILS:
+                del data_dict[symbol][key]
+        return pd.DataFrame(
+            [pd.Series(data_dict[symbol]) for symbol in self.symbols],
+            index=self.symbols)
 
     @property
     def fund_top_holdings(self):
@@ -311,12 +339,23 @@ class Ticker(_YahooBase):
 
     @property
     def fund_bond_ratings(self):
-        return self._fund_dataframe(endpoint="topHoldings", key="bondRatings")
+        return self._fund_dataframe_concat(
+            endpoint="topHoldings", key="bondRatings")
 
     @property
     def fund_sector_weightings(self):
-        return self._fund_dataframe(
+        return self._fund_dataframe_concat(
             endpoint="topHoldings", key="sectorWeightings")
+
+    @property
+    def fund_bond_holdings(self):
+        return self._retrieve_relevant_data(
+            endpoint="topHoldings", key="bondHoldings")
+
+    @property
+    def fund_equity_holdings(self):
+        return self._retrieve_relevant_data(
+            endpoint="topHoldings", key="equityHoldings")
 
     # OPTIONS
 
@@ -374,7 +413,7 @@ class Ticker(_YahooBase):
         period = kwargs.get('period', self.period)
         interval = kwargs.get('interval', self.interval)
         other_params = {'range': period, 'interval': interval}
-        new_base_url = self._CHART_BASE_URL
+        new_base_url = self._CHART_API_URL
         new_url = self._chart_url
         if period not in self._PERIODS:
             raise ValueError("Period values must be one of {}".format(
