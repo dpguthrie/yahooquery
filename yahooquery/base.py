@@ -21,8 +21,6 @@ class _YahooBase(object):
 
     def __init__(self, **kwargs):
         self.session = _init_session(kwargs.get("session"))
-        self.output_format = kwargs.get(
-            "output_format", os.getenv("YQ_OUTPUT_FORMAT", 'json'))
 
     @property
     def params(self):
@@ -98,13 +96,4 @@ class _YahooBase(object):
 
     def fetch(self, url, **kwargs):
         data = self._execute_yahoo_query(url, **kwargs)
-        return data
-
-    def _output_format(self, data, **kwargs):
-        if self.output_format == 'json':
-            return data
-        else:
-            return self._format_pandas(data, **kwargs)
-
-    def _format_pandas(self, data, **kwargs):
         return data
