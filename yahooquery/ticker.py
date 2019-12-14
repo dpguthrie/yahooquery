@@ -62,6 +62,7 @@ class Ticker(_YahooBase):
         self._expiration_dates = {}
         self.period = kwargs.get('period', 'ytd')
         self.interval = kwargs.get('interval', '1d')
+        self.combine_dataframes = kwargs.get('combine_dataframes', True)
         super(Ticker, self).__init__(**kwargs)
 
     @property
@@ -100,7 +101,7 @@ class Ticker(_YahooBase):
         return {"events": ','.join(['div', 'split'])}
 
     # HELPER METHODS
-    def _get_endpoint(self, endpoint, params={}, **kwargs):
+    def _get_endpoint(self, endpoint=None, params={}, **kwargs):
         self.optional_params = params
         self.endpoints = [endpoint]
         data = {}
@@ -110,6 +111,13 @@ class Ticker(_YahooBase):
             try:
                 data[self.symbols[i]] = \
                     json['quoteSummary']['result'][0][endpoint]
+            except KeyError:
+                try:
+                    data[self.symbols[i]] = \
+                        json['chart']['result'][0]
+                except KeyError:
+                    data[self.symbols[i]] = \
+                        json['optionChain']['result'][0]
             except TypeError:
                 data[self.symbols[i]] = json
         return data
@@ -126,7 +134,8 @@ class Ticker(_YahooBase):
                     temp_df[date] = temp_df[date].apply(lambda x: x.get('fmt'))
                 except AttributeError:
                     temp_df[date] = pd.to_datetime(temp_df[date], unit='s')
-            temp_df = temp_df.applymap(lambda x:  x.get('raw') if isinstance(x, dict) else x)
+            temp_df = temp_df.applymap(
+                lambda x:  x.get('raw') if isinstance(x, dict) else x)
             if drop_cols:
                 temp_df.drop(drop_cols, axis=1, inplace=True)
             temp_df['ticker'] = symbol.upper()
@@ -146,7 +155,8 @@ class Ticker(_YahooBase):
                                 data[symbol][k] = v.get('fmt', v)
                             else:
                                 data[symbol][k] = \
-                                    datetime.fromtimestamp(v).strftime('%Y-%m-%d')
+                                    datetime.fromtimestamp(v).strftime(
+                                        '%Y-%m-%d')
                         else:
                             if isinstance(v, dict):
                                 data[symbol][k] = v.get('raw', v)
@@ -159,6 +169,10 @@ class Ticker(_YahooBase):
                 new_data[symbol] = data[symbol][key]
             return new_data
         return data
+
+    def _expiration_date_list(self, symbol):
+        return [[(k, v) for k, v in d.items()]
+                for d in self._expiration_dates[symbol]]
 
     # RETURN DICTIONARY
     @property
@@ -287,11 +301,16 @@ class Ticker(_YahooBase):
 
     @property
     def major_holders(self):
+        dataframes = []
         data = self._get_endpoint("majorHoldersBreakdown")
-        df = pd.DataFrame.from_dict(data, orient='index')
-        df = df.applymap(lambda x: x.get('raw') if isinstance(x, dict) else x)
-        df.drop(['maxAge'], inplace=True)
-        return df
+        for symbol in self.symbols:
+            df = pd.DataFrame.from_dict(
+                data[symbol], orient='index', columns=[symbol])
+            df = df.applymap(
+                lambda x: x.get('raw') if isinstance(x, dict) else x)
+            df.drop(['maxAge'], inplace=True)
+            dataframes.append(df)
+        return pd.concat(dataframes, axis=1)
 
     @property
     def earnings_trend(self):
@@ -360,45 +379,45 @@ class Ticker(_YahooBase):
     # OPTIONS
 
     def _get_options(self):
-        new_url = self._options_url
-        json = self.fetch(new_url=new_url, other_params=())
-        for exp_date in json['optionChain']['result'][0]['expirationDates']:
-            self._expiration_dates[
-                datetime.fromtimestamp(exp_date).strftime('%Y-%m-%d')] = \
-                    exp_date
+        data = self._get_endpoint(url_key='options', other_params=())
+        for symbol in self.symbols:
+            self._expiration_dates[symbol] = []
+            for exp_date in data[symbol]['expirationDates']:
+                self._expiration_dates[symbol].append(
+                    {datetime.fromtimestamp(exp_date).strftime('%Y-%m-%d'):
+                     exp_date})
 
-    def _options_to_dataframe(self, df, options):
+    def _options_to_dataframe(self, df, options, symbol, expiration_dates):
         calls = pd.DataFrame(options['calls'])
         calls['optionType'] = 'call'
+        calls['ticker'] = symbol.upper()
         puts = pd.DataFrame(options['puts'])
         puts['optionType'] = 'put'
+        puts['ticker'] = symbol.upper()
+        d = {}
+        for item in expiration_dates:
+            d[item[0][0][0]] = item[0][0][1]
         for df in [calls, puts]:
             df['expiration'] = df['expiration'].map(
-                {v: k for k, v in self._expiration_dates.items()})
+                {v: k for k, v in d.items()})
             df['lastTradeDate'] = pd.to_datetime(df['lastTradeDate'], unit='s')
         return df.append([calls, puts])
 
-    def option_chain(self, expiration_date=None):
-        new_url = self._options_url
+    @property
+    def option_chain(self):
         df = pd.DataFrame()
         if not self._expiration_dates:
             self._get_options()
-        if not expiration_date:
-            for date in self._expiration_dates.values():
-                json = self.fetch(new_url=new_url, other_params={'date': date})
-                options = json['optionChain']['result'][0]['options'][0]
+        for symbol in self.symbols:
+            expiration_dates = self._expiration_date_list(symbol)
+            for date in expiration_dates:
+                json = self._get_endpoint(
+                    url_key='options', other_params={'date': date[0][1]})
+                options = json[symbol]['options'][0]
                 df = df.append(
-                    self._options_to_dataframe(df, options), sort=False)
-        elif expiration_date not in self._expiration_dates.keys():
-            raise ValueError(f"""
-                {expiration_date} is not a valid value.  Valid expiration
-                dates are {', '.join(self.option_expiration_dates)}
-            """)
-        else:
-            json = self.fetch(new_url=new_url, other_params={
-                'date': self._expiration_dates[expiration_date]})
-            options = json['optionChain']['result'][0]['options'][0]
-            df = self._options_to_dataframe(df, options)
+                    self._options_to_dataframe(
+                        df, options, symbol, expiration_dates),
+                    sort=False)
         return df
 
     @property
@@ -413,27 +432,39 @@ class Ticker(_YahooBase):
         period = kwargs.get('period', self.period)
         interval = kwargs.get('interval', self.interval)
         other_params = {'range': period, 'interval': interval}
-        new_base_url = self._CHART_API_URL
-        new_url = self._chart_url
         if period not in self._PERIODS:
             raise ValueError("Period values must be one of {}".format(
                 ', '.join(self._PERIODS)))
         if interval not in self._INTERVALS:
             raise ValueError("Interval values must be one of {}".format(
                 ', '.join(self._INTERVALS)))
-        data = self.fetch(
-            new_base_url=new_base_url, new_url=new_url,
-            other_params={**other_params, **self._chart_params})
-        return data['chart']['result'][0]
+        data = self._get_endpoint(
+            url_key='chart', other_params={
+                **other_params, **self._chart_params})
+        return data
 
-    def _historical_data_to_dataframe(self, data):
-        dates = [datetime.fromtimestamp(x) for x in data['timestamp']]
-        df = pd.DataFrame(data['indicators']['quote'][0])
-        df['dates'] = dates
-        df.set_index('dates', inplace=True)
-        return df
+    def _historical_data_to_dataframe(self, data, **kwargs):
+        d = {}
+        for symbol in self.symbols:
+            if isinstance(data[symbol], dict):
+                dates = [
+                    datetime.fromtimestamp(x) for x in data[symbol]['timestamp']]
+                df = pd.DataFrame(data[symbol]['indicators']['quote'][0])
+                df['dates'] = dates
+                df['ticker'] = symbol.upper()
+                df.set_index('dates', inplace=True)
+                d[symbol] = df
+            else:
+                d[symbol] = data[symbol]
+        if kwargs.get('combine_dataframes', self.combine_dataframes):
+            ls = []
+            for key in d:
+                if isinstance(d[key], pd.DataFrame):
+                    ls.append(d[key])
+            return pd.concat(ls, sort=False)
+        return d
 
     def history(self, **kwargs):
         data = self._get_historical_data(**kwargs)
-        df = self._historical_data_to_dataframe(data)
+        df = self._historical_data_to_dataframe(data, **kwargs)
         return df
