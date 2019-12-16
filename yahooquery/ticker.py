@@ -122,6 +122,18 @@ class Ticker(_YahooBase):
                 data[self.symbols[i]] = json
         return data
 
+    def _get_endpoints(self, endpoints=[], params={}, **kwargs):
+        self.optional_params = params
+        self.endpoints = endpoints
+        data = {}
+        for i, url in enumerate(
+                self._urls_dict[kwargs.pop('url_key', 'base')]):
+            json = self.fetch(url, **kwargs)
+            for endpoint in endpoints:
+                data[self.symbols[i]][endpoint] = \
+                    json['quoteSummary']['result'][0][endpoint]
+        return data
+
     def _list_to_dataframe(
             self, endpoint, key, date_fields=['reportDate'],
             drop_cols=['maxAge'], combine_dataframes=True):
@@ -249,7 +261,7 @@ class Ticker(_YahooBase):
             endpoint="assetProfile", key="companyOfficers", date_fields=[])
 
     @property
-    def earnings_history(self):
+    def earning_history(self):
         return self._list_to_dataframe(
             endpoint="earningsHistory", key="history", date_fields=['quarter'])
 
@@ -447,8 +459,8 @@ class Ticker(_YahooBase):
         d = {}
         for symbol in self.symbols:
             if isinstance(data[symbol], dict):
-                dates = [
-                    datetime.fromtimestamp(x) for x in data[symbol]['timestamp']]
+                dates = [datetime.fromtimestamp(x)
+                         for x in data[symbol]['timestamp']]
                 df = pd.DataFrame(data[symbol]['indicators']['quote'][0])
                 df['dates'] = dates
                 df['ticker'] = symbol.upper()
