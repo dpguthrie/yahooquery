@@ -1,6 +1,5 @@
 import requests
 # import urllib3
-import os
 
 from yahooquery.utils import _init_session
 from yahooquery.utils.exceptions import YahooQueryError
