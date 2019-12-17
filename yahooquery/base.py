@@ -1,5 +1,4 @@
 import requests
-# import urllib3
 
 from yahooquery.utils import _init_session
 from yahooquery.utils.exceptions import YahooQueryError
@@ -16,17 +15,16 @@ class _YahooBase(object):
 
     _CHART_API_URL = "https://query1.finance.yahoo.com"
 
-    _VALID_FORMATS = ('json', 'pandas')
-
     def __init__(self, **kwargs):
         self.session = _init_session(kwargs.get("session"))
+        self.output_format = kwargs.get("output_format", "json")
 
     @property
     def params(self):
         return {}
 
     @property
-    def urls(self):
+    def _urls(self):
         pass
 
     def _validate_response(self, response):
@@ -51,12 +49,10 @@ class _YahooBase(object):
         try:
             if response['quoteSummary']['error']:
                 error = response['quoteSummary']['error']
-                raise YahooQueryError(
-                    error.get('code'), error.get('description'))
+                raise YahooQueryError(error.get('description'))
         except KeyError:
-            if not response.get('chart', None):
-                if not response.get('optionChain'):
-                    raise YahooQueryError()
+            if not any(k in response for k in ('chart', 'optionChain')):
+                raise YahooQueryError()
         return response
 
     def _execute_yahoo_query(self, url, **kwargs):
@@ -94,5 +90,4 @@ class _YahooBase(object):
         raise YahooQueryError()
 
     def fetch(self, url, **kwargs):
-        data = self._execute_yahoo_query(url, **kwargs)
-        return data
+        return self._execute_yahoo_query(url, **kwargs)
