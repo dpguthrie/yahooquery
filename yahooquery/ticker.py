@@ -1,7 +1,9 @@
 from datetime import datetime
 import pandas as pd
+from collections import ChainMap
 
 from .base import _YahooBase
+from yahooquery.utils.format import _Format
 
 
 class Ticker(_YahooBase):
@@ -18,6 +20,72 @@ class Ticker(_YahooBase):
         'summaryDetail', 'price', 'quoteType', 'summaryProfile', 'fundProfile',
         'fundPerformance', 'topHoldings', 'esgScores'
     ]
+
+    _ENDPOINT_DICT = {
+        'assetProfile': {
+            'exclude_cols': ['maxAge'], 'convert_dates': [
+                'governanceEpochDate', 'compensationAsOfEpochDate']},
+        'balanceSheetHistory': {
+            'filter': 'balanceSheetStatements', 'convert_dates': ['endDate'],
+            'exclude_cols': ['maxAge']},
+        'cashflowStatementHistory': {
+            'filter': 'cashflowStatements', 'convert_dates': ['endDate'],
+            'exclude_cols': ['maxAge']},
+        'defaultKeyStatistics': {
+            'exclude_cols': ['maxAge'], 'convert_dates': [
+                'sharesShortPreviousMonthDate', 'dateShortInterest',
+                'lastFiscalYearEnd', 'nextFiscalYearEnd', 'fundInceptionDate',
+                'lastSplitDate', 'mostRecentQuarter']},
+        'earningsHistory': {
+            'filter': 'history', 'convert_dates': ['quarter'],
+            'exclude_cols': ['maxAge']},
+        'esgScores': {
+            'exclude_cols': ['maxAge'], 'convert_dates': []},
+        'financialData': {
+            'exclude_cols': ['maxAge'], 'convert_dates': []},
+        'fundOwnership': {
+            'filter': 'ownershipList', 'convert_dates': ['reportDate'],
+            'exclude_cols': []},
+        'fundProfile': {
+            'exclude_cols': ['maxAge'], 'convert_dates': []},
+        'incomeStatementHistory': {
+            'filter': 'incomeStatementHistory', 'convert_dates': ['endDate'],
+            'exclude_cols': []},
+        'insiderHolders': {
+            'filter': 'holders', 'convert_dates':
+            ['latestTransDate', 'positionDirectDate'],
+            'exclude_cols': ['maxAge']},
+        'insiderTransactions': {
+            'filter': 'transactions', 'convert_dates': ['startDate'],
+            'exclude_cols': ['maxAge']},
+        'institutionOwnership': {
+            'filter': 'ownershipList', 'convert_dates': ['reportDate'],
+            'exclude_cols': ['maxAge']},
+        'majorHoldersBreakdown': {
+            'exclude_cols': ['maxAge'], 'convert_dates': []},
+        'price': {
+            'exclude_cols': ['maxAge'], 'convert_dates': []},
+        'quoteType': {
+            'exclude_cols': ['maxAge'],
+            'convert_dates': ['firstTradeDateEpochUtc']},
+        'recommendationTrend': {
+            'filter': 'trend', 'convert_dates': [], 'exclude_cols': []},
+        'secFilings': {
+            'filter': 'filings', 'convert_dates': ['epochDate'],
+            'exclude_cols': ['maxAge']},
+        'netSharePurchaseActivity': {
+            'exclude_cols': ['maxAge'], 'convert_dates': []},
+        'summaryDetail': {
+            'exclude_cols': ['maxAge'],
+            'convert_dates': ['exDividendDate', 'expireDate', 'startDate']},
+        'summaryProfile': {
+            'exclude_cols': ['maxAge'], 'convert_dates': []},
+        'topHoldings': {
+            'exclude_cols': [], 'convert_dates': []},
+        'upgradeDowngradeHistory': {
+            'filter': 'history', 'convert_dates': ['quarter'],
+            'exclude_cols': []}
+    }
 
     _STYLE_BOX = {
         'http://us.i1.yimg.com/us.yimg.com/i/fi/3_0stylelargeeq1.gif':
@@ -58,11 +126,12 @@ class Ticker(_YahooBase):
 
     def __init__(self, symbols=None, **kwargs):
         self.symbols = symbols if isinstance(symbols, list) else [symbols]
-        self.endpoints = []
-        self._expiration_dates = {}
         self.period = kwargs.get('period', 'ytd')
         self.interval = kwargs.get('interval', '1d')
         self.combine_dataframes = kwargs.get('combine_dataframes', True)
+        self.formatted = kwargs.get('formatted', True)
+        self.endpoints = []
+        self._expiration_dates = {}
         super(Ticker, self).__init__(**kwargs)
 
     @property
@@ -83,9 +152,9 @@ class Ticker(_YahooBase):
     @property
     def _urls_dict(self):
         return {
-            'base': self._base_urls,
-            'options': self._options_urls,
-            'chart': self._chart_urls
+            'base': {'urls': self._base_urls, 'key': 'quoteSummary'},
+            'options': {'urls': self._options_urls, 'key': 'optionChain'},
+            'chart': {'urls': self._chart_urls, 'key': 'chart'}
         }
 
     @property
@@ -100,229 +169,165 @@ class Ticker(_YahooBase):
     def _chart_params(self):
         return {"events": ','.join(['div', 'split'])}
 
-    # HELPER METHODS
     def _get_endpoint(self, endpoint=None, params={}, **kwargs):
         self.optional_params = params
-        self.endpoints = [endpoint]
+        self.endpoints = endpoint if isinstance(endpoint, list) else [endpoint]
+        formatted = kwargs.get('formatted', self.formatted)
         data = {}
-        for i, url in enumerate(
-                self._urls_dict[kwargs.pop('url_key', 'base')]):
+        url_key = kwargs.pop('url_key', 'base')
+        for i, url in enumerate(self._urls_dict[url_key]['urls']):
             json = self.fetch(url, **kwargs)
             try:
+                d = json[self._urls_dict[url_key]['key']]['result'][0]
                 data[self.symbols[i]] = \
-                    json['quoteSummary']['result'][0][endpoint]
-            except KeyError:
-                try:
-                    data[self.symbols[i]] = \
-                        json['chart']['result'][0]
-                except KeyError:
-                    data[self.symbols[i]] = \
-                        json['optionChain']['result'][0]
+                    _Format(d, self).format if formatted else d
             except TypeError:
                 data[self.symbols[i]] = json
         return data
 
-    def _get_endpoints(self, endpoints=[], params={}, **kwargs):
-        self.optional_params = params
-        self.endpoints = endpoints
-        data = {}
-        for i, url in enumerate(
-                self._urls_dict[kwargs.pop('url_key', 'base')]):
-            json = self.fetch(url, **kwargs)
-            for endpoint in endpoints:
-                data[self.symbols[i]][endpoint] = \
-                    json['quoteSummary']['result'][0][endpoint]
-        return data
-
-    def _list_to_dataframe(
-            self, endpoint, key, date_fields=['reportDate'],
-            drop_cols=['maxAge'], combine_dataframes=True):
-        data = self._get_endpoint(endpoint)
-        df = pd.DataFrame()
-        for symbol in self.symbols:
-            temp_df = pd.DataFrame(data[symbol][key])
-            for date in date_fields:
-                try:
-                    temp_df[date] = temp_df[date].apply(lambda x: x.get('fmt'))
-                except AttributeError:
-                    temp_df[date] = pd.to_datetime(temp_df[date], unit='s')
-            temp_df = temp_df.applymap(
-                lambda x:  x.get('raw') if isinstance(x, dict) else x)
-            if drop_cols:
-                temp_df.drop(drop_cols, axis=1, inplace=True)
-            temp_df['ticker'] = symbol.upper()
-            df = df.append(temp_df)
-        return df
-
-    def _retrieve_relevant_data(
-            self, endpoint, exclude_cols=[], convert_dates=[], key=None):
-        data = self._get_endpoint(endpoint)
-        for symbol in self.symbols:
-            try:
-                iterator = data[symbol][key] if key else data[symbol]
-                for k, v in iterator.items():
-                    if v:
-                        if k.lower() in [x.lower() for x in convert_dates]:
-                            if isinstance(v, dict):
-                                data[symbol][k] = v.get('fmt', v)
-                            else:
-                                data[symbol][k] = \
-                                    datetime.fromtimestamp(v).strftime(
-                                        '%Y-%m-%d')
-                        else:
-                            if isinstance(v, dict):
-                                data[symbol][k] = v.get('raw', v)
-                [data[symbol].pop(k) for k in exclude_cols]
-            except AttributeError:
-                pass
-        if key:
-            new_data = {}
+    def _to_dataframe(self, endpoint=None, params={}, **kwargs):
+        data = self._get_endpoint(endpoint, params, **kwargs)
+        dataframes = []
+        try:
             for symbol in self.symbols:
-                new_data[symbol] = data[symbol][key]
-            return new_data
-        return data
+                if kwargs.get('from_dict', False):
+                    if kwargs.get('data_filter'):
+                        df = pd.DataFrame.from_dict(ChainMap(
+                            *data[symbol][kwargs.get('data_filter')]),
+                            orient='index', columns=[symbol])
+                    else:
+                        df = pd.DataFrame.from_dict(
+                            ChainMap(*data[symbol]), orient='index',
+                            columns=[symbol])
+                else:
+                    if kwargs.get('data_filter'):
+                        df = pd.DataFrame(
+                            data[symbol][kwargs.get('data_filter')])
+                    else:
+                        df = pd.DataFrame(data[symbol])
+                    df['ticker'] = symbol.upper()
+                dataframes.append(df)
+            if kwargs.get('from_dict', False):
+                return pd.concat(dataframes, axis=1)
+            return pd.concat(dataframes, ignore_index=True)
+        except TypeError:
+            return data
 
     def _expiration_date_list(self, symbol):
         return [[(k, v) for k, v in d.items()]
                 for d in self._expiration_dates[symbol]]
 
+    def get_multiple_endpoints(self, endpoints, **kwargs):
+        if not isinstance(endpoints, list):
+            raise ValueError(f"""
+                A list is expected.  {endpoints} is not a list.""")
+        elif any(elem not in self._ENDPOINTS for elem in endpoints):
+            raise ValueError(f"""
+                One of {', '.join(endpoints)} is not a valid value.
+                Valid values are {', '.join(self._ENDPOINTS)})""")
+        else:
+            return self._get_endpoint(endpoints, **kwargs)
+
     # RETURN DICTIONARY
     @property
     def asset_profile(self):
-        return self._retrieve_relevant_data(
-            "assetProfile", ['maxAge'], convert_dates=[
-                'governanceEpochDate', 'compensationAsOfEpochDate'])
+        return self._get_endpoint("assetProfile")
 
     @property
     def esg_scores(self):
-        return self._retrieve_relevant_data(
-            "esgScores", exclude_cols=['maxAge'])
+        return self._get_endpoint("esgScores", from_dict=True)
 
     @property
     def financial_data(self):
-        return self._retrieve_relevant_data(
-            "financialData", exclude_cols=['maxAge'])
+        return self._get_endpoint("financialData")
 
     @property
     def fund_profile(self):
-        return self._retrieve_relevant_data(
-            "fundProfile", exclude_cols=['maxAge'])
+        return self._get_endpoint("fundProfile")
 
     @property
     def key_stats(self):
-        return self._retrieve_relevant_data(
-            "defaultKeyStatistics", ['maxAge'], convert_dates=[
-                'sharesShortPreviousMonthDate', 'dateShortInterest',
-                'lastFiscalYearEnd', 'nextFiscalYearEnd', 'fundInceptionDate',
-                'lastSplitDate', 'mostRecentQuarter'])
+        return self._get_endpoint("defaultKeyStatistics")
+
+    @property
+    def major_holders(self):
+        return self._get_endpoint("majorHoldersBreakdown")
 
     @property
     def price(self):
-        return self._retrieve_relevant_data("price", exclude_cols=['maxAge'])
+        return self._get_endpoint("price")
 
     @property
     def quote_type(self):
-        return self._retrieve_relevant_data(
-            "quoteType", exclude_cols=['maxAge'],
-            convert_dates=['firstTradeDateEpochUtc'])
+        return self._get_endpoint("quoteType")
 
     @property
     def share_purchase_activity(self):
-        return self._retrieve_relevant_data(
-            "netSharePurchaseActivity", exclude_cols=['maxAge'])
+        return self._get_endpoint("netSharePurchaseActivity")
 
     @property
     def summary_detail(self):
-        return self._retrieve_relevant_data(
-            "summaryDetail", exclude_cols=['maxAge'],
-            convert_dates=['exDividendDate', 'expireDate', 'startDate'])
+        return self._get_endpoint("summaryDetail")
 
     @property
     def summary_profile(self):
-        return self._retrieve_relevant_data(
-            "summaryProfile", exclude_cols=['maxAge'])
+        return self._get_endpoint("summaryProfile")
 
     # RETURN DATAFRAMES
     @property
     def balance_sheet(self):
-        return self._list_to_dataframe(
-            endpoint="balanceSheetHistory", key="balanceSheetStatements",
-            date_fields=["endDate"])
+        return self._to_dataframe(
+            "balanceSheetHistory", data_filter="balanceSheetStatements")
 
     @property
     def cash_flow(self):
-        return self._list_to_dataframe(
-            endpoint="cashflowStatementHistory", key="cashflowStatements",
-            date_fields=["endDate"])
+        return self._to_dataframe(
+            "cashflowStatementHistory", data_filter="cashflowStatements")
 
     @property
     def company_officers(self):
-        return self._list_to_dataframe(
-            endpoint="assetProfile", key="companyOfficers", date_fields=[])
+        return self._to_dataframe(
+            "assetProfile", data_filter="companyOfficers")
 
     @property
     def earning_history(self):
-        return self._list_to_dataframe(
-            endpoint="earningsHistory", key="history", date_fields=['quarter'])
-
-    @property
-    def grading_history(self):
-        return self._list_to_dataframe(
-            endpoint="upgradeDowngradeHistory", key="history",
-            date_fields=["epochGradeDate"], drop_cols=[])
-
-    @property
-    def income_statement(self):
-        return self._list_to_dataframe(
-            endpoint="incomeStatementHistory", key="incomeStatementHistory",
-            date_fields=["endDate"])
-
-    @property
-    def insider_holders(self):
-        return self._list_to_dataframe(
-            endpoint="insiderHolders", key="holders",
-            date_fields=['latestTransDate', 'positionDirectDate'])
-
-    @property
-    def insider_transactions(self):
-        return self._list_to_dataframe(
-            endpoint="insiderTransactions", key="transactions",
-            date_fields=['startDate'])
-
-    @property
-    def institution_ownership(self):
-        return self._list_to_dataframe(
-            endpoint="institutionOwnership", key="ownershipList")
-
-    @property
-    def recommendation_trend(self):
-        return self._list_to_dataframe(
-            endpoint="recommendationTrend", key="trend", date_fields=[],
-            drop_cols=[])
-
-    @property
-    def sec_filings(self):
-        return self._list_to_dataframe(
-            endpoint="secFilings", key="filings", date_fields=[],
-            drop_cols=["maxAge", "epochDate"])
+        return self._to_dataframe("earningsHistory", data_filter="history")
 
     @property
     def fund_ownership(self):
-        return self._list_to_dataframe(
-            endpoint="fundOwnership", key="ownershipList")
+        return self._to_dataframe("fundOwnership", data_filter="ownershipList")
 
     @property
-    def major_holders(self):
-        dataframes = []
-        data = self._get_endpoint("majorHoldersBreakdown")
-        for symbol in self.symbols:
-            df = pd.DataFrame.from_dict(
-                data[symbol], orient='index', columns=[symbol])
-            df = df.applymap(
-                lambda x: x.get('raw') if isinstance(x, dict) else x)
-            df.drop(['maxAge'], inplace=True)
-            dataframes.append(df)
-        return pd.concat(dataframes, axis=1)
+    def grading_history(self):
+        return self._to_dataframe(
+            "upgradeDowngradeHistory", data_filter="history")
+
+    @property
+    def income_statement(self):
+        return self._to_dataframe(
+            "incomeStatementHistory", data_filter="incomeStatementHistory")
+
+    @property
+    def insider_holders(self):
+        return self._to_dataframe("insiderHolders", data_filter="holders")
+
+    @property
+    def insider_transactions(self):
+        return self._to_dataframe(
+            "insiderTransactions", data_filter="transactions")
+
+    @property
+    def institution_ownership(self):
+        return self._to_dataframe(
+            "institutionOwnership", data_filter="ownershipList")
+
+    @property
+    def recommendation_trend(self):
+        return self._to_dataframe("recommendationTrend", data_filter="trend")
+
+    @property
+    def sec_filings(self):
+        return self._to_dataframe("secFilings", data_filter="filings")
 
     @property
     def earnings_trend(self):
@@ -356,7 +361,7 @@ class Ticker(_YahooBase):
 
     @property
     def fund_category_holdings(self):
-        data_dict = self._retrieve_relevant_data("topHoldings", ['maxAge'])
+        data_dict = self._get_endpoint("topHoldings")
         for symbol in self.symbols:
             for key in self._FUND_DETAILS:
                 del data_dict[symbol][key]
@@ -365,33 +370,42 @@ class Ticker(_YahooBase):
             index=self.symbols)
 
     @property
+    def fund_holding_info(self):
+        return self._get_endpoint("topHoldings")
+
+    @property
     def fund_top_holdings(self):
-        return self._fund_dataframe(endpoint="topHoldings", key="holdings")
+        return self._to_dataframe("topHoldings", data_filter="holdings")
 
     @property
     def fund_bond_ratings(self):
-        return self._fund_dataframe_concat(
-            endpoint="topHoldings", key="bondRatings")
+        return self._to_dataframe(
+            "topHoldings", data_filter="bondRatings", from_dict=True)
 
     @property
     def fund_sector_weightings(self):
-        return self._fund_dataframe_concat(
-            endpoint="topHoldings", key="sectorWeightings")
+        return self._to_dataframe(
+            "topHoldings", data_filter="sectorWeightings", from_dict=True)
 
     @property
     def fund_bond_holdings(self):
-        return self._retrieve_relevant_data(
-            endpoint="topHoldings", key="bondHoldings")
+        data = self.fund_holding_info
+        for symbol in self.symbols:
+            data[symbol] = data[symbol]["bondHoldings"]
+        return data
 
     @property
     def fund_equity_holdings(self):
-        return self._retrieve_relevant_data(
-            endpoint="topHoldings", key="equityHoldings")
+        data = self.fund_holding_info
+        for symbol in self.symbols:
+            data[symbol] = data[symbol]["equityHoldings"]
+        return data
 
     # OPTIONS
 
     def _get_options(self):
-        data = self._get_endpoint(url_key='options', other_params=())
+        data = self._get_endpoint(
+            url_key='options', other_params=(), formatted=False)
         for symbol in self.symbols:
             self._expiration_dates[symbol] = []
             for exp_date in data[symbol]['expirationDates']:
@@ -424,7 +438,8 @@ class Ticker(_YahooBase):
             expiration_dates = self._expiration_date_list(symbol)
             for date in expiration_dates:
                 json = self._get_endpoint(
-                    url_key='options', other_params={'date': date[0][1]})
+                    url_key='options', other_params={'date': date[0][1]},
+                    formatted=False)
                 options = json[symbol]['options'][0]
                 df = df.append(
                     self._options_to_dataframe(
@@ -452,7 +467,7 @@ class Ticker(_YahooBase):
                 ', '.join(self._INTERVALS)))
         data = self._get_endpoint(
             url_key='chart', other_params={
-                **other_params, **self._chart_params})
+                **other_params, **self._chart_params}, formatted=False)
         return data
 
     def _historical_data_to_dataframe(self, data, **kwargs):
