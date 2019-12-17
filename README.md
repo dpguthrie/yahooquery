@@ -21,7 +21,7 @@ tickers = Ticker(['aapl', 'msft'])
 
 ## Data
 
-Based on the data you'd like, the result will either be accessed through a dictionary or as a `pandas.DataFrame`.  Accessing data is incredibly easy and pythonic.
+Based on the data you'd like, the result will either be accessed through a `dict` or as a `pandas.DataFrame`.  Accessing data is incredibly easy and pythonic.
 
 ### Dictionaries
 
@@ -171,4 +171,17 @@ tickers = Ticker(['aapl', 'msft'])
 | 2019-01-03 07:30:00 | 91312200 | 143.98  | 142    | 145.72 |  142.19 | AAPL     |
 | 2019-12-12 07:30:00 | 24612100 | 151.65  | 151.02 | 153.44 |  153.24 | MSFT     |
 | 2019-12-13 14:00:01 | 23850062 | 153.003 | 152.85 | 154.89 |  154.53 | MSFT     |
+
+## Multiple Endpoints
+
+Access more than one endpoint in one call using the `get_multiple_endoints` method of the `Ticker` class.  This method **ONLY** returns dictionaries.
+
+```python
+aapl = Ticker('aapl')
+endpoints = ['assetProfile', 'esgScores', 'incomeStatementHistory']
+aapl.get_multiple_endpoints(endpoints)
+{'aapl': {'assetProfile': {...}, 'esgScores', {...}, 'incomeStatementHistory', {...}}}
+```
+
+Type `Ticker._ENDPOINTS` to view the list of endpoints supported through this method.
 
