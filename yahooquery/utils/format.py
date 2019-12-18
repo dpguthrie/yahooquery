@@ -1,5 +1,30 @@
 from datetime import datetime
-import pandas as pd
+import collections.abc
+
+
+def _format_data(obj):
+    for k, v in obj.items():
+        if isinstance(v, collections.abc.Mapping):
+            if k in ['convert_dates']:
+                if isinstance(v, collections.abc.Mapping):
+                    obj[k] = v.get('fmt', v)
+                else:
+                    obj[k] = datetime.fromtimestamp(v).strftime('%Y-%m-%d')
+            elif 'raw' in v:
+                obj[k] = v.get('raw')
+            elif 'min' in v:
+                obj[k] = v
+            else:
+                _format_data(v)
+        elif isinstance(v, list):
+            if isinstance(v[0], collections.abc.Mapping):
+                for i, list_item in enumerate(v):
+                    obj[k][i] = _format_data(list_item)
+            else:
+                obj[k] = v
+        else:
+            obj[k] = v
+    return obj
 
 
 class _Format:
@@ -76,18 +101,3 @@ class _Format:
 
     def _format_float(self, key, value, endpoint, **kwargs):
         pass
-
-
-class _Dataframe:
-    def __init__(self, data, data_filter=None):
-        self.data = data
-        self.filter = data_filter
-
-    def dataframe(self):
-        dataframes = []
-        for key in self.data.keys():
-            df = pd.DataFrame(self.data[key][self.filter])
-            if len(self.data.keys()) > 1:
-                df['ticker'] = key.upper()
-            dataframes.append(df)
-        return df
