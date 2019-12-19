@@ -3,7 +3,7 @@ import pandas as pd
 from collections import ChainMap
 
 from .base import _YahooBase
-from yahooquery.utils import _Format, _convert_to_timestamp
+from yahooquery.utils import _convert_to_timestamp
 
 
 class Ticker(_YahooBase):
