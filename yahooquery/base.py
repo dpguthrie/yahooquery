@@ -11,21 +11,18 @@ class _YahooBase(object):
     """
 
     # Base URL
-    _YAHOO_API_URL = "https://query2.finance.yahoo.com"
+    _BASE_API_URL = "https://query2.finance.yahoo.com"
 
     _CHART_API_URL = "https://query1.finance.yahoo.com"
 
     def __init__(self, **kwargs):
         self.session = _init_session(kwargs.get("session"))
-        self.output_format = kwargs.get("output_format", "json")
+        if 'proxies' in kwargs:
+            self.session.proxies = kwargs.get('proxies')
 
     @property
     def params(self):
         return {}
-
-    @property
-    def _urls(self):
-        pass
 
     def _validate_response(self, response):
         """Ensures response from API is valid
@@ -75,18 +72,13 @@ class _YahooBase(object):
         YahooQueryError
             If problems arise when making the query
         """
-        if 'other_params' in kwargs:
-            response = self.session.get(
-                url=url, params=kwargs.get('other_params'))
-        else:
-            response = self.session.get(url=url, params=self.params)
+        response = self.session.get(url=url, params=self.params)
         if response.status_code == requests.codes.ok:
             return self._validate_response(response.json())
         for key in ['quoteSummary', 'chart']:
             if response.json().get(key):
                 error = response.json().get(key).get('error')
-        if error:
-            return error.get('description')
+                return error.get('description')
         raise YahooQueryError()
 
     def fetch(self, url, **kwargs):

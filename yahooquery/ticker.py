@@ -3,13 +3,14 @@ import pandas as pd
 from collections import ChainMap
 
 from .base import _YahooBase
-from yahooquery.utils.format import _Format
+from yahooquery.utils import _Format, _convert_to_timestamp
 
 
 class Ticker(_YahooBase):
 
     _ENDPOINTS = [
         'assetProfile', 'incomeStatementHistory',
+        'incomeStatementHistoryQuarterly',
         'balanceSheetHistory', 'cashflowStatementHistory', 'financialData'
         'defaultKeyStatistics', 'calendarEvents', 'secFilings',
         'recommendationTrend', 'upgradeDowngradeHistory',
@@ -23,68 +24,45 @@ class Ticker(_YahooBase):
 
     _ENDPOINT_DICT = {
         'assetProfile': {
-            'exclude_cols': ['maxAge'], 'convert_dates': [
+            'convert_dates': [
                 'governanceEpochDate', 'compensationAsOfEpochDate']},
         'balanceSheetHistory': {
-            'filter': 'balanceSheetStatements', 'convert_dates': ['endDate'],
-            'exclude_cols': ['maxAge']},
+            'filter': 'balanceSheetStatements', 'convert_dates': ['endDate']},
         'cashflowStatementHistory': {
-            'filter': 'cashflowStatements', 'convert_dates': ['endDate'],
-            'exclude_cols': ['maxAge']},
+            'filter': 'cashflowStatements', 'convert_dates': ['endDate']},
         'defaultKeyStatistics': {
-            'exclude_cols': ['maxAge'], 'convert_dates': [
+            'convert_dates': [
                 'sharesShortPreviousMonthDate', 'dateShortInterest',
                 'lastFiscalYearEnd', 'nextFiscalYearEnd', 'fundInceptionDate',
                 'lastSplitDate', 'mostRecentQuarter']},
         'earningsHistory': {
-            'filter': 'history', 'convert_dates': ['quarter'],
-            'exclude_cols': ['maxAge']},
-        'esgScores': {
-            'exclude_cols': ['maxAge'], 'convert_dates': []},
-        'financialData': {
-            'exclude_cols': ['maxAge'], 'convert_dates': []},
+            'filter': 'history', 'convert_dates': ['quarter']},
+        'esgScores': {'convert_dates': []},
+        'financialData': {'convert_dates': []},
         'fundOwnership': {
-            'filter': 'ownershipList', 'convert_dates': ['reportDate'],
-            'exclude_cols': []},
-        'fundProfile': {
-            'exclude_cols': ['maxAge'], 'convert_dates': []},
+            'filter': 'ownershipList', 'convert_dates': ['reportDate']},
+        'fundProfile': {'convert_dates': []},
         'incomeStatementHistory': {
-            'filter': 'incomeStatementHistory', 'convert_dates': ['endDate'],
-            'exclude_cols': []},
+            'filter': 'incomeStatementHistory', 'convert_dates': ['endDate']},
         'insiderHolders': {
             'filter': 'holders', 'convert_dates':
-            ['latestTransDate', 'positionDirectDate'],
-            'exclude_cols': ['maxAge']},
+            ['latestTransDate', 'positionDirectDate']},
         'insiderTransactions': {
-            'filter': 'transactions', 'convert_dates': ['startDate'],
-            'exclude_cols': ['maxAge']},
+            'filter': 'transactions', 'convert_dates': ['startDate']},
         'institutionOwnership': {
-            'filter': 'ownershipList', 'convert_dates': ['reportDate'],
-            'exclude_cols': ['maxAge']},
-        'majorHoldersBreakdown': {
-            'exclude_cols': ['maxAge'], 'convert_dates': []},
-        'price': {
-            'exclude_cols': ['maxAge'], 'convert_dates': []},
-        'quoteType': {
-            'exclude_cols': ['maxAge'],
-            'convert_dates': ['firstTradeDateEpochUtc']},
-        'recommendationTrend': {
-            'filter': 'trend', 'convert_dates': [], 'exclude_cols': []},
-        'secFilings': {
-            'filter': 'filings', 'convert_dates': ['epochDate'],
-            'exclude_cols': ['maxAge']},
-        'netSharePurchaseActivity': {
-            'exclude_cols': ['maxAge'], 'convert_dates': []},
+            'filter': 'ownershipList', 'convert_dates': ['reportDate']},
+        'majorHoldersBreakdown': {'convert_dates': []},
+        'price': {'convert_dates': []},
+        'quoteType': {'convert_dates': ['firstTradeDateEpochUtc']},
+        'recommendationTrend': {'filter': 'trend', 'convert_dates': []},
+        'secFilings': {'filter': 'filings', 'convert_dates': ['epochDate']},
+        'netSharePurchaseActivity': {'convert_dates': []},
         'summaryDetail': {
-            'exclude_cols': ['maxAge'],
             'convert_dates': ['exDividendDate', 'expireDate', 'startDate']},
-        'summaryProfile': {
-            'exclude_cols': ['maxAge'], 'convert_dates': []},
-        'topHoldings': {
-            'exclude_cols': [], 'convert_dates': []},
+        'summaryProfile': {'convert_dates': []},
+        'topHoldings': {'convert_dates': []},
         'upgradeDowngradeHistory': {
-            'filter': 'history', 'convert_dates': ['quarter'],
-            'exclude_cols': []}
+            'filter': 'history', 'convert_dates': ['quarter']}
     }
 
     _STYLE_BOX = {
@@ -126,22 +104,21 @@ class Ticker(_YahooBase):
 
     def __init__(self, symbols=None, **kwargs):
         self.symbols = symbols if isinstance(symbols, list) else [symbols]
-        self.period = kwargs.get('period', 'ytd')
-        self.interval = kwargs.get('interval', '1d')
         self.combine_dataframes = kwargs.get('combine_dataframes', True)
         self.formatted = kwargs.get('formatted', True)
         self.endpoints = []
         self._expiration_dates = {}
+        self._url_key = 'base'
         super(Ticker, self).__init__(**kwargs)
 
     @property
     def _base_urls(self):
-        return [f"{self._YAHOO_API_URL}/v10/finance/quoteSummary/{symbol}"
+        return [f"{self._BASE_API_URL}/v10/finance/quoteSummary/{symbol}"
                 for symbol in self.symbols]
 
     @property
     def _options_urls(self):
-        return [f'{self._YAHOO_API_URL}/v7/finance/options/{symbol}'
+        return [f'{self._BASE_API_URL}/v7/finance/options/{symbol}'
                 for symbol in self.symbols]
 
     @property
@@ -150,37 +127,92 @@ class Ticker(_YahooBase):
                 for symbol in self.symbols]
 
     @property
-    def _urls_dict(self):
-        return {
-            'base': {'urls': self._base_urls, 'key': 'quoteSummary'},
-            'options': {'urls': self._options_urls, 'key': 'optionChain'},
-            'chart': {'urls': self._chart_urls, 'key': 'chart'}
-        }
+    def _base_params(self):
+        if self.endpoints[0]:
+            return {'modules': ','.join(self.endpoints)}
+        return {}
+
+    @property
+    def _chart_params(self):
+        return {"events": ','.join(['div', 'split'])}
+
+    @property
+    def _options_params(self):
+        return {}
 
     @property
     def params(self):
-        temp = {"modules": ','.join(self.endpoints)}
+        temp = self._urls_dict[self._url_key]['params']
         temp.update(self.optional_params)
         params = {k: str(v) if v is True or v is False else str(v)
                   for k, v in temp.items()}
         return params
 
     @property
-    def _chart_params(self):
-        return {"events": ','.join(['div', 'split'])}
+    def _urls_dict(self):
+        return {
+            'base': {
+                'urls': self._base_urls, 'key': 'quoteSummary',
+                'params': self._base_params},
+            'options': {
+                'urls': self._options_urls, 'key': 'optionChain',
+                'params': self._options_params},
+            'chart': {
+                'urls': self._chart_urls, 'key': 'chart',
+                'params': self._chart_params}
+        }
+
+    @property
+    def _convert_dates(self):
+        dates = []
+        for endpoint in self.endpoints:
+            dates.extend([date for date
+                         in self._ENDPOINT_DICT[endpoint]['convert_dates']])
+        return dates
+
+    def _format_data(self, obj):
+        for k, v in obj.items():
+            if k in self._convert_dates:
+                if isinstance(v, dict):
+                    obj[k] = v.get('fmt', v)
+                else:
+                    obj[k] = datetime.fromtimestamp(v).strftime('%Y-%m-%d')
+            elif isinstance(v, dict):
+                if 'raw' in v:
+                    obj[k] = v.get('raw')
+                elif 'min' in v:
+                    obj[k] = v
+                else:
+                    obj[k] = self._format_data(v)
+            elif isinstance(v, list):
+                if isinstance(v[0], dict):
+                    for i, list_item in enumerate(v):
+                        obj[k][i] = self._format_data(list_item)
+                else:
+                    obj[k] = v
+            else:
+                obj[k] = v
+        return obj
 
     def _get_endpoint(self, endpoint=None, params={}, **kwargs):
         self.optional_params = params
         self.endpoints = endpoint if isinstance(endpoint, list) else [endpoint]
         formatted = kwargs.get('formatted', self.formatted)
         data = {}
-        url_key = kwargs.pop('url_key', 'base')
-        for i, url in enumerate(self._urls_dict[url_key]['urls']):
+        self._url_key = kwargs.pop('url_key', 'base')
+        for i, url in enumerate(self._urls_dict[self._url_key]['urls']):
             json = self.fetch(url, **kwargs)
             try:
-                d = json[self._urls_dict[url_key]['key']]['result'][0]
-                data[self.symbols[i]] = \
-                    _Format(d, self).format if formatted else d
+                d = json[self._urls_dict[self._url_key]['key']]['result'][0]
+                if len(self.endpoints) > 1 or self.endpoints[0] is None:
+                    data[self.symbols[i]] = \
+                        self._format_data(d) if formatted else d
+                else:
+                    data[self.symbols[i]] = \
+                        self._format_data(d[endpoint]) if formatted \
+                        else d[endpoint]
+                # data[self.symbols[i]] = \
+                #     _Format(d, self).format if formatted else d
             except TypeError:
                 data[self.symbols[i]] = json
         return data
@@ -405,7 +437,7 @@ class Ticker(_YahooBase):
 
     def _get_options(self):
         data = self._get_endpoint(
-            url_key='options', other_params=(), formatted=False)
+            url_key='options', formatted=False)
         for symbol in self.symbols:
             self._expiration_dates[symbol] = []
             for exp_date in data[symbol]['expirationDates']:
@@ -415,10 +447,10 @@ class Ticker(_YahooBase):
 
     def _options_to_dataframe(self, df, options, symbol, expiration_dates):
         calls = pd.DataFrame(options['calls'])
-        calls['optionType'] = 'call'
+        calls['optionType'] = 'CALL'
         calls['ticker'] = symbol.upper()
         puts = pd.DataFrame(options['puts'])
-        puts['optionType'] = 'put'
+        puts['optionType'] = 'PUT'
         puts['ticker'] = symbol.upper()
         d = {}
         for item in expiration_dates:
@@ -438,13 +470,12 @@ class Ticker(_YahooBase):
             expiration_dates = self._expiration_date_list(symbol)
             for date in expiration_dates:
                 json = self._get_endpoint(
-                    url_key='options', other_params={'date': date[0][1]},
+                    url_key='options', params={'date': date[0][1]},
                     formatted=False)
                 options = json[symbol]['options'][0]
                 df = df.append(
                     self._options_to_dataframe(
-                        df, options, symbol, expiration_dates),
-                    sort=False)
+                        df, options, symbol, expiration_dates))
         return df
 
     @property
@@ -455,19 +486,23 @@ class Ticker(_YahooBase):
 
     # HISTORICAL PRICE DATA
 
-    def _get_historical_data(self, **kwargs):
-        period = kwargs.get('period', self.period)
-        interval = kwargs.get('interval', self.interval)
-        other_params = {'range': period, 'interval': interval}
-        if period not in self._PERIODS:
-            raise ValueError("Period values must be one of {}".format(
-                ', '.join(self._PERIODS)))
+    def _get_historical_data(self, period, interval, start, end, **kwargs):
+        if start or period is None or period.lower() == 'max':
+            start = _convert_to_timestamp(start)
+            end = _convert_to_timestamp(end, start=False)
+            params = {'period1': start, 'period2': end}
+        else:
+            period = period.lower()
+            if period not in self._PERIODS:
+                raise ValueError("Period values must be one of {}".format(
+                    ', '.join(self._PERIODS)))
+            params = {'range': period}
         if interval not in self._INTERVALS:
             raise ValueError("Interval values must be one of {}".format(
                 ', '.join(self._INTERVALS)))
+        params['interval'] = interval.lower()
         data = self._get_endpoint(
-            url_key='chart', other_params={
-                **other_params, **self._chart_params}, formatted=False)
+            url_key='chart', params=params, formatted=False)
         return data
 
     def _historical_data_to_dataframe(self, data, **kwargs):
@@ -484,14 +519,16 @@ class Ticker(_YahooBase):
             else:
                 d[symbol] = data[symbol]
         if kwargs.get('combine_dataframes', self.combine_dataframes):
-            ls = []
+            dataframes = []
             for key in d:
                 if isinstance(d[key], pd.DataFrame):
-                    ls.append(d[key])
-            return pd.concat(ls, sort=False)
+                    dataframes.append(d[key])
+            return pd.concat(dataframes, sort=False)
         return d
 
-    def history(self, **kwargs):
-        data = self._get_historical_data(**kwargs)
+    def history(
+            self, period='ytd', interval='1d', start=None, end=None, **kwargs):
+        data = self._get_historical_data(
+            period, interval, start, end, **kwargs)
         df = self._historical_data_to_dataframe(data, **kwargs)
         return df
