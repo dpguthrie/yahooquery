@@ -21,5 +21,5 @@ setup(
         "Intended Audience :: Financial and Insurance Industry",
         "Operating System :: OS Independent"
     ],
-    keywords='pandas, yahoo finance, finance'
+    keywords='pandas, yahoo finance, finance, stocks, mutual funds, etfs'
 )
