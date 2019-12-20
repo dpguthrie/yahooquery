@@ -571,8 +571,8 @@ class Ticker(_YahooBase):
             string with the format YYYY-MM-DD or as a datetime object
         end: str of datetime.datetime, default None, optional
             Specify a ending point to pull data from.  Can be expressed as a
-            string with the format YYYY-MM-DD or as a datetime object    
-        
+            string with the format YYYY-MM-DD or as a datetime object.
+
         Keyword Arguments
         -----------------
         combine_dataframes: bool, default True, optional

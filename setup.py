@@ -12,16 +12,18 @@ def parse_requirements(filename):
 
 setup(
     name="yahooquery",
-    version="0.0.1",
+    version="1.0.0",
     author="Doug Guthrie",
     author_email="douglas.p.guthrie@gmail.com",
-    description="Retrieve data from Yahoo finance",
+    description="Retrieve nearly all data from Yahoo Finance for one or more ticker symbols",
     long_description=long_description,
     long_description_content_type="text/markdown",
+    license="MIT",
     packages=find_packages(),
+    url="https://github.com/dpguthrie/yahooquery",
     install_requires=parse_requirements("requirements.txt"),
     classifiers=[
-        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Financial and Insurance Industry",
         "Operating System :: OS Independent"
