@@ -6,7 +6,7 @@ Python wrapper around an unofficial Yahoo Finance API.
 ## Install
 
 ```bash
-pip install python
+pip install yahooquery
 ```
 
 ## Ticker
