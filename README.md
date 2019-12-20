@@ -1,7 +1,13 @@
 # Yahooquery
 [![CodeFactor](https://www.codefactor.io/repository/github/dpguthrie/yahooquery/badge/master?s=289f5ed067de511ac29b5e229c1a5ef5c8c1dc83)](https://www.codefactor.io/repository/github/dpguthrie/yahooquery/overview/master)
 
-Python wrapper around an unofficial Yahoo Finance API.  
+Python wrapper around an unofficial Yahoo Finance API.
+
+## Install
+
+```bash
+pip install python
+```
 
 ## Ticker
 
@@ -148,14 +154,13 @@ Historical price data can be retrieved for one or more tickers through the `hist
 aapl.history()
 ```
 
-The `Ticker` class will create default arguments for `period` and `interval`, which are `ytd` and `1d`, respectively.  You can alter that with arguments to the class or the method.
+If no arguments are provided, as above, default values will be supplied for both `period` and `interval`, which are `ytd` and `1d`, respectively.  Additional arguments you can provide to the method are `start` and `end`.  Start and end dates can be either strings with a date format of `yyyy-mm-dd` or as a `datetime.datetime` object.
 
 ```python
-aapl = Ticker('aapl', period='5y', interval='1mo')
 
-# or
-
-aapl.history(period='5y', interval='1mo')
+aapl.history(period='max')
+aapl.history(start='2019-05-01')  # Default end date is now
+aapl.history(end='2018-12-31')  # Default start date is 1900-01-01
 
 # Period options = 1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max
 # Interval options = 1m, 2m, 5m, 15m, 30m, 60m, 90m, 1h, 1d, 5d, 1wk, 1mo, 3mo
@@ -165,6 +170,7 @@ If trying to retrieve more than one ticker, one dataframe will be returned and t
 
 ```python
 tickers = Ticker(['aapl', 'msft'])
+tickers.history()
 ```
 | dates               |   volume |    open |    low |   high |   close | ticker   |
 |:--------------------|---------:|--------:|-------:|-------:|--------:|:---------|
