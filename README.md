@@ -127,6 +127,7 @@ fund = Ticker('rpbax')
 fund.fund_category_holdings  # pandas.DataFrame
 fund.fund_bond_ratings  # pandas.DataFrame
 fund.fund_sector_weightings  # pandas.DataFrame
+fund.fund_performance  # dict
 fund.fund_bond_holdings  # dict
 fund.fund_equity_holdings  # dict
 ```
