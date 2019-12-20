@@ -205,7 +205,9 @@ class Ticker(_YahooBase):
                 else:
                     obj[k] = self._format_data(v)
             elif isinstance(v, list):
-                if isinstance(v[0], dict):
+                if len(v) == 0:
+                    obj[k] = v
+                elif isinstance(v[0], dict):
                     for i, list_item in enumerate(v):
                         obj[k][i] = self._format_data(list_item)
                 else:
