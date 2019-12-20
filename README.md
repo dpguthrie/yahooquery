@@ -7,6 +7,8 @@
 
 Python wrapper around an unofficial Yahoo Finance API.
 
+![Yahooquery Demo](demo/demo.gif)
+
 ## Install
 
 ```bash
