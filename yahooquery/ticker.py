@@ -478,10 +478,11 @@ class Ticker(_YahooBase):
         d = {}
         for item in expiration_dates:
             d[item[0][0][0]] = item[0][0][1]
-        for df in [calls, puts]:
-            df['expiration'] = df['expiration'].map(
+        for dataframe in [calls, puts]:
+            dataframe['expiration'] = dataframe['expiration'].map(
                 {v: k for k, v in d.items()})
-            df['lastTradeDate'] = pd.to_datetime(df['lastTradeDate'], unit='s')
+            dataframe['lastTradeDate'] = pd.to_datetime(
+                dataframe['lastTradeDate'], unit='s')
         return df.append([calls, puts])
 
     @property
