@@ -7,6 +7,18 @@ from yahooquery.utils import _convert_to_timestamp
 
 
 class Ticker(_YahooBase):
+    """
+    Base class for interacting with Yahoo Finance API
+
+    Attributes
+    ----------
+    symbols: str or list
+        Symbol or list collection of symbols
+    combine_dataframes: bool, default True, optional
+        Desired pandas output format for multiple symbols
+    formatted: bool, default True, optional
+        Format output priot to returning data
+    """
 
     _ENDPOINTS = [
         'assetProfile', 'incomeStatementHistory',
@@ -41,6 +53,7 @@ class Ticker(_YahooBase):
         'financialData': {'convert_dates': []},
         'fundOwnership': {
             'filter': 'ownershipList', 'convert_dates': ['reportDate']},
+        'fundPerformance': {'convert_dates': ['asOfDate']},
         'fundProfile': {'convert_dates': []},
         'incomeStatementHistory': {
             'filter': 'incomeStatementHistory', 'convert_dates': ['endDate']},
@@ -103,6 +116,13 @@ class Ticker(_YahooBase):
     ]
 
     def __init__(self, symbols=None, **kwargs):
+        """Initialize class
+
+        Parameters
+        ----------
+        symbols: str or list
+            Symbol or list collection of symbols
+        """
         self.symbols = symbols if isinstance(symbols, list) else [symbols]
         self.combine_dataframes = kwargs.get('combine_dataframes', True)
         self.formatted = kwargs.get('formatted', True)
@@ -369,6 +389,10 @@ class Ticker(_YahooBase):
 
     # FUND SPECIFIC
 
+    @property
+    def fund_performance(self):
+        return self._get_endpoint("fundPerformance")
+
     def _fund_dataframe(self, endpoint, key):
         data = self._get_endpoint(endpoint)
         df = pd.DataFrame()
@@ -480,6 +504,8 @@ class Ticker(_YahooBase):
 
     @property
     def option_expiration_dates(self):
+        """List of option expiration dates
+        """
         if not self._expiration_dates:
             self._get_options()
         return list(self._expiration_dates.keys())
@@ -528,6 +554,32 @@ class Ticker(_YahooBase):
 
     def history(
             self, period='ytd', interval='1d', start=None, end=None, **kwargs):
+        """
+        Historical pricing data
+
+        Pulls historical data for a symbol or symbols and returns
+        a pandas.DataFrame
+
+        Parameters
+        ----------
+        period: str, default ytd, optional
+            Length of time
+        interval: str, default 1d, optional
+            Time between data points
+        start: str or datetime.datetime, default None, optional
+            Specify a starting point to pull data from.  Can be expressed as a
+            string with the format YYYY-MM-DD or as a datetime object
+        end: str of datetime.datetime, default None, optional
+            Specify a ending point to pull data from.  Can be expressed as a
+            string with the format YYYY-MM-DD or as a datetime object    
+        
+        Keyword Arguments
+        -----------------
+        combine_dataframes: bool, default True, optional
+            When multiple symbols are present, specify if you'd like the
+            resulting dataframes to be combined.  The ticker column will
+            be added to identify rows.
+        """
         data = self._get_historical_data(
             period, interval, start, end, **kwargs)
         df = self._historical_data_to_dataframe(data, **kwargs)

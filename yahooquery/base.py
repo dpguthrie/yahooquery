@@ -7,7 +7,14 @@ from yahooquery.utils.exceptions import YahooQueryError
 class _YahooBase(object):
     """
     Base class for retrieving security information from Yahoo Finance.
-    Conducts query operations and output for data retrieved from API
+    Conducts query operations and validation for data retrieved from API
+
+    Attributes
+    ----------
+    session: requests_cache.session, default None, optional
+        A cached requests-cache session
+    proxies: dict, default None, optional
+        Definition for HTTP and HTTPS proxies
     """
 
     # Base URL
@@ -82,4 +89,17 @@ class _YahooBase(object):
         raise YahooQueryError()
 
     def fetch(self, url, **kwargs):
+        """Executes query and validates response
+
+        Parameters
+        ----------
+        url: str
+            A properly-formatted url
+
+        Returns
+        -------
+        response: dict
+            Validated json from execution of http request
+
+        """
         return self._execute_yahoo_query(url, **kwargs)
