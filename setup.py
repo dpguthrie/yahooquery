@@ -3,13 +3,6 @@ from setuptools import setup, find_packages
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-
-def parse_requirements(filename):
-    with open(filename) as f:
-        required = f.read().splitlines()
-        return required
-
-
 setup(
     name="yahooquery",
     version="1.0.0",
@@ -21,7 +14,7 @@ setup(
     license="MIT",
     packages=find_packages(),
     url="https://github.com/dpguthrie/yahooquery",
-    install_requires=parse_requirements("requirements.txt"),
+    install_requires=['pandas>=0.24', 'requests>=2.20'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "Development Status :: 2 - Pre-Alpha",
