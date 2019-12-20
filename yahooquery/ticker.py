@@ -273,12 +273,11 @@ class Ticker(_YahooBase):
         if not isinstance(endpoints, list):
             raise ValueError(f"""
                 A list is expected.  {endpoints} is not a list.""")
-        elif any(elem not in self._ENDPOINTS for elem in endpoints):
+        if any(elem not in self._ENDPOINTS for elem in endpoints):
             raise ValueError(f"""
                 One of {', '.join(endpoints)} is not a valid value.
                 Valid values are {', '.join(self._ENDPOINTS)})""")
-        else:
-            return self._get_endpoint(endpoints, **kwargs)
+        return self._get_endpoint(endpoints, **kwargs)
 
     # RETURN DICTIONARY
     @property
