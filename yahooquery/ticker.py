@@ -23,9 +23,10 @@ class Ticker(_YahooBase):
     _ENDPOINTS = [
         'assetProfile', 'incomeStatementHistory',
         'incomeStatementHistoryQuarterly',
-        'balanceSheetHistory', 'cashflowStatementHistory', 'financialData'
-        'defaultKeyStatistics', 'calendarEvents', 'secFilings',
-        'recommendationTrend', 'upgradeDowngradeHistory',
+        'balanceSheetHistory', 'balanceSheetHistoryQuarterly',
+        'cashflowStatementHistory', 'cashFlowStatementHistoryQuarterly',
+        'financialData', 'defaultKeyStatistics', 'calendarEvents',
+        'secFilings', 'recommendationTrend', 'upgradeDowngradeHistory',
         'institutionOwnership', 'fundOwnership',
         'majorHoldersBreakdown', 'insiderTransactions', 'insiderHolders',
         'netSharePurchaseActivity', 'earnings', 'earningsHistory',
@@ -40,7 +41,13 @@ class Ticker(_YahooBase):
                 'governanceEpochDate', 'compensationAsOfEpochDate']},
         'balanceSheetHistory': {
             'filter': 'balanceSheetStatements', 'convert_dates': ['endDate']},
+        'balanceSheetHistoryQuarterly': {
+            'filter': 'balanceSheetStatements', 'convert_dates': ['endDate']},
+        'calendarEvents': {
+            'convert_dates': ['earningsDate', 'exDividendDate, dividendDate']},
         'cashflowStatementHistory': {
+            'filter': 'cashflowStatements', 'convert_dates': ['endDate']},
+        'cashflowStatementHistoryQuarterly': {
             'filter': 'cashflowStatements', 'convert_dates': ['endDate']},
         'defaultKeyStatistics': {
             'convert_dates': [
@@ -56,6 +63,8 @@ class Ticker(_YahooBase):
         'fundPerformance': {'convert_dates': ['asOfDate']},
         'fundProfile': {'convert_dates': []},
         'incomeStatementHistory': {
+            'filter': 'incomeStatementHistory', 'convert_dates': ['endDate']},
+        'incomeStatementHistoryQuarterly': {
             'filter': 'incomeStatementHistory', 'convert_dates': ['endDate']},
         'insiderHolders': {
             'filter': 'holders', 'convert_dates':
@@ -287,6 +296,10 @@ class Ticker(_YahooBase):
         return self._get_endpoint("assetProfile")
 
     @property
+    def calendar_events(self):
+        return self._get_endpoint("calendarEvents")
+
+    @property
     def esg_scores(self):
         return self._get_endpoint("esgScores", from_dict=True)
 
@@ -327,15 +340,18 @@ class Ticker(_YahooBase):
         return self._get_endpoint("summaryProfile")
 
     # RETURN DATAFRAMES
-    @property
-    def balance_sheet(self):
-        return self._to_dataframe(
-            "balanceSheetHistory", data_filter="balanceSheetStatements")
+    def _financials(self, endpoint, data_filter, frequency):
+        if frequency.lower() == "q":
+            endpoint += "Quarterly"
+        return self._to_dataframe(endpoint, data_filter=data_filter)
 
-    @property
-    def cash_flow(self):
-        return self._to_dataframe(
-            "cashflowStatementHistory", data_filter="cashflowStatements")
+    def balance_sheet(self, frequency="A"):
+        return self._financials(
+            "balanceSheetHistory", "balanceSheetStatements", frequency)
+
+    def cash_flow(self, frequency="A"):
+        return self._financials(
+            "cashflowStatementHistory", "cashflowStatements", frequency)
 
     @property
     def company_officers(self):
@@ -355,10 +371,9 @@ class Ticker(_YahooBase):
         return self._to_dataframe(
             "upgradeDowngradeHistory", data_filter="history")
 
-    @property
-    def income_statement(self):
-        return self._to_dataframe(
-            "incomeStatementHistory", data_filter="incomeStatementHistory")
+    def income_statement(self, frequency="A"):
+        return self._financials(
+            "incomeStatementHistory", "incomeStatementHistory", frequency)
 
     @property
     def insider_holders(self):

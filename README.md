@@ -113,12 +113,9 @@ tickers.summary_profile
 ### Dataframes
 
 ```python
-aapl.balance_sheet
-aapl.cash_flow
 aapl.company_officers
 aapl.earning_history
 aapl.grading_history
-aapl.income_statement
 aapl.insider_holders
 aapl.insider_transactions
 aapl.institution_ownership
@@ -127,6 +124,13 @@ aapl.sec_filings
 aapl.fund_ownership
 aapl.major_holders
 aapl.earnings_trend
+
+# The following methods take a frequency argument.  If nothing is provided, annual data will be returned.  To return quarterly data, pass "q" as an argument.
+aapl.balance_sheet()  # Defaults to Annual
+aapl.balance_sheet(frequency="q")
+aapl.balance_sheet("q")
+aapl.cash_flow()
+aapl.income_statement()
 ```
 
 ## Fund Specific
