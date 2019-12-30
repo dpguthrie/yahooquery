@@ -3,14 +3,22 @@ import pandas as pd
 from yahooquery import Ticker
 
 
-def test_number_symbols():
-    ticker = Ticker(['aapl', 'msft', 'fb'])
-    assert len(ticker.symbols) == 3
-    assert len(ticker.asset_profile.keys()) == 3
+@pytest.fixture
+def ticker():
+    return Ticker('aapl')
 
 
-def test_asset_profile():
-    ticker = Ticker('aapl')
+@pytest.fixture
+def mutual_fund():
+    return Ticker('hasgx')
+
+
+@pytest.fixture
+def multiple_tickers():
+    return Ticker(['aapl', 'msft', 'fb'])
+
+
+def test_asset_profile(ticker):
     assert 'address1' in ticker.asset_profile['aapl']
 
 
@@ -29,20 +37,30 @@ def test_not_fund():
     assert "No fundamentals data" in ticker.fund_holding_info['aapl']
 
 
-def test_dataframe():
-    ticker = Ticker('aapl')
+def test_dicts(ticker, multiple_tickers):
+    for attr in [
+            'asset_profile', 'calendar_events', 'esg_scores', 'financial_data',
+            'key_stats', 'major_holders', 'price', 'quote_type',
+            'share_purchase_activity', 'summary_detail']:
+        assert isinstance(getattr(ticker, attr), dict)
+        assert isinstance(getattr(multiple_tickers, attr), dict)
+        assert len(getattr(multiple_tickers, attr).keys()) == len(
+            multiple_tickers.symbols)
+
+
+def test_dataframe(ticker, multiple_tickers):
+    for attr in [
+            'company_officers', 'earning_history', 'grading_history',
+            'insider_holders', 'insider_transactions', 'institution_ownership',
+            'recommendation_trend', 'sec_filings']:
+        assert isinstance(getattr(ticker, attr), pd.DataFrame)
+        assert isinstance(getattr(multiple_tickers, attr), pd.DataFrame)
+    for method in ['income_statement', 'balance_sheet', 'cash_flow']:
+        assert isinstance(getattr(ticker, method)(), pd.DataFrame)
+        assert isinstance(getattr(ticker, method)("q"), pd.DataFrame)
+        assert isinstance(getattr(multiple_tickers, method)(), pd.DataFrame)
+        assert isinstance(getattr(multiple_tickers, method)("q"), pd.DataFrame)
     assert isinstance(ticker.history(), pd.DataFrame)
-    ticker = Ticker('aaapl')
-    assert isinstance(ticker.history(), dict)
-    tickers = Ticker(['aapl', 'aaapl'])
-    assert isinstance(tickers.history(), dict)
-    assert isinstance(tickers.history()['aapl'], pd.DataFrame)
-    tickers = Ticker(['aapl', 'fb'])
-    assert isinstance(tickers.history(), pd.DataFrame)
-    tickers.combine_dataframes = False
-    assert isinstance(tickers.history(), dict)
-    assert isinstance(tickers.history()['aapl'], pd.DataFrame)
-    assert isinstance(tickers.history()['fb'], pd.DataFrame)
 
 
 def test_missing_symbol():
