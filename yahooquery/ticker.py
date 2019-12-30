@@ -124,7 +124,7 @@ class Ticker(_YahooBase):
         '10y', 'ytd', 'max'
     ]
 
-    def __init__(self, symbols=None, **kwargs):
+    def __init__(self, symbols, **kwargs):
         """Initialize class
 
         Parameters
@@ -436,7 +436,10 @@ class Ticker(_YahooBase):
         data_dict = self._get_endpoint("topHoldings")
         for symbol in self.symbols:
             for key in self._FUND_DETAILS:
-                del data_dict[symbol][key]
+                try:
+                    del data_dict[symbol][key]
+                except TypeError:
+                    return data_dict
         return pd.DataFrame(
             [pd.Series(data_dict[symbol]) for symbol in self.symbols],
             index=self.symbols)
@@ -551,7 +554,7 @@ class Ticker(_YahooBase):
     def _historical_data_to_dataframe(self, data, **kwargs):
         d = {}
         for symbol in self.symbols:
-            if isinstance(data[symbol], dict):
+            if 'timestamp' in data[symbol]:
                 dates = [datetime.fromtimestamp(x)
                          for x in data[symbol]['timestamp']]
                 df = pd.DataFrame(data[symbol]['indicators']['quote'][0])
@@ -561,7 +564,8 @@ class Ticker(_YahooBase):
                 d[symbol] = df
             else:
                 d[symbol] = data[symbol]
-        if kwargs.get('combine_dataframes', self.combine_dataframes):
+        if kwargs.get('combine_dataframes', self.combine_dataframes) and \
+                all(isinstance(d[key], pd.DataFrame) for key in d):
             dataframes = []
             for key in d:
                 if isinstance(d[key], pd.DataFrame):
