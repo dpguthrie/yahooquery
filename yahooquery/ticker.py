@@ -142,18 +142,18 @@ class Ticker(_YahooBase):
 
     @property
     def _base_urls(self):
-        return [f"{self._BASE_API_URL}/v10/finance/quoteSummary/{symbol}"
-                for symbol in self.symbols]
+        return ["{}/v10/finance/quoteSummary/{}".format(
+            self._BASE_API_URL, symbol) for symbol in self.symbols]
 
     @property
     def _options_urls(self):
-        return [f'{self._BASE_API_URL}/v7/finance/options/{symbol}'
-                for symbol in self.symbols]
+        return ["{}/v7/finance/options/{}".format(
+            self._BASE_API_URL, symbol) for symbol in self.symbols]
 
     @property
     def _chart_urls(self):
-        return [f'{self._CHART_API_URL}/v8/finance/chart/{symbol}'
-                for symbol in self.symbols]
+        return ["{}/v8/finance/chart/{}".format(
+            self._CHART_API_URL, symbol) for symbol in self.symbols]
 
     @property
     def _base_params(self):
