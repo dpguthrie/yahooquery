@@ -282,12 +282,15 @@ class Ticker(_YahooBase):
 
     def get_multiple_endpoints(self, endpoints, **kwargs):
         if not isinstance(endpoints, list):
-            raise ValueError(f"""
-                A list is expected.  {endpoints} is not a list.""")
+            raise ValueError("A list is expected.  {} is not a list.".format(
+                endpoints))
         if any(elem not in self._ENDPOINTS for elem in endpoints):
-            raise ValueError(f"""
-                One of {', '.join(endpoints)} is not a valid value.
-                Valid values are {', '.join(self._ENDPOINTS)})""")
+            raise ValueError("""
+                One of {} is not a valid value.
+                Valid values are {})""".format(
+                    ', '.join(endpoints),
+                    ', '.join(self._ENDPOINTS)
+                ))
         return self._get_endpoint(endpoints, **kwargs)
 
     # RETURN DICTIONARY
