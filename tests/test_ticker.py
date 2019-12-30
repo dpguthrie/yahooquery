@@ -24,9 +24,9 @@ def test_quote_not_found():
 
 def test_not_fund():
     ticker = Ticker('aapl')
-    assert "No fundamentals data" in ticker.fund_profile
-    assert "No fundamentals data" in ticker.fund_performance
-    assert "No fundamentals data" in ticker.fund_holding_info
+    assert "No fundamentals data" in ticker.fund_profile['aapl']
+    assert "No fundamentals data" in ticker.fund_performance['aapl']
+    assert "No fundamentals data" in ticker.fund_holding_info['aapl']
 
 
 def test_dataframe():
