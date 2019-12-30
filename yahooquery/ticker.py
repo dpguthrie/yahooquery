@@ -1,6 +1,5 @@
 from datetime import datetime
 import pandas as pd
-from collections import ChainMap
 
 from .base import _YahooBase
 from yahooquery.utils import _convert_to_timestamp
@@ -254,14 +253,13 @@ class Ticker(_YahooBase):
         try:
             for symbol in self.symbols:
                 if kwargs.get('from_dict', False):
-                    if kwargs.get('data_filter'):
-                        df = pd.DataFrame.from_dict(ChainMap(
-                            *data[symbol][kwargs.get('data_filter')]),
-                            orient='index', columns=[symbol])
-                    else:
-                        df = pd.DataFrame.from_dict(
-                            ChainMap(*data[symbol]), orient='index',
-                            columns=[symbol])
+                    final_data = data[symbol][kwargs.get('data_filter')] if \
+                        kwargs.get('data_filter') else data[symbol]
+                    df = pd.DataFrame(
+                        [(k, v) for d in final_data for k, v in d.items()]
+                    )
+                    df.set_index(0, inplace=True)
+                    df.columns = [symbol]
                 else:
                     if kwargs.get('data_filter'):
                         df = pd.DataFrame(
@@ -304,7 +302,7 @@ class Ticker(_YahooBase):
 
     @property
     def esg_scores(self):
-        return self._get_endpoint("esgScores", from_dict=True)
+        return self._get_endpoint("esgScores")
 
     @property
     def financial_data(self):
