@@ -1,5 +1,15 @@
 from setuptools import setup, find_packages
 
+INSTALL_REQUIRES = [
+    'pandas',
+    'requests'
+]
+
+TEST_REQUIRES = [
+    # testing and coverage
+    'pytest', 'coverage', 'pytest-cov'
+]
+
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
@@ -14,7 +24,10 @@ setup(
     license="MIT",
     packages=find_packages(),
     url="https://github.com/dpguthrie/yahooquery",
-    install_requires=['pandas>=0.24', 'requests>=2.20'],
+    install_requires=INSTALL_REQUIRES,
+    extra_require={
+        'test': TEST_REQUIRES + INSTALL_REQUIRES
+    },
     classifiers=[
         "Programming Language :: Python :: 3",
         "Development Status :: 2 - Pre-Alpha",
