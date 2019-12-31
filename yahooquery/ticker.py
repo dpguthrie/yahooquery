@@ -245,6 +245,9 @@ class Ticker(_YahooBase):
                 #     _Format(d, self).format if formatted else d
             except TypeError:
                 data[self.symbols[i]] = json
+            except IndexError:
+                data[self.symbols[i]] = "No data found for symbol {}".format(
+                    self.symbols[i])
         return data
 
     def _to_dataframe(self, endpoint=None, params={}, **kwargs):
@@ -410,28 +413,6 @@ class Ticker(_YahooBase):
     def fund_performance(self):
         return self._get_endpoint("fundPerformance")
 
-    def _fund_dataframe(self, endpoint, key):
-        data = self._get_endpoint(endpoint)
-        df = pd.DataFrame()
-        for symbol in self.symbols:
-            temp_df = pd.DataFrame(data[symbol][key])
-            temp_df['ticker'] = symbol.upper()
-            df = df.append(temp_df)
-        df = df.applymap(lambda x:  x.get('raw') if isinstance(x, dict) else x)
-        return df
-
-    def _fund_dataframe_concat(self, endpoint, key):
-        data = self._get_endpoint(endpoint)
-        dataframes = []
-        for symbol in self.symbols:
-            d = {}
-            for item in data[symbol][key]:
-                for k, v in item.items():
-                    d[k] = v.get('raw')
-            df = pd.DataFrame.from_dict(d, orient='index', columns=[symbol])
-            dataframes.append(df)
-        return pd.concat(dataframes, axis=1, sort=False)
-
     @property
     def fund_category_holdings(self):
         data_dict = self._get_endpoint("topHoldings")
@@ -467,14 +448,20 @@ class Ticker(_YahooBase):
     def fund_bond_holdings(self):
         data = self.fund_holding_info
         for symbol in self.symbols:
-            data[symbol] = data[symbol]["bondHoldings"]
+            try:
+                data[symbol] = data[symbol]["bondHoldings"]
+            except TypeError:
+                pass
         return data
 
     @property
     def fund_equity_holdings(self):
         data = self.fund_holding_info
         for symbol in self.symbols:
-            data[symbol] = data[symbol]["equityHoldings"]
+            try:
+                data[symbol] = data[symbol]["equityHoldings"]
+            except TypeError:
+                pass
         return data
 
     # OPTIONS
