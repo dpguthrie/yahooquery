@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+1.0.8
+-----
+- Updated option_chain method for bugs as well as MultiIndex indexing
+  to allow the user an easier way to make cross-sections of the
+  resulting data.
+
 1.0.7
 -----
 - Made the symbols argument to the `Ticker` class a required argument
