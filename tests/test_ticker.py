@@ -1,68 +1,68 @@
 import pytest
-import pandas as pd
+import itertools
 from yahooquery import Ticker
 
 
-@pytest.fixture
-def ticker():
-    return Ticker('aapl')
+TICKERS = [
+    Ticker('aapl'), Ticker(['aapl', 'msft']), Ticker(['aapl', 'aaapl']),
+    Ticker('hasgx')
+]
+
+FINANCIALS = ['cash_flow', 'income_statement', 'balance_sheet']
+
+SEPERATE_ENDPOINTS = FINANCIALS + [
+    'option_chain', 'history', 'earnings_trend', 'params', 'get_multiple_endpoints']
 
 
-@pytest.fixture
-def mutual_fund():
-    return Ticker('hasgx')
+def props(cls):
+    return [i for i in cls.__dict__.keys() if i[:1] != '_' and i not in SEPERATE_ENDPOINTS]
 
 
-@pytest.fixture
-def multiple_tickers():
-    return Ticker(['aapl', 'msft', 'fb'])
+@pytest.fixture(params=TICKERS)
+def ticker(request):
+    return request.param
 
 
-def test_asset_profile(ticker):
-    assert 'address1' in ticker.asset_profile['aapl']
+# def test_option_chain(ticker):
+#     assert ticker.option_chain is not None
+
+def test_bad_multiple_endpoints_no_list(ticker):
+    with pytest.raises(ValueError):
+        assert ticker.get_multiple_endpoints("assetProfile summaryProfile")
 
 
-def test_quote_not_found():
-    ticker = Ticker('aaapl')
-    assert "Quote not found" in ticker.income_statement()["aaapl"]
-    tickers = Ticker(['aapl', 'aaapl'])
-    assert len(tickers.income_statement().keys()) == 2
-    assert "Quote not found" in tickers.income_statement()['aaapl']
+def test_bad_multiple_endpoints_wrong(ticker):
+    with pytest.raises(ValueError):
+        assert ticker.get_multiple_endpoints(["asetProfile", "summaryProfile"])
 
 
-def test_not_fund():
-    ticker = Ticker('aapl')
-    assert "No fundamentals data" in ticker.fund_profile['aapl']
-    assert "No fundamentals data" in ticker.fund_performance['aapl']
-    assert "No fundamentals data" in ticker.fund_holding_info['aapl']
+def test_multiple_endpoints(ticker):
+    assert ticker.get_multiple_endpoints(["assetProfile", "summaryProfile"]) is not None
 
 
-def test_dicts(ticker, multiple_tickers):
-    for attr in [
-            'asset_profile', 'calendar_events', 'esg_scores', 'financial_data',
-            'key_stats', 'major_holders', 'price', 'quote_type',
-            'share_purchase_activity', 'summary_detail']:
-        assert isinstance(getattr(ticker, attr), dict)
-        assert isinstance(getattr(multiple_tickers, attr), dict)
-        assert len(getattr(multiple_tickers, attr).keys()) == len(
-            multiple_tickers.symbols)
+@pytest.mark.parametrize("endpoint", props(Ticker))
+def test_endpoints(ticker, endpoint):
+    assert getattr(ticker, endpoint) is not None
 
 
-def test_dataframe(ticker, multiple_tickers):
-    for attr in [
-            'company_officers', 'earning_history', 'grading_history',
-            'insider_holders', 'insider_transactions', 'institution_ownership',
-            'recommendation_trend', 'sec_filings']:
-        assert isinstance(getattr(ticker, attr), pd.DataFrame)
-        assert isinstance(getattr(multiple_tickers, attr), pd.DataFrame)
-    for method in ['income_statement', 'balance_sheet', 'cash_flow']:
-        assert isinstance(getattr(ticker, method)(), pd.DataFrame)
-        assert isinstance(getattr(ticker, method)("q"), pd.DataFrame)
-        assert isinstance(getattr(multiple_tickers, method)(), pd.DataFrame)
-        assert isinstance(getattr(multiple_tickers, method)("q"), pd.DataFrame)
-    assert isinstance(ticker.history(), pd.DataFrame)
+@pytest.mark.parametrize("endpoint, frequency", [
+    el for el in itertools.product(FINANCIALS, ['q', 'a'])])
+def test_financials(ticker, frequency, endpoint):
+    assert getattr(ticker, endpoint)(frequency) is not None
 
 
-def test_missing_symbol():
-    with pytest.raises(TypeError):
-        Ticker()
+@pytest.mark.parametrize("period, interval", [
+    (p, i) for p, i in zip([
+        '1d', '5d', '1y', '5y', 'max'], [
+        '1m', '2m', '1d', '1wk', '3mo'])])
+def test_history(ticker, period, interval):
+    assert ticker.history(period, interval) is not None
+
+
+@pytest.mark.parametrize("period, interval", [
+    (p, i) for p, i in zip([
+        '2d', '1mo'], [
+        '1m', '3m'])])
+def test_history_bad_args(ticker, period, interval):
+    with pytest.raises(ValueError):
+        assert ticker.history(period, interval)
