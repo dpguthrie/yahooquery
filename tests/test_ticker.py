@@ -1,5 +1,7 @@
 import pytest
 import itertools
+from datetime import datetime
+
 from yahooquery import Ticker
 
 
@@ -16,7 +18,8 @@ SEPERATE_ENDPOINTS = FINANCIALS + [
 
 
 def props(cls):
-    return [i for i in cls.__dict__.keys() if i[:1] != '_' and i not in SEPERATE_ENDPOINTS]
+    return [i for i in cls.__dict__.keys()
+            if i[:1] != '_' and i not in SEPERATE_ENDPOINTS]
 
 
 @pytest.fixture(params=TICKERS)
@@ -24,8 +27,9 @@ def ticker(request):
     return request.param
 
 
-# def test_option_chain(ticker):
-#     assert ticker.option_chain is not None
+def test_option_chain(ticker):
+    assert ticker.option_chain is not None
+
 
 def test_bad_multiple_endpoints_no_list(ticker):
     with pytest.raises(ValueError):
@@ -58,6 +62,14 @@ def test_financials(ticker, frequency, endpoint):
         '1m', '2m', '1d', '1wk', '3mo'])])
 def test_history(ticker, period, interval):
     assert ticker.history(period, interval) is not None
+
+
+@pytest.mark.parametrize("start, end", [
+    (start, end) for start, end in zip([
+        datetime(2019, 1, 1), '2019-01-01'], [
+        '2019-12-30', datetime(2019, 12, 30)])])
+def test_history_start_end(ticker, start, end):
+    assert ticker.history(start, end) is not None
 
 
 @pytest.mark.parametrize("period, interval", [
