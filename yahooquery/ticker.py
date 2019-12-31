@@ -255,20 +255,15 @@ class Ticker(_YahooBase):
         dataframes = []
         try:
             for symbol in self.symbols:
+                final_data = data[symbol][kwargs.get('data_filter')] if \
+                    kwargs.get('data_filter') else data[symbol]
                 if kwargs.get('from_dict', False):
-                    final_data = data[symbol][kwargs.get('data_filter')] if \
-                        kwargs.get('data_filter') else data[symbol]
                     df = pd.DataFrame(
-                        [(k, v) for d in final_data for k, v in d.items()]
-                    )
+                        [(k, v) for d in final_data for k, v in d.items()])
                     df.set_index(0, inplace=True)
                     df.columns = [symbol]
                 else:
-                    if kwargs.get('data_filter'):
-                        df = pd.DataFrame(
-                            data[symbol][kwargs.get('data_filter')])
-                    else:
-                        df = pd.DataFrame(data[symbol])
+                    df = pd.DataFrame(final_data)
                     df['ticker'] = symbol.upper()
                 dataframes.append(df)
             if kwargs.get('from_dict', False):
@@ -276,10 +271,6 @@ class Ticker(_YahooBase):
             return pd.concat(dataframes, ignore_index=True)
         except TypeError:
             return data
-
-    def _expiration_date_list(self, symbol):
-        return [[(k, v) for k, v in d.items()]
-                for d in self._expiration_dates[symbol]]
 
     def get_multiple_endpoints(self, endpoints, **kwargs):
         if not isinstance(endpoints, list):
@@ -471,52 +462,64 @@ class Ticker(_YahooBase):
             url_key='options', formatted=False)
         for symbol in self.symbols:
             self._expiration_dates[symbol] = []
-            for exp_date in data[symbol]['expirationDates']:
-                self._expiration_dates[symbol].append(
-                    {datetime.fromtimestamp(exp_date).strftime('%Y-%m-%d'):
-                     exp_date})
+            try:
+                for exp_date in data[symbol]['expirationDates']:
+                    self._expiration_dates[symbol].append(
+                        {datetime.fromtimestamp(exp_date).strftime('%Y-%m-%d'):
+                         exp_date})
+            except TypeError:
+                # No data
+                pass
 
-    def _options_to_dataframe(self, df, options, symbol, expiration_dates):
+    def _options_to_dataframe(self, options, symbol):
         calls = pd.DataFrame(options['calls'])
-        calls['optionType'] = 'CALL'
-        calls['ticker'] = symbol.upper()
+        calls['optionType'] = 'call'
         puts = pd.DataFrame(options['puts'])
-        puts['optionType'] = 'PUT'
-        puts['ticker'] = symbol.upper()
-        d = {}
-        for item in expiration_dates:
-            d[item[0][0][0]] = item[0][0][1]
+        puts['optionType'] = 'put'
+        d = {v: k for d in self._expiration_dates[symbol]
+             for k, v in d.items()}
         for dataframe in [calls, puts]:
-            dataframe['expiration'] = dataframe['expiration'].map(
-                {v: k for k, v in d.items()})
+            dataframe.replace({'expiration': d})
             dataframe['lastTradeDate'] = pd.to_datetime(
                 dataframe['lastTradeDate'], unit='s')
-        return df.append([calls, puts])
+        return pd.concat([calls, puts], keys=['calls', 'puts'])
 
     @property
     def option_chain(self):
-        df = pd.DataFrame()
+        all_dataframes = []
+        symbols = []
         if not self._expiration_dates:
             self._get_options()
         for symbol in self.symbols:
-            expiration_dates = self._expiration_date_list(symbol)
-            for date in expiration_dates:
+            symbol_dataframes = []
+            for date in self._expiration_dates[symbol]:
                 json = self._get_endpoint(
-                    url_key='options', params={'date': date[0][1]},
+                    url_key='options', params={'date': list(date.values())[0]},
                     formatted=False)
                 options = json[symbol]['options'][0]
-                df = df.append(
-                    self._options_to_dataframe(
-                        df, options, symbol, expiration_dates))
-        return df
-
-    @property
-    def option_expiration_dates(self):
-        """List of option expiration dates
-        """
-        if not self._expiration_dates:
-            self._get_options()
-        return list(self._expiration_dates.keys())
+                symbol_dataframes.append(
+                    self._options_to_dataframe(options, symbol))
+            try:
+                all_dataframes.append(pd.concat(symbol_dataframes, keys=[
+                    datetime.strptime(k, "%Y-%m-%d").date()
+                    for d in self._expiration_dates[symbol]
+                    for k, v in d.items()]))
+                symbols.append(symbol)
+            except ValueError:
+                # No data was found for symbol
+                pass
+        if all_dataframes:
+            if len(symbols) > 1:
+                return pd.concat(
+                    all_dataframes, keys=symbols, names=[
+                        'symbol', 'expiration_date', 'option_type',
+                        'row_number'])
+            else:
+                return pd.concat(
+                    all_dataframes, names=[
+                        'expiration_date', 'option_type', 'row_number'])
+        return {symbol: 'No option data found'
+                for symbol in self.symbols if symbol not in symbols}
 
     # HISTORICAL PRICE DATA
 
