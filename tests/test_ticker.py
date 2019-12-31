@@ -11,7 +11,8 @@ TICKERS = [
 FINANCIALS = ['cash_flow', 'income_statement', 'balance_sheet']
 
 SEPERATE_ENDPOINTS = FINANCIALS + [
-    'option_chain', 'history', 'earnings_trend', 'params', 'get_multiple_endpoints']
+    'option_chain', 'history', 'earnings_trend', 'params',
+    'get_multiple_endpoints', 'option_expiration_dates']
 
 
 def props(cls):
