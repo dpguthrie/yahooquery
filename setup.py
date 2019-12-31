@@ -29,8 +29,11 @@ setup(
         'test': TEST_REQUIRES + INSTALL_REQUIRES,
     },
     classifiers=[
-        "Programming Language :: Python :: 3",
-        "Development Status :: 2 - Pre-Alpha",
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         "Intended Audience :: Financial and Insurance Industry",
         "Operating System :: OS Independent"
     ],
