@@ -69,7 +69,7 @@ def test_history(ticker, period, interval):
         datetime(2019, 1, 1), '2019-01-01'], [
         '2019-12-30', datetime(2019, 12, 30)])])
 def test_history_start_end(ticker, start, end):
-    assert ticker.history(start, end) is not None
+    assert ticker.history(start=start, end=end) is not None
 
 
 @pytest.mark.parametrize("period, interval", [
