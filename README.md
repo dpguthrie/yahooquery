@@ -155,7 +155,42 @@ fund.fund_equity_holdings  # dict
 Retrieve option pricing for every expiration date for given ticker(s)
 
 ```python
-aapl.option_chain  # returns pandas.DataFrame
+import pandas as pd
+df = aapl.option_chain  # returns pandas.DataFrame
+
+# The dataframe contains a MultiIndex
+df.index.names
+FrozenList(['symbol', 'expiration_date', 'option_type', 'row'])
+
+# Get all options for specified symbol
+df.loc['aapl']
+
+# Get specific expiration date for specified symbol
+df.loc['aapl', '2020-01-02']
+
+# Get specific option type for expiration date for specified symbol
+df.loc['aapl', '2020-01-02', 'calls']
+
+# Works with multiple tickers as well
+tickers = Ticker(['aapl', 'msft', 'fb'])
+df = tickers.option_chain
+
+# Retrieve options for only one symbol
+df.loc['aapl']
+
+# Retrieve only calls for all symbols
+df.xs('calls', level=2)
+
+# Retrieve only puts for fb
+df.xs(('fb', 'puts'), level=[0, 2])
+# or
+df.xs(('fb', 'puts'), level=['symbol', 'option_type'])
+
+# Filter dataframe by options that in the money
+df.loc[df['inTheMoney'] == True]
+
+# Only include Apple in the money options
+df.loc[df['inTheMoney'] == True].xs('aapl') 
 ```
 
 ## Historical Pricing
