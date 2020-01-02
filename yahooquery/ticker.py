@@ -13,8 +13,6 @@ class Ticker(_YahooBase):
     ----------
     symbols: str or list
         Symbol or list collection of symbols
-    combine_dataframes: bool, default True, optional
-        Desired pandas output format for multiple symbols
     formatted: bool, default True, optional
         Format output priot to returning data
     """
@@ -132,7 +130,6 @@ class Ticker(_YahooBase):
             Symbol or list collection of symbols
         """
         self.symbols = symbols if isinstance(symbols, list) else [symbols]
-        self.combine_dataframes = kwargs.get('combine_dataframes', True)
         self.formatted = kwargs.get('formatted', True)
         self.endpoints = []
         self._expiration_dates = {}
@@ -264,11 +261,12 @@ class Ticker(_YahooBase):
                     df.columns = [symbol]
                 else:
                     df = pd.DataFrame(final_data)
-                    df['ticker'] = symbol.upper()
                 dataframes.append(df)
             if kwargs.get('from_dict', False):
                 return pd.concat(dataframes, axis=1)
-            return pd.concat(dataframes, ignore_index=True)
+            return pd.concat(
+                dataframes, keys=self.symbols, names=['symbol', 'row'],
+                sort=False)
         except TypeError:
             return data
 
@@ -547,18 +545,17 @@ class Ticker(_YahooBase):
                          for x in data[symbol]['timestamp']]
                 df = pd.DataFrame(data[symbol]['indicators']['quote'][0])
                 df['dates'] = dates
-                df['ticker'] = symbol.upper()
                 df.set_index('dates', inplace=True)
                 d[symbol] = df
             else:
                 d[symbol] = data[symbol]
-        if kwargs.get('combine_dataframes', self.combine_dataframes) and \
-                all(isinstance(d[key], pd.DataFrame) for key in d):
-            dataframes = []
-            for key in d:
-                if isinstance(d[key], pd.DataFrame):
-                    dataframes.append(d[key])
-            return pd.concat(dataframes, sort=False)
+        if all(isinstance(d[key], pd.DataFrame) for key in d):
+            if len(d) == 1:
+                return d[self.symbols[0]]
+            else:
+                return pd.concat(
+                    list(d.values()), keys=list(d.keys()),
+                    names=['symbol', 'dates'], sort=False)
         return d
 
     def history(
@@ -581,13 +578,6 @@ class Ticker(_YahooBase):
         end: str of datetime.datetime, default None, optional
             Specify a ending point to pull data from.  Can be expressed as a
             string with the format YYYY-MM-DD or as a datetime object.
-
-        Keyword Arguments
-        -----------------
-        combine_dataframes: bool, default True, optional
-            When multiple symbols are present, specify if you'd like the
-            resulting dataframes to be combined.  The ticker column will
-            be added to identify rows.
         """
         data = self._get_historical_data(
             period, interval, start, end, **kwargs)
