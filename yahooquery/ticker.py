@@ -473,16 +473,17 @@ class Ticker(_YahooBase):
 
     def _options_to_dataframe(self, options, symbol):
         calls = pd.DataFrame(options['calls'])
-        calls['optionType'] = 'call'
         puts = pd.DataFrame(options['puts'])
-        puts['optionType'] = 'put'
         d = {v: k for d in self._expiration_dates[symbol]
              for k, v in d.items()}
         for dataframe in [calls, puts]:
             dataframe.replace({'expiration': d})
-            dataframe['lastTradeDate'] = pd.to_datetime(
-                dataframe['lastTradeDate'], unit='s')
-        return pd.concat([calls, puts], keys=['calls', 'puts'])
+            try:
+                dataframe['lastTradeDate'] = pd.to_datetime(
+                    dataframe['lastTradeDate'], unit='s')
+            except KeyError:
+                pass
+        return pd.concat([calls, puts], keys=['calls', 'puts'], sort=False)
 
     @property
     def option_chain(self):
@@ -501,23 +502,19 @@ class Ticker(_YahooBase):
                     self._options_to_dataframe(options, symbol))
             try:
                 all_dataframes.append(pd.concat(symbol_dataframes, keys=[
-                    datetime.strptime(k, "%Y-%m-%d").date()
+                    datetime.strptime(k, "%Y-%m-%d")
                     for d in self._expiration_dates[symbol]
-                    for k, v in d.items()]))
+                    for k, v in d.items()], names=[
+                        'expiration_date', 'option_type', 'row'], sort=False))
                 symbols.append(symbol)
             except ValueError:
                 # No data was found for symbol
                 pass
         if all_dataframes:
-            if len(symbols) > 1:
-                return pd.concat(
-                    all_dataframes, keys=symbols, names=[
-                        'symbol', 'expiration_date', 'option_type',
-                        'row_number'])
-            else:
-                return pd.concat(
-                    all_dataframes, names=[
-                        'expiration_date', 'option_type', 'row_number'])
+            return pd.concat(
+                all_dataframes, keys=symbols, names=[
+                    'symbol', 'expiration_date', 'option_type',
+                    'row'], sort=False)
         return {symbol: 'No option data found'
                 for symbol in self.symbols if symbol not in symbols}
 
