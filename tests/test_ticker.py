@@ -33,16 +33,16 @@ def test_option_chain(ticker):
 
 def test_bad_multiple_endpoints_no_list(ticker):
     with pytest.raises(ValueError):
-        assert ticker.get_multiple_endpoints("assetProfile summaryProfile")
+        assert ticker.get_endpoints("assetProfile summaryProfile")
 
 
 def test_bad_multiple_endpoints_wrong(ticker):
     with pytest.raises(ValueError):
-        assert ticker.get_multiple_endpoints(["asetProfile", "summaryProfile"])
+        assert ticker.get_endpoints(["asetProfile", "summaryProfile"])
 
 
 def test_multiple_endpoints(ticker):
-    assert ticker.get_multiple_endpoints(["assetProfile", "summaryProfile"]) is not None
+    assert ticker.get_endpoints(["assetProfile", "summaryProfile"]) is not None
 
 
 def test_all_endpoints(ticker):
