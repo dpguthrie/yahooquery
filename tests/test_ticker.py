@@ -13,7 +13,7 @@ TICKERS = [
 FINANCIALS = ['cash_flow', 'income_statement', 'balance_sheet']
 
 SEPERATE_ENDPOINTS = FINANCIALS + [
-    'option_chain', 'history', 'earnings_trend', 'params',
+    'option_chain', 'history', 'params', 'all_endpoints',
     'get_multiple_endpoints', 'option_expiration_dates']
 
 
@@ -43,6 +43,12 @@ def test_bad_multiple_endpoints_wrong(ticker):
 
 def test_multiple_endpoints(ticker):
     assert ticker.get_multiple_endpoints(["assetProfile", "summaryProfile"]) is not None
+
+
+def test_all_endpoints(ticker):
+    assert ticker.all_endpoints is not None
+    data = ticker.all_endpoints
+    assert list(data.keys()) == ticker.symbols
 
 
 @pytest.mark.parametrize("endpoint", props(Ticker))
