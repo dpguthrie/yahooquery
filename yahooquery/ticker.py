@@ -21,7 +21,7 @@ class Ticker(_YahooBase):
         'assetProfile', 'incomeStatementHistory',
         'incomeStatementHistoryQuarterly',
         'balanceSheetHistory', 'balanceSheetHistoryQuarterly',
-        'cashflowStatementHistory', 'cashFlowStatementHistoryQuarterly',
+        'cashflowStatementHistory', 'cashflowStatementHistoryQuarterly',
         'financialData', 'defaultKeyStatistics', 'calendarEvents',
         'secFilings', 'recommendationTrend', 'upgradeDowngradeHistory',
         'institutionOwnership', 'fundOwnership',
@@ -41,7 +41,8 @@ class Ticker(_YahooBase):
         'balanceSheetHistoryQuarterly': {
             'filter': 'balanceSheetStatements', 'convert_dates': ['endDate']},
         'calendarEvents': {
-            'convert_dates': ['earningsDate', 'exDividendDate, dividendDate']},
+            'convert_dates': [
+                'earningsDate', 'exDividendDate', 'dividendDate']},
         'cashflowStatementHistory': {
             'filter': 'cashflowStatements', 'convert_dates': ['endDate']},
         'cashflowStatementHistoryQuarterly': {
@@ -51,18 +52,22 @@ class Ticker(_YahooBase):
                 'sharesShortPreviousMonthDate', 'dateShortInterest',
                 'lastFiscalYearEnd', 'nextFiscalYearEnd', 'fundInceptionDate',
                 'lastSplitDate', 'mostRecentQuarter']},
+        'earnings': {'convert_dates': ['earningsDate']},
         'earningsHistory': {
             'filter': 'history', 'convert_dates': ['quarter']},
+        'earningsTrend': {'convert_dates': []},
         'esgScores': {'convert_dates': []},
         'financialData': {'convert_dates': []},
         'fundOwnership': {
             'filter': 'ownershipList', 'convert_dates': ['reportDate']},
         'fundPerformance': {'convert_dates': ['asOfDate']},
         'fundProfile': {'convert_dates': []},
+        'indexTrend': {'convert_dates': []},
         'incomeStatementHistory': {
             'filter': 'incomeStatementHistory', 'convert_dates': ['endDate']},
         'incomeStatementHistoryQuarterly': {
             'filter': 'incomeStatementHistory', 'convert_dates': ['endDate']},
+        'industryTrend': {'convert_dates': []},
         'insiderHolders': {
             'filter': 'holders', 'convert_dates':
             ['latestTransDate', 'positionDirectDate']},
@@ -76,12 +81,13 @@ class Ticker(_YahooBase):
         'recommendationTrend': {'filter': 'trend', 'convert_dates': []},
         'secFilings': {'filter': 'filings', 'convert_dates': ['epochDate']},
         'netSharePurchaseActivity': {'convert_dates': []},
+        'sectorTrend': {'convert_dates': []},
         'summaryDetail': {
             'convert_dates': ['exDividendDate', 'expireDate', 'startDate']},
         'summaryProfile': {'convert_dates': []},
         'topHoldings': {'convert_dates': []},
         'upgradeDowngradeHistory': {
-            'filter': 'history', 'convert_dates': ['quarter']}
+            'filter': 'history', 'convert_dates': ['epochGradeDate']}
     }
 
     _STYLE_BOX = {
@@ -200,6 +206,8 @@ class Ticker(_YahooBase):
             if k in self._convert_dates:
                 if isinstance(v, dict):
                     obj[k] = v.get('fmt', v)
+                elif isinstance(v, list):
+                    obj[k] = [item.get('fmt') for item in v]
                 else:
                     obj[k] = datetime.fromtimestamp(v).strftime('%Y-%m-%d')
             elif isinstance(v, dict):
@@ -238,8 +246,6 @@ class Ticker(_YahooBase):
                     data[self.symbols[i]] = \
                         self._format_data(d[endpoint]) if formatted \
                         else d[endpoint]
-                # data[self.symbols[i]] = \
-                #     _Format(d, self).format if formatted else d
             except TypeError:
                 data[self.symbols[i]] = json
             except IndexError:
@@ -270,7 +276,24 @@ class Ticker(_YahooBase):
         except TypeError:
             return data
 
-    def get_multiple_endpoints(self, endpoints, **kwargs):
+    def get_endpoints(self, endpoints, **kwargs):
+        """
+        Obtain specific endpoints for given symbol(s)
+
+        Parameters
+        ----------
+        endpoints: list
+            Desired endpoints for retrieval
+
+        Notes
+        -----
+        Only returns JSON
+
+        Raises
+        ------
+        ValueError
+            If invalid endpoint is specified or invalid format is given
+        """
         if not isinstance(endpoints, list):
             raise ValueError("A list is expected.  {} is not a list.".format(
                 endpoints))
@@ -283,53 +306,217 @@ class Ticker(_YahooBase):
                 ))
         return self._get_endpoint(endpoints, **kwargs)
 
+    @property
+    def all_endpoints(self):
+        """
+        Returns all base endpoints, indexed by endpoint title for each symbol
+
+        Notes
+        -----
+        Only returns JSON
+        """
+        return self._get_endpoint(self._ENDPOINTS)
+
     # RETURN DICTIONARY
     @property
     def asset_profile(self):
+        """Asset Profile
+
+        Geographical and business summary data for given symbol(s).
+
+        Returns
+        -------
+        dict
+            assetProfile endpoint data
+        """
         return self._get_endpoint("assetProfile")
 
     @property
     def calendar_events(self):
+        """Calendar Events
+
+        Earnings and Revenue expectations for upcoming earnings date for given
+        symbol(s)
+
+        Returns
+        -------
+        dict
+            calendarEvents endpoint data
+        """
         return self._get_endpoint("calendarEvents")
 
     @property
+    def earnings(self):
+        """Earnings
+
+        Historical earnings data for given symbol(s)
+
+        Returns
+        -------
+        dict
+            earnings endpoint data
+        """
+        return self._get_endpoint("earnings")
+
+    @property
+    def earnings_trend(self):
+        """Earnings Trend
+
+        Historical trend data for earnings and revenue estimations for given
+        symbol(s)
+
+        Returns
+        -------
+        dict
+            earningsTrend endpoint data
+        """
+        return self._get_endpoint("earningsTrend")
+
+    @property
     def esg_scores(self):
+        """ESG Scores
+
+        Data related to a given symbol(s) environmental, social, and
+        governance metrics
+
+        Returns
+        -------
+        dict
+            esgScores endpoint data
+        """
         return self._get_endpoint("esgScores")
 
     @property
     def financial_data(self):
+        """Financial Data
+
+        Financial KPIs for given symbol(s)
+
+        Returns
+        -------
+        dict
+            financialData endpoint data
+        """
         return self._get_endpoint("financialData")
 
     @property
-    def fund_profile(self):
-        return self._get_endpoint("fundProfile")
+    def index_trend(self):
+        """Index Trend
+
+        Trend data related given symbol(s) index, specificially PE and PEG
+        ratios
+
+        Returns
+        -------
+        dict
+            indexTrend endpoint data
+        """
+        return self._get_endpoint("indexTrend")
+
+    @property
+    def industry_trend(self):
+        """Industry Trend
+
+        Seems to be deprecated
+
+        Returns
+        -------
+        dict
+            industryTrend endpoint data
+        """
+        return self._get_endpoint("industryTrend")
 
     @property
     def key_stats(self):
+        """Key Statistics
+
+        KPIs for given symbol(s) (PE, enterprise value, EPS, EBITA, and more)
+
+        Returns
+        -------
+        dict
+            defaultKeyStatistics endpoint data
+        """
         return self._get_endpoint("defaultKeyStatistics")
 
     @property
     def major_holders(self):
+        """Major Holders
+
+        Data showing breakdown of owners of given symbol(s), insiders,
+        institutions, etc.
+
+        Returns
+        -------
+        dict
+            majorHoldersBreakdown endpoint data
+        """
         return self._get_endpoint("majorHoldersBreakdown")
 
     @property
     def price(self):
+        """Price
+
+        Detailed pricing data for given symbol(s), exchange, quote type,
+        currency, market cap, pre / post market data, etc.
+
+        Returns
+        -------
+        dict
+            price endpoint data
+        """
         return self._get_endpoint("price")
 
     @property
     def quote_type(self):
+        """Quote Type
+
+        Stock exchange specific data for given symbol(s)
+
+        Returns
+        -------
+        dict
+            quoteType endpoint data
+        """
         return self._get_endpoint("quoteType")
 
     @property
     def share_purchase_activity(self):
+        """Share Purchase Activity
+
+        High-level buy / sell data for given symbol(s) insiders
+
+        Returns
+        -------
+        dict
+            netSharePurchaseActivity endpoint data
+        """
         return self._get_endpoint("netSharePurchaseActivity")
 
     @property
     def summary_detail(self):
+        """Summary Detail
+
+        Contains similar data to price endpoint
+
+        Returns
+        -------
+        dict
+            summaryDetail endpoint data
+        """
         return self._get_endpoint("summaryDetail")
 
     @property
     def summary_profile(self):
+        """Summary Profile
+
+        Data related to given symbol(s) location and business summary
+
+        Returns
+        -------
+        dict
+            summaryProfile endpoint data
+        """
         return self._get_endpoint("summaryProfile")
 
     # RETURN DATAFRAMES
@@ -339,71 +526,206 @@ class Ticker(_YahooBase):
         return self._to_dataframe(endpoint, data_filter=data_filter)
 
     def balance_sheet(self, frequency="A"):
+        """Balance Sheet
+
+        Retrieves balance sheet data for most recent four quarters or most
+        recent four years.
+
+        Parameters
+        ----------
+        frequency: str, default 'A', optional
+            Specify either annual or quarterly balance sheet.  Value should
+            be 'a' or 'q'.
+        Returns
+        -------
+        pandas.DataFrame
+            balanceSheetHistory, balanceSheetHistoryQuarterly endpoint data
+        """
         return self._financials(
             "balanceSheetHistory", "balanceSheetStatements", frequency)
 
-    def cash_flow(self, frequency="A"):
+    def cash_flow(self, frequency="a"):
+        """Cash Flow
+
+        Retrieves cash flow data for most recent four quarters or most
+        recent four years.
+
+        Parameters
+        ----------
+        frequency: str, default 'A', optional
+            Specify either annual or quarterly cash flow statement.  Value
+            should be 'a' or 'q'.
+        Returns
+        -------
+        pandas.DataFrame
+            cashflowStatementHistory, cashflowStatementHistoryQuarterly
+            endpoint data
+        """
         return self._financials(
             "cashflowStatementHistory", "cashflowStatements", frequency)
 
     @property
     def company_officers(self):
+        """Company Officers
+
+        Retrieves top executives for given symbol(s) and their total pay
+        package.  Uses the assetProfile endpoint to retrieve data
+
+        Returns
+        -------
+        pandas.DataFrame
+            assetProfile endpoint data
+        """
         return self._to_dataframe(
             "assetProfile", data_filter="companyOfficers")
 
     @property
     def earning_history(self):
+        """Earning History
+
+        Data related to historical earnings (actual vs. estimate) for given
+        symbol(s)
+
+        Returns
+        -------
+        pandas.DataFrame
+            earningsHistory endpoint data
+        """
         return self._to_dataframe("earningsHistory", data_filter="history")
 
     @property
     def fund_ownership(self):
+        """Fund Ownership
+
+        Data related to top 10 owners of a given symbol(s)
+
+        Returns
+        -------
+        pandas.DataFrame
+            fundOwnership endpoint data
+        """
         return self._to_dataframe("fundOwnership", data_filter="ownershipList")
 
     @property
     def grading_history(self):
+        """Grading History
+
+        Data related to upgrades / downgrades by companies for a given
+        symbol(s)
+
+        Returns
+        -------
+        pandas.DataFrame
+            upgradeDowngradeHistory endpoint data
+        """
         return self._to_dataframe(
             "upgradeDowngradeHistory", data_filter="history")
 
-    def income_statement(self, frequency="A"):
+    def income_statement(self, frequency="a"):
+        """Income Statement
+
+        Retrieves income statement data for most recent four quarters or most
+        recent four years.
+
+        Parameters
+        ----------
+        frequency: str, default 'A', optional
+            Specify either annual or quarterly income statement.  Value should
+            be 'a' or 'q'.
+        Returns
+        -------
+        pandas.DataFrame
+            incomeStatementHistory, incomeStatementHistoryQuarterly
+            endpoint data
+        """
         return self._financials(
             "incomeStatementHistory", "incomeStatementHistory", frequency)
 
     @property
     def insider_holders(self):
+        """Insider Holders
+
+        Data related to stock holdings of a given symbol(s) insiders
+
+        Returns
+        -------
+        pandas.DataFrame
+            insiderHolders endpoint data
+        """
         return self._to_dataframe("insiderHolders", data_filter="holders")
 
     @property
     def insider_transactions(self):
+        """Insider Transactions
+
+        Data related to transactions by insiders for a given symbol(s)
+
+        Returns
+        -------
+        pandas.DataFrame
+            insiderTransactions endpoint data
+        """
         return self._to_dataframe(
             "insiderTransactions", data_filter="transactions")
 
     @property
     def institution_ownership(self):
+        """Institution Ownership
+
+        Top 10 owners of a given symbol(s)
+
+        Returns
+        -------
+        pandas.DataFrame
+            institutionOwnership endpoint data
+        """
         return self._to_dataframe(
             "institutionOwnership", data_filter="ownershipList")
 
     @property
     def recommendation_trend(self):
+        """Recommendation Trend
+
+        Data related to historical recommendations (buy, hold, sell) for a
+        given symbol(s)
+
+        Returns
+        -------
+        pandas.DataFrame
+            recommendationTrend endpoint data
+        """
         return self._to_dataframe("recommendationTrend", data_filter="trend")
 
     @property
     def sec_filings(self):
-        return self._to_dataframe("secFilings", data_filter="filings")
+        """SEC Filings
 
-    @property
-    def earnings_trend(self):
-        raise NotImplementedError()
-        # return self._list_to_dataframe(
-        #     endpoint="earningsTrend", key="trend", date_fields=[])
+        Historical SEC filings for a given symbol(s)
+
+        Returns
+        -------
+        pandas.DataFrame
+            secFilings endpoint data
+        """
+        return self._to_dataframe("secFilings", data_filter="filings")
 
     # FUND SPECIFIC
 
     @property
-    def fund_performance(self):
-        return self._get_endpoint("fundPerformance")
-
-    @property
     def fund_category_holdings(self):
+        """Fund Category Holdings
+
+        High-level holding breakdown (cash, bonds, equity, etc.) for a given
+        symbol(s)
+
+        .. warning:: This endpoint will only return data for specific
+                     securities (funds and etfs)
+
+        Returns
+        -------
+        pandas.DataFrame
+            topHoldings endpoint data subset
+        """
         data_dict = self._get_endpoint("topHoldings")
         for symbol in self.symbols:
             for key in self._FUND_DETAILS:
@@ -416,25 +738,120 @@ class Ticker(_YahooBase):
             index=self.symbols)
 
     @property
+    def fund_performance(self):
+        """Fund Performance
+
+        Historical return data for a given symbol(s) and symbol(s) specific
+        category
+
+        .. warning:: This endpoint will only return data for specific
+                     securities (funds and etfs)
+
+        Returns
+        -------
+        pandas.DataFrame
+            fundPerformance endpoint data
+        """
+        return self._get_endpoint("fundPerformance")
+
+    @property
+    def fund_profile(self):
+        """Fund Profile
+
+        Summary level information for a given symbol(s)
+
+        .. warning:: This endpoint will only return data for specific
+                     securities (funds and etfs)
+
+        Returns
+        -------
+        pandas.DataFrame
+            fundProfile endpoint data
+        """
+        return self._get_endpoint("fundProfile")
+
+    @property
     def fund_holding_info(self):
+        """Fund Holding Information
+
+        Contains information for a funds top holdings, bond ratings, bond
+        holdings, equity holdings, sector weightings, and category breakdown
+
+        .. warning:: This endpoint will only return data for specific
+                     securities (funds and etfs)
+
+        Returns
+        -------
+        dict
+            topHoldings endpoint data
+        """
         return self._get_endpoint("topHoldings")
 
     @property
     def fund_top_holdings(self):
+        """Fund Top Holdings
+
+        Retrieves Top 10 holdings for a given symbol(s)
+
+        .. warning:: This endpoint will only return data for specific
+                     securities (funds and etfs)
+
+        Returns
+        -------
+        pandas.DataFrame
+            topHoldings endpoint data subset
+        """
         return self._to_dataframe("topHoldings", data_filter="holdings")
 
     @property
     def fund_bond_ratings(self):
+        """Fund Bond Ratings
+
+        Retrieves aggregated bond rating data for a given symbol(s)
+
+        .. warning:: This endpoint will only return data for specific
+                     securities (funds and etfs)
+
+        Returns
+        -------
+        pandas.DataFrame
+            topHoldings endpoint data subset
+        """
         return self._to_dataframe(
             "topHoldings", data_filter="bondRatings", from_dict=True)
 
     @property
     def fund_sector_weightings(self):
+        """Fund Sector Weightings
+
+        Retrieves aggregated sector weightings for a given symbol(s)
+
+        .. warning:: This endpoint will only return data for specific
+                     securities (funds and etfs)
+
+        Returns
+        -------
+        pandas.DataFrame
+            topHoldings endpoint data subset
+        """
         return self._to_dataframe(
             "topHoldings", data_filter="sectorWeightings", from_dict=True)
 
     @property
     def fund_bond_holdings(self):
+        """Fund Bond Holdings
+
+        Retrieves aggregated maturity and duration information for a given
+        symbol(s)
+
+        .. warning:: This endpoint will only return data for specific
+                     securities (funds and etfs)
+
+        Returns
+        -------
+        dict
+            topHoldings endpoint data subset
+        """
         data = self.fund_holding_info
         for symbol in self.symbols:
             try:
@@ -445,6 +862,18 @@ class Ticker(_YahooBase):
 
     @property
     def fund_equity_holdings(self):
+        """Fund Equity Holdings
+
+        Retrieves aggregated priceTo____ data for a given symbol(s)
+
+        .. warning:: This endpoint will only return data for specific
+                     securities (funds and etfs)
+
+        Returns
+        -------
+        dict
+            topHoldings endpoint data subset
+        """
         data = self.fund_holding_info
         for symbol in self.symbols:
             try:
@@ -485,6 +914,15 @@ class Ticker(_YahooBase):
 
     @property
     def option_chain(self):
+        """Option Chain
+
+        Retrieves calls and puts for each expiration date for a given symbol(s)
+
+        Returns
+        -------
+        pandas.DataFrame
+            option chain for each expiration date
+        """
         all_dataframes = []
         symbols = []
         if not self._expiration_dates:
@@ -563,8 +1001,7 @@ class Ticker(_YahooBase):
         """
         Historical pricing data
 
-        Pulls historical data for a symbol or symbols and returns
-        a pandas.DataFrame
+        Pulls historical pricing data for a given symbol(s)
 
         Parameters
         ----------
@@ -578,6 +1015,11 @@ class Ticker(_YahooBase):
         end: str of datetime.datetime, default None, optional
             Specify a ending point to pull data from.  Can be expressed as a
             string with the format YYYY-MM-DD or as a datetime object.
+
+        Returns
+        -------
+        pandas.DataFrame
+            historical pricing data
         """
         data = self._get_historical_data(
             period, interval, start, end, **kwargs)
