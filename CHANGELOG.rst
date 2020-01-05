@@ -1,6 +1,19 @@
 Change Log
 ==========
 
+1.0.10
+------
+- Added docstrings to each property / method
+- Changed get_multiple_endpoints method to get_endpoints
+- Added all known endpoints into Ticker class.  Missing
+  endpoints were earnings, earnings_trend, and index_trend
+
+1.0.9
+-----
+- Removed combine_dataframes kwarg.  This is just the default behavior now.
+- Removed ticker column in history method.  `symbol` is now part of
+  a MultiIndex in the returned DataFrame
+
 1.0.8
 -----
 - Updated option_chain method for bugs as well as MultiIndex indexing
