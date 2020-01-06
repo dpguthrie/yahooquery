@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+1.0.11
+------
+- Bug fix related to accessing the multiple endpoint methods
+  (get_endpoints, all_endpoints).  Error would occur during
+  formatting, specifically for the earningsTrend endpoint
+- Bug fix related to passing one endpoint to the get_endpoints
+  method.
+
 1.0.10
 ------
 - Added docstrings to each property / method
