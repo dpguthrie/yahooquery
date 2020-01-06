@@ -48,8 +48,7 @@ def test_multiple_endpoints(ticker):
 def test_all_endpoints(ticker):
     assert ticker.all_endpoints is not None
     data = ticker.all_endpoints
-    assert len(data.keys()) == ticker.symbols and \
-           sorted(list(data.keys()) == sorted(ticker.symbols))
+    assert sorted(list(data.keys()) == sorted(ticker.symbols))
 
 
 @pytest.mark.parametrize("endpoint", props(Ticker))
