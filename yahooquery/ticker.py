@@ -14,7 +14,7 @@ class Ticker(_YahooBase):
     symbols: str or list
         Symbol or list collection of symbols
     formatted: bool, default True, optional
-        Format output priot to returning data
+        Format output prior to returning data
     """
 
     _ENDPOINTS = [
@@ -209,7 +209,10 @@ class Ticker(_YahooBase):
                 elif isinstance(v, list):
                     obj[k] = [item.get('fmt') for item in v]
                 else:
-                    obj[k] = datetime.fromtimestamp(v).strftime('%Y-%m-%d')
+                    try:
+                        obj[k] = datetime.fromtimestamp(v).strftime('%Y-%m-%d')
+                    except TypeError:
+                        obj[k] = v
             elif isinstance(v, dict):
                 if 'raw' in v:
                     obj[k] = v.get('raw')
@@ -244,7 +247,7 @@ class Ticker(_YahooBase):
                         self._format_data(d) if formatted else d
                 else:
                     data[self.symbols[i]] = \
-                        self._format_data(d[endpoint]) if formatted \
+                        self._format_data(d[self.endpoints[0]]) if formatted \
                         else d[endpoint]
             except TypeError:
                 data[self.symbols[i]] = json
