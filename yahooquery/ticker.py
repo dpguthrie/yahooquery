@@ -14,10 +14,41 @@ class Ticker(_YahooBase):
     symbols: str or list
         Symbol or list collection of symbols
     formatted: bool, default True, optional
-        Format output prior to returning data
+        Format output prior to returning data.
+
+    Notes
+    -----
+    When formatted is set to False, all base endpoints will return as
+    dictionaries.  There are two reasons for this:
+
+    1. Quantitative values are expressed as dictionaries.  For example:
+
+       "totalPay": {
+           "raw": 115554666,
+           "fmt": "11.56M",
+           "longFmt": "11,555,466"
+       }
+
+       When formatted is set to True, the _format_data method will return
+       the value in the "raw" key.
+
+    2. Dates are either expressed as timestamps:
+
+       "governanceEpochDate": 1570147200
+
+       Or as dictionaries:
+
+        "exDividendDate": {
+            "raw": 1573084800,
+            "fmt": "2019-11-07"
+        }
+
+        When formatted is set to True, the _format_data method will return the
+        date expressed in the format YYYY-MM-DD by either converting from the
+        timestamp or retrieving the "fmt" key.
     """
 
-    _ENDPOINTS = [
+    ENDPOINTS = [
         'assetProfile', 'incomeStatementHistory',
         'incomeStatementHistoryQuarterly',
         'balanceSheetHistory', 'balanceSheetHistoryQuarterly',
@@ -115,13 +146,13 @@ class Ticker(_YahooBase):
         'holdings', 'equityHoldings', 'bondHoldings', 'bondRatings',
         'sectorWeightings']
 
-    _INTERVALS = [
+    INTERVALS = [
         '1m', '2m', '5m', '15m',
         '30m', '60m', '90m', '1h',
         '1d', '5d', '1wk', '1mo', '3mo'
     ]
 
-    _PERIODS = [
+    PERIODS = [
         '1d', '5d', '1mo', '3mo',
         '6mo', '1y', '2y', '5y',
         '10y', 'ytd', 'max'
@@ -248,7 +279,7 @@ class Ticker(_YahooBase):
                 else:
                     data[self.symbols[i]] = \
                         self._format_data(d[self.endpoints[0]]) if formatted \
-                        else d[endpoint]
+                        else d[self.endpoints[0]]
             except TypeError:
                 data[self.symbols[i]] = json
             except IndexError:
@@ -258,25 +289,28 @@ class Ticker(_YahooBase):
 
     def _to_dataframe(self, endpoint=None, params={}, **kwargs):
         data = self._get_endpoint(endpoint, params, **kwargs)
-        dataframes = []
-        try:
-            for symbol in self.symbols:
-                final_data = data[symbol][kwargs.get('data_filter')] if \
-                    kwargs.get('data_filter') else data[symbol]
+        if self.formatted:
+            dataframes = []
+            try:
+                for symbol in self.symbols:
+                    final_data = data[symbol][kwargs.get('data_filter')] if \
+                        kwargs.get('data_filter') else data[symbol]
+                    if kwargs.get('from_dict', False):
+                        df = pd.DataFrame(
+                            [(k, v) for d in final_data for k, v in d.items()])
+                        df.set_index(0, inplace=True)
+                        df.columns = [symbol]
+                    else:
+                        df = pd.DataFrame(final_data)
+                    dataframes.append(df)
                 if kwargs.get('from_dict', False):
-                    df = pd.DataFrame(
-                        [(k, v) for d in final_data for k, v in d.items()])
-                    df.set_index(0, inplace=True)
-                    df.columns = [symbol]
-                else:
-                    df = pd.DataFrame(final_data)
-                dataframes.append(df)
-            if kwargs.get('from_dict', False):
-                return pd.concat(dataframes, axis=1)
-            return pd.concat(
-                dataframes, keys=self.symbols, names=['symbol', 'row'],
-                sort=False)
-        except TypeError:
+                    return pd.concat(dataframes, axis=1)
+                return pd.concat(
+                    dataframes, keys=self.symbols, names=['symbol', 'row'],
+                    sort=False)
+            except TypeError:
+                return data
+        else:
             return data
 
     def get_endpoints(self, endpoints, **kwargs):
@@ -300,12 +334,12 @@ class Ticker(_YahooBase):
         if not isinstance(endpoints, list):
             raise ValueError("A list is expected.  {} is not a list.".format(
                 endpoints))
-        if any(elem not in self._ENDPOINTS for elem in endpoints):
+        if any(elem not in self.ENDPOINTS for elem in endpoints):
             raise ValueError("""
                 One of {} is not a valid value.
                 Valid values are {})""".format(
                     ', '.join(endpoints),
-                    ', '.join(self._ENDPOINTS)
+                    ', '.join(self.ENDPOINTS)
                 ))
         return self._get_endpoint(endpoints, **kwargs)
 
@@ -318,7 +352,7 @@ class Ticker(_YahooBase):
         -----
         Only returns JSON
         """
-        return self._get_endpoint(self._ENDPOINTS)
+        return self._get_endpoint(self.ENDPOINTS)
 
     # RETURN DICTIONARY
     @property
@@ -966,13 +1000,13 @@ class Ticker(_YahooBase):
             params = {'period1': start, 'period2': end}
         else:
             period = period.lower()
-            if period not in self._PERIODS:
+            if period not in self.PERIODS:
                 raise ValueError("Period values must be one of {}".format(
-                    ', '.join(self._PERIODS)))
+                    ', '.join(self.PERIODS)))
             params = {'range': period}
-        if interval not in self._INTERVALS:
+        if interval not in self.INTERVALS:
             raise ValueError("Interval values must be one of {}".format(
-                ', '.join(self._INTERVALS)))
+                ', '.join(self.INTERVALS)))
         params['interval'] = interval.lower()
         data = self._get_endpoint(
             url_key='chart', params=params, formatted=False)
