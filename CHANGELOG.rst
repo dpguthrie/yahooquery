@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+1.0.12
+------
+- Changed private Ticker variables (_ENDPOINTS, _PERIODS, and _INTERVALS) to public
+- Updated README for new multiple endpoint methods as well as a comparison to yfinance
+- Forced dictionary return when formatted = False.
+
 1.0.11
 ------
 - Bug fix related to accessing the multiple endpoint methods
