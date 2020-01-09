@@ -213,29 +213,56 @@ aapl.history(end='2018-12-31')  # Default start date is 1900-01-01
 # Interval options = 1m, 2m, 5m, 15m, 30m, 60m, 90m, 1h, 1d, 5d, 1wk, 1mo, 3mo
 ```
 
+Available periods and intervals can be seen through `Ticker.PERIODS` and `Ticker.INTERVALS`, respectively.
+
 If trying to retrieve more than one ticker, one dataframe will be returned and the column `ticker` can be used to identify each row appropriately.
 
 ```python
 tickers = Ticker(['aapl', 'msft'])
 tickers.history()
 ```
-| dates               |   volume |    open |    low |   high |   close | ticker   |
-|:--------------------|---------:|--------:|-------:|-------:|--------:|:---------|
-| 2019-01-02 07:30:00 | 37039700 | 154.89  | 154.23 | 158.85 |  157.92 | AAPL     |
-| 2019-01-03 07:30:00 | 91312200 | 143.98  | 142    | 145.72 |  142.19 | AAPL     |
-| 2019-12-12 07:30:00 | 24612100 | 151.65  | 151.02 | 153.44 |  153.24 | MSFT     |
-| 2019-12-13 14:00:01 | 23850062 | 153.003 | 152.85 | 154.89 |  154.53 | MSFT     |
+| symbol | dates               |   volume |    open |    low |   high |   close |
+|:-------|:--------------------|---------:|--------:|-------:|-------:|--------:|
+| AAPL   | 2019-01-02 07:30:00 | 37039700 | 154.89  | 154.23 | 158.85 |  157.92 |
+| AAPL   | 2019-01-03 07:30:00 | 91312200 | 143.98  | 142    | 145.72 |  142.19 |
+| MSFT   | 2019-12-12 07:30:00 | 24612100 | 151.65  | 151.02 | 153.44 |  153.24 |
+| MSFT   | 2019-12-13 14:00:01 | 23850062 | 153.003 | 152.85 | 154.89 |  154.53 |
+
+If more than one symbol is given, `symbol` and `dates` will comprise a MultiIndex in the returned dataframe.
 
 ## Multiple Endpoints
 
-Access more than one endpoint in one call using the `get_multiple_endoints` method of the `Ticker` class.  This method **ONLY** returns dictionaries.
+Multiple endpoints can be accessed in one call for a given symbol through two separate endpoints:  `get_endpoints` and `all_endpoints`.  The `get_endpoints` method
+takes in a `list` of allowable endpoints.  Conversely, the `all_endpoints` property will retrieve all base endpoints.
 
 ```python
 aapl = Ticker('aapl')
 endpoints = ['assetProfile', 'esgScores', 'incomeStatementHistory']
-aapl.get_multiple_endpoints(endpoints)
-{'aapl': {'assetProfile': {...}, 'esgScores', {...}, 'incomeStatementHistory', {...}}}
+data = aapl.get_endpoints(endpoints)
+
+# or
+
+data = aapl.all_endpoints
+
+# The symbol(s) and endpoints become the keys in the dictionary
+
+data['aapl']['assetProfile']
+data['aapl']['esgScores']
+data['aapl']['incomeStatementHistory']
 ```
 
-Type `Ticker._ENDPOINTS` to view the list of endpoints supported through this method.
+### Notes
 
+- The data will always be returned as a dictionary
+- `Ticker.ENDPOINTS` will show you the list of allowable endpoints you can pass to the `get_endpoints` method
+
+## Comparison to yfinance
+
+### Advantages
+
+- Data is retrieved from an API instead of scraped through their front-end (this doesn't apply to the historical pricing and option chain data).  This should make for faster requests.  The performance metrics below are from comparing yfinance's `info` property against yahooquery's `all_endpoints` property and both packages `history` methods.
+
+### Disadvantages
+
+- Multithreading is available through yfinance.
+- In the event yahoo closes this API, which they've done in the past, this package, outside of the history and option_chain methods, would become obsolete.  yfinance, because it scrapes data, would most likely still be functional.
