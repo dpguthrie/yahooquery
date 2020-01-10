@@ -260,9 +260,8 @@ data['aapl']['incomeStatementHistory']
 
 ### Advantages
 
-- Data is retrieved from an API instead of scraped through their front-end (this doesn't apply to the historical pricing and option chain data).  This should make for faster requests.  The performance metrics below are from comparing yfinance's `info` property against yahooquery's `all_endpoints` property and both packages `history` methods.
+- Data is retrieved from an API instead of scraped through their front-end (this doesn't apply to the historical pricing and option chain data).  This makes for significantly faster requests for base endpoints.
 
 ### Disadvantages
 
-- Multithreading is available through yfinance.
-- In the event yahoo closes this API, which they've done in the past, this package, outside of the history and option_chain methods, would become obsolete.  yfinance, because it scrapes data, would most likely still be functional.
+- Multithreading is available through yfinance and makes downloading historical prices increasingly faster than yahooquery as the number of tickers increase.  **This feature could probably be developed next.**
