@@ -7,7 +7,7 @@
 [![Build Status](https://travis-ci.com/dpguthrie/yahooquery.svg?branch=master)](https://travis-ci.com/dpguthrie/yahooquery)
 [![codecov](https://codecov.io/gh/dpguthrie/yahooquery/branch/master/graph/badge.svg)](https://codecov.io/gh/dpguthrie/yahooquery)
 
-Python wrapper around an unofficial Yahoo Finance API.
+Python wrapper around an unofficial Yahoo Finance API.  Check out an interactive demo at (https://yahooquery-streamlit.herokuapp.com)
 
 ![Yahooquery Demo](demo/demo.gif)
 
@@ -227,8 +227,6 @@ tickers.history()
 | AAPL   | 2019-01-03 07:30:00 | 91312200 | 143.98  | 142    | 145.72 |  142.19 |
 | MSFT   | 2019-12-12 07:30:00 | 24612100 | 151.65  | 151.02 | 153.44 |  153.24 |
 | MSFT   | 2019-12-13 14:00:01 | 23850062 | 153.003 | 152.85 | 154.89 |  154.53 |
-
-If more than one symbol is given, `symbol` and `dates` will comprise a MultiIndex in the returned dataframe.
 
 ## Multiple Endpoints
 
