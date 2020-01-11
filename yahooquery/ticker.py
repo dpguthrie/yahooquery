@@ -238,7 +238,10 @@ class Ticker(_YahooBase):
                 if isinstance(v, dict):
                     obj[k] = v.get('fmt', v)
                 elif isinstance(v, list):
-                    obj[k] = [item.get('fmt') for item in v]
+                    try:
+                        obj[k] = [item.get('fmt') for item in v]
+                    except AttributeError:
+                        obj[k] = v
                 else:
                     try:
                         obj[k] = datetime.fromtimestamp(v).strftime('%Y-%m-%d')
@@ -1019,6 +1022,9 @@ class Ticker(_YahooBase):
                 dates = [datetime.fromtimestamp(x)
                          for x in data[symbol]['timestamp']]
                 df = pd.DataFrame(data[symbol]['indicators']['quote'][0])
+                if data[symbol]['indicators'].get('adjclose'):
+                    df['adjclose'] = \
+                        data[symbol]['indicators']['adjclose'][0]['adjclose']
                 df['dates'] = dates
                 df.set_index('dates', inplace=True)
                 d[symbol] = df
