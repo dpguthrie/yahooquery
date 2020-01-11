@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+1.0.13
+------
+- Add `adjclose` column to dataframe returned from `yahooquery.Ticker.history`
+
 1.0.12
 ------
 - Changed private Ticker variables (_ENDPOINTS, _PERIODS, and _INTERVALS) to public
