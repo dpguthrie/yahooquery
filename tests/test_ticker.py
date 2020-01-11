@@ -7,7 +7,8 @@ from yahooquery import Ticker
 
 TICKERS = [
     Ticker('aapl'), Ticker(['aapl', 'msft']), Ticker(['aapl', 'aaapl']),
-    Ticker('hasgx')
+    Ticker('hasgx'), Ticker('aapl', formatted=False),
+    Ticker(['aapl', 'fb'], formatted=False)
 ]
 
 FINANCIALS = ['cash_flow', 'income_statement', 'balance_sheet']
