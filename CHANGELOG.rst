@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+1.0.14
+------
+- Add asynchronous requests with the requests-futures library
+- Add "events" to the history dataframe (dividends and splits)
+
 1.0.13
 ------
 - Add `adjclose` column to dataframe returned from `yahooquery.Ticker.history`
