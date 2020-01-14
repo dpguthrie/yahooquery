@@ -253,13 +253,3 @@ data['aapl']['incomeStatementHistory']
 
 - The data will always be returned as a dictionary
 - `Ticker.ENDPOINTS` will show you the list of allowable endpoints you can pass to the `get_endpoints` method
-
-## Comparison to yfinance
-
-### Advantages
-
-- Data is retrieved from an API instead of scraped through their front-end (this doesn't apply to the historical pricing and option chain data).  This makes for significantly faster requests for base endpoints.
-
-### Disadvantages
-
-- Multithreading is available through yfinance and makes downloading historical prices increasingly faster than yahooquery as the number of tickers increase.  **This feature could probably be developed next.**
