@@ -289,11 +289,10 @@ class Ticker(object):
             if response[self._urls_dict[self._url_key]['key']]['error']:
                 error = response[self._urls_dict[self._url_key]['key']]['error']
                 return error.get('description')
-            elif not response[self._urls_dict[self._url_key]['key']]['result']:
+            if not response[self._urls_dict[self._url_key]['key']]['result']:
                 return 'No data found'
         except KeyError:
             print("Unknown key")
-            pass
         return response
 
     def _get_endpoint(self, endpoint=None, params={}, **kwargs):
@@ -908,6 +907,15 @@ class Ticker(object):
         return self._to_dataframe(
             "topHoldings", data_filter="sectorWeightings", from_dict=True)
 
+    def _fund_holdings(self, holding_type):
+        data = self.fund_holding_info
+        for symbol in self.symbols:
+            try:
+                data[symbol] = data[symbol][holding_type]
+            except TypeError:
+                pass
+        return data
+
     @property
     def fund_bond_holdings(self):
         """Fund Bond Holdings
@@ -923,13 +931,7 @@ class Ticker(object):
         dict
             topHoldings endpoint data subset
         """
-        data = self.fund_holding_info
-        for symbol in self.symbols:
-            try:
-                data[symbol] = data[symbol]["bondHoldings"]
-            except TypeError:
-                pass
-        return data
+        return self._fund_holdings("bondHoldings")
 
     @property
     def fund_equity_holdings(self):
@@ -945,13 +947,7 @@ class Ticker(object):
         dict
             topHoldings endpoint data subset
         """
-        data = self.fund_holding_info
-        for symbol in self.symbols:
-            try:
-                data[symbol] = data[symbol]["equityHoldings"]
-            except TypeError:
-                pass
-        return data
+        return self._fund_holdings("equityHoldings")
 
     # OPTIONS
 
@@ -1056,10 +1052,8 @@ class Ticker(object):
         if all(isinstance(d[key], pd.DataFrame) for key in d):
             if len(d) == 1:
                 return d[self.symbols[0]]
-            else:
-                return pd.concat(
-                    list(d.values()), keys=list(d.keys()),
-                    names=['symbol', 'date'], sort=False)
+            return pd.concat(list(d.values()), keys=list(d.keys()),
+                             names=['symbol', 'date'], sort=False)
         return d
 
     def history(
