@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+1.0.15
+------
+- Missing required library requests-futures in setup.py file
+
 1.0.14
 ------
 - Add asynchronous requests with the requests-futures library
