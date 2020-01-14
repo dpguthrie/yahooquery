@@ -1,9 +1,9 @@
 from datetime import datetime
 import pandas as pd
 
-from yahooquery.utils import (
-    _convert_to_timestamp, _init_session, _history_dataframe)
+from yahooquery.utils import _convert_to_timestamp, _history_dataframe
 from concurrent.futures import as_completed
+from requests_futures.sessions import FuturesSession
 
 
 class Ticker(object):
@@ -170,7 +170,7 @@ class Ticker(object):
         symbols: str or list
             Symbol or list collection of symbols
         """
-        self.session = _init_session(kwargs.get('session'))
+        self.session = FuturesSession(max_workers=kwargs.get('max_workers', 8))
         if kwargs.get('proxies'):
             self.session.proxies = kwargs.get('proxies')
         self.symbols = symbols if isinstance(symbols, list) else [symbols]
@@ -277,8 +277,8 @@ class Ticker(object):
 
         Parameters
         ----------
-        response: requests.response
-            A requests.response object
+        response: requests-futures.response
+            A requests-futures.response object
 
         Returns
         -------
@@ -955,29 +955,29 @@ class Ticker(object):
         data = self._get_endpoint(
             url_key='options', formatted=False)
         for symbol in self.symbols:
-            self._expiration_dates[symbol] = []
+            self._expiration_dates[symbol] = {}
             try:
                 for exp_date in data[symbol]['expirationDates']:
-                    self._expiration_dates[symbol].append(
-                        {datetime.fromtimestamp(exp_date).strftime('%Y-%m-%d'):
-                         exp_date})
+                    self._expiration_dates[symbol][exp_date] = \
+                        pd.to_datetime(exp_date, unit='s')
             except TypeError:
                 # No data
                 pass
 
-    def _options_to_dataframe(self, options, symbol):
-        calls = pd.DataFrame(options['calls'])
-        puts = pd.DataFrame(options['puts'])
-        d = {v: k for d in self._expiration_dates[symbol]
-             for k, v in d.items()}
-        for dataframe in [calls, puts]:
-            dataframe.replace({'expiration': d})
-            try:
-                dataframe['lastTradeDate'] = pd.to_datetime(
-                    dataframe['lastTradeDate'], unit='s')
-            except KeyError:
-                pass
-        return pd.concat([calls, puts], keys=['calls', 'puts'], sort=False)
+    def _options_to_dataframe(self, options, symbol, date):
+        dataframes = []
+        for optionType in ['calls', 'puts']:
+            df = pd.DataFrame(options[optionType])
+            df['optionType'] = optionType
+            dataframes.append(df)
+        df = pd.concat(dataframes, sort=False)
+        df['symbol'] = symbol
+        df['expirationDate'] = self._expiration_dates[symbol][int(date)]
+        try:
+            df['lastTradeDate'] = pd.to_datetime(df['lastTradeDate'], unit='s')
+        except KeyError:
+            pass
+        return df
 
     @property
     def option_chain(self):
@@ -990,36 +990,34 @@ class Ticker(object):
         pandas.DataFrame
             option chain for each expiration date
         """
-        all_dataframes = []
-        symbols = []
+        dataframes = []
+        futures = []
         if not self._expiration_dates:
             self._get_options()
-        for symbol in self.symbols:
-            symbol_dataframes = []
-            for date in self._expiration_dates[symbol]:
-                json = self._get_endpoint(
-                    url_key='options', params={'date': list(date.values())[0]},
-                    formatted=False)
-                options = json[symbol]['options'][0]
-                symbol_dataframes.append(
-                    self._options_to_dataframe(options, symbol))
-            try:
-                all_dataframes.append(pd.concat(symbol_dataframes, keys=[
-                    datetime.strptime(k, "%Y-%m-%d")
-                    for d in self._expiration_dates[symbol]
-                    for k, v in d.items()], names=[
-                        'expiration_date', 'option_type', 'row'], sort=False))
-                symbols.append(symbol)
-            except ValueError:
-                # No data was found for symbol
-                pass
-        if all_dataframes:
-            return pd.concat(
-                all_dataframes, keys=symbols, names=[
-                    'symbol', 'expiration_date', 'option_type',
-                    'row'], sort=False)
-        return {symbol: 'No option data found'
-                for symbol in self.symbols if symbol not in symbols}
+        for url in self._urls_dict['options']['urls']:
+            symbol = url.rsplit('/')[-1]
+            futures.extend(
+                [self.session.get(url=url, params={
+                    'date': date})
+                 for date in list(self._expiration_dates[symbol].keys())])
+        for future in as_completed(futures):
+            response = future.result()
+            json = self._validate_response(response.json())
+            symbol = response.url.rsplit("/")[-1].rsplit('?')[0]
+            date = response.url.rsplit("=")[-1]
+            data = json['optionChain']['result'][0]
+            df = self._options_to_dataframe(
+                data['options'][0], symbol, date)
+            dataframes.append(df)
+        if dataframes:
+            df = pd.concat(dataframes, sort=False)
+            df.set_index(['symbol', 'expirationDate', 'optionType'],
+                         inplace=True)
+            df.rename_axis(['symbol', 'expirationDate', 'optionType'],
+                           inplace=True)
+            return df
+        else:
+            return "No option chain data found"
 
     # HISTORICAL PRICE DATA
 
