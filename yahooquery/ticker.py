@@ -1,11 +1,11 @@
 from datetime import datetime
 import pandas as pd
 
-from .base import _YahooBase
-from yahooquery.utils import _convert_to_timestamp
+from yahooquery.utils import _convert_to_timestamp, _init_session
+from concurrent.futures import as_completed
 
 
-class Ticker(_YahooBase):
+class Ticker(object):
     """
     Base class for interacting with Yahoo Finance API
 
@@ -47,6 +47,9 @@ class Ticker(_YahooBase):
         date expressed in the format YYYY-MM-DD by either converting from the
         timestamp or retrieving the "fmt" key.
     """
+    _BASE_API_URL = "https://query2.finance.yahoo.com"
+
+    _CHART_API_URL = "https://query1.finance.yahoo.com"
 
     ENDPOINTS = [
         'assetProfile', 'incomeStatementHistory',
@@ -166,6 +169,7 @@ class Ticker(_YahooBase):
         symbols: str or list
             Symbol or list collection of symbols
         """
+        self.session = _init_session(kwargs.get('session'))
         self.symbols = symbols if isinstance(symbols, list) else [symbols]
         self.formatted = kwargs.get('formatted', True)
         self.endpoints = []
@@ -266,28 +270,53 @@ class Ticker(_YahooBase):
                 obj[k] = v
         return obj
 
+    def _validate_response(self, response):
+        """Ensures response from API is valid
+
+        Parameters
+        ----------
+        response: requests.response
+            A requests.response object
+
+        Returns
+        -------
+        response:  Parsed JSON
+            A json-formatted response
+        """
+        try:
+            if response[self._urls_dict[self._url_key]['key']]['error']:
+                error = response[self._urls_dict[self._url_key]['key']]['error']
+                return error.get('description')
+            elif not response[self._urls_dict[self._url_key]['key']]['result']:
+                return 'No data found'
+        except KeyError:
+            print("Unknown key")
+            pass
+        return response
+
     def _get_endpoint(self, endpoint=None, params={}, **kwargs):
         self.optional_params = params
         self.endpoints = endpoint if isinstance(endpoint, list) else [endpoint]
         formatted = kwargs.get('formatted', self.formatted)
         data = {}
         self._url_key = kwargs.pop('url_key', 'base')
-        for i, url in enumerate(self._urls_dict[self._url_key]['urls']):
-            json = self.fetch(url, **kwargs)
+        futures = [self.session.get(url=url, params=self.params)
+                   for url in self._urls_dict[self._url_key]['urls']]
+        for future in as_completed(futures):
+            response = future.result()
+            json = self._validate_response(response.json())
+            symbol = response.url.rsplit('/')[-1].rsplit('?')[0]
             try:
                 d = json[self._urls_dict[self._url_key]['key']]['result'][0]
                 if len(self.endpoints) > 1 or self.endpoints[0] is None:
-                    data[self.symbols[i]] = \
+                    data[symbol] = \
                         self._format_data(d) if formatted else d
                 else:
-                    data[self.symbols[i]] = \
+                    data[symbol] = \
                         self._format_data(d[self.endpoints[0]]) if formatted \
                         else d[self.endpoints[0]]
             except TypeError:
-                data[self.symbols[i]] = json
-            except IndexError:
-                data[self.symbols[i]] = "No data found for symbol {}".format(
-                    self.symbols[i])
+                data[symbol] = json
         return data
 
     def _to_dataframe(self, endpoint=None, params={}, **kwargs):

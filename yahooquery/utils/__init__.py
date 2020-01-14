@@ -1,4 +1,5 @@
 import requests
+from requests_futures.sessions import FuturesSession
 from datetime import datetime
 import time
 
@@ -6,7 +7,8 @@ import time
 def _init_session(session):
     if session is None:
         session = requests.session()
-    return session
+        future_session = FuturesSession(session=session)
+    return future_session
 
 
 def _convert_to_timestamp(date=None, start=True):
