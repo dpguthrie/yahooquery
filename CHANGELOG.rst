@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+1.1.0
+-----
+- Entire library makes asynchronous requests (missing piece was the
+  option_chain method).
+
 1.0.15
 ------
 - Missing required library requests-futures in setup.py file
