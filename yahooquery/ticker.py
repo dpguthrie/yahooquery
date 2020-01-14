@@ -284,6 +284,8 @@ class Ticker(object):
             if response[self._urls_dict[self._url_key]['key']]['error']:
                 error = response[self._urls_dict[self._url_key]['key']]['error']
                 return error.get('description')
+            elif not response[self._urls_dict[self._url_key]['key']]['result']:
+                return 'No data found'
         except KeyError:
             print("Unknown key")
             pass
