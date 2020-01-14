@@ -253,3 +253,7 @@ data['aapl']['incomeStatementHistory']
 
 - The data will always be returned as a dictionary
 - `Ticker.ENDPOINTS` will show you the list of allowable endpoints you can pass to the `get_endpoints` method
+
+## Caution
+
+This package uses asynchronous requests through the requests-futures package.  If you're downloading a lot of data, be mindful of the impact you're having on Yahoo's servers.  The default number of workers is set at 8 but can be changed through the `max_workers` argument when initializing a `Ticker`.
