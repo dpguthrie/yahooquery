@@ -1,7 +1,8 @@
 from datetime import datetime
 import pandas as pd
 
-from yahooquery.utils import _convert_to_timestamp, _init_session
+from yahooquery.utils import (
+    _convert_to_timestamp, _init_session, _history_dataframe)
 from concurrent.futures import as_completed
 
 
@@ -170,12 +171,13 @@ class Ticker(object):
             Symbol or list collection of symbols
         """
         self.session = _init_session(kwargs.get('session'))
+        if kwargs.get('proxies'):
+            self.session.proxies = kwargs.get('proxies')
         self.symbols = symbols if isinstance(symbols, list) else [symbols]
         self.formatted = kwargs.get('formatted', True)
         self.endpoints = []
         self._expiration_dates = {}
         self._url_key = 'base'
-        super(Ticker, self).__init__(**kwargs)
 
     @property
     def _base_urls(self):
@@ -1048,15 +1050,7 @@ class Ticker(object):
         d = {}
         for symbol in self.symbols:
             if 'timestamp' in data[symbol]:
-                dates = [datetime.fromtimestamp(x)
-                         for x in data[symbol]['timestamp']]
-                df = pd.DataFrame(data[symbol]['indicators']['quote'][0])
-                if data[symbol]['indicators'].get('adjclose'):
-                    df['adjclose'] = \
-                        data[symbol]['indicators']['adjclose'][0]['adjclose']
-                df['dates'] = dates
-                df.set_index('dates', inplace=True)
-                d[symbol] = df
+                d[symbol] = _history_dataframe(data, symbol)
             else:
                 d[symbol] = data[symbol]
         if all(isinstance(d[key], pd.DataFrame) for key in d):
@@ -1065,7 +1059,7 @@ class Ticker(object):
             else:
                 return pd.concat(
                     list(d.values()), keys=list(d.keys()),
-                    names=['symbol', 'dates'], sort=False)
+                    names=['symbol', 'date'], sort=False)
         return d
 
     def history(
