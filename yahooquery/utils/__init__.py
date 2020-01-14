@@ -1,13 +1,6 @@
-from requests_futures.sessions import FuturesSession
 from datetime import datetime
 import time
 import pandas as pd
-
-
-def _init_session(session):
-    if session is None:
-        session = FuturesSession(session=session)
-    return session
 
 
 def _convert_to_timestamp(date=None, start=True):
