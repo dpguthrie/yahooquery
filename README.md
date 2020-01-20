@@ -1,6 +1,6 @@
 # Yahooquery
 [![CodeFactor](https://www.codefactor.io/repository/github/dpguthrie/yahooquery/badge/master?s=289f5ed067de511ac29b5e229c1a5ef5c8c1dc83)](https://www.codefactor.io/repository/github/dpguthrie/yahooquery/overview/master)
-[![PyPi download total](https://pypip.in/d/yahooquery/badge.png)](https://crate.io/packages/yahooquery/)
+[![PyPi downloads](https://pypi.python.org/pypi/yahooquery)](https://img.shields.io/pypi/dm/yahooquery.svg?maxAge=2592000&label=installs&color=%2327B1FF)
 [![PyPI version shields.io](https://img.shields.io/pypi/v/yahooquery.svg)](https://pypi.python.org/pypi/yahooquery/)
 [![PyPI license](https://img.shields.io/pypi/l/yahooquery.svg)](https://pypi.python.org/pypi/yahooquery/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/yahooquery.svg)](https://pypi.python.org/pypi/yahooquery/)
