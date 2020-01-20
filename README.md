@@ -1,11 +1,15 @@
 # Yahooquery
 [![CodeFactor](https://www.codefactor.io/repository/github/dpguthrie/yahooquery/badge/master?s=289f5ed067de511ac29b5e229c1a5ef5c8c1dc83)](https://www.codefactor.io/repository/github/dpguthrie/yahooquery/overview/master)
-[![PyPi downloads](https://pypi.python.org/pypi/yahooquery)](https://img.shields.io/pypi/dm/yahooquery.svg?maxAge=2592000&label=installs&color=%2327B1FF)
+[![PyPi downloads](https://pypip.in/d/yahooquery/badge.png)](https://crate.io/packages/yahooquery/)
 [![PyPI version shields.io](https://img.shields.io/pypi/v/yahooquery.svg)](https://pypi.python.org/pypi/yahooquery/)
 [![PyPI license](https://img.shields.io/pypi/l/yahooquery.svg)](https://pypi.python.org/pypi/yahooquery/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/yahooquery.svg)](https://pypi.python.org/pypi/yahooquery/)
 [![Build Status](https://travis-ci.com/dpguthrie/yahooquery.svg?branch=master)](https://travis-ci.com/dpguthrie/yahooquery)
 [![codecov](https://codecov.io/gh/dpguthrie/yahooquery/branch/master/graph/badge.svg)](https://codecov.io/gh/dpguthrie/yahooquery)
+
+.. image:: https://img.shields.io/pypi/dm/yfinance.svg?maxAge=2592000&label=installs&color=%2327B1FF
+    :target: https://pypi.python.org/pypi/yfinance
+    :alt: PyPi downloads
 
 Python wrapper around an unofficial Yahoo Finance API.  Check out an interactive demo at (https://yahooquery-streamlit.herokuapp.com)
 
