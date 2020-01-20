@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+1.1.1
+-----
+- Fill NA values from history dataframe.  Event data (dividends and splits)
+  will be filled with zeros.  Other columns (high, low, open, close,
+  volume, adjclose) will be filled with prior day's data.
+- Fill NA values from options dataframe.  Missing values are replaced with zero
+
 1.1.0
 -----
 - Entire library makes asynchronous requests (missing piece was the
