@@ -1060,7 +1060,7 @@ class Ticker(object):
                 columns.remove('splits')
             try:
                 df[columns] = df.groupby(['symbol'])[columns].ffill()
-            except KeyError:
+            except (KeyError, ValueError):
                 df.fillna(method='ffill', inplace=True)
             return df
         return d
