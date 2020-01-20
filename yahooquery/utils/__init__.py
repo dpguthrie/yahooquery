@@ -23,7 +23,6 @@ def _history_dataframe(data, symbol):
         df = pd.merge(
             df, _events_to_dataframe(data, symbol), how='left',
             left_index=True, right_index=True)
-        df.fillna(0, inplace=True)
     return df
 
 

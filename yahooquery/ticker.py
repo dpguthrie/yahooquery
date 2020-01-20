@@ -285,14 +285,11 @@ class Ticker(object):
         response:  Parsed JSON
             A json-formatted response
         """
-        try:
-            if response[self._urls_dict[self._url_key]['key']]['error']:
-                error = response[self._urls_dict[self._url_key]['key']]['error']
-                return error.get('description')
-            if not response[self._urls_dict[self._url_key]['key']]['result']:
-                return 'No data found'
-        except KeyError:
-            print("Unknown key")
+        if response[self._urls_dict[self._url_key]['key']]['error']:
+            error = response[self._urls_dict[self._url_key]['key']]['error']
+            return error.get('description')
+        if not response[self._urls_dict[self._url_key]['key']]['result']:
+            return 'No data found'
         return response
 
     def _get_endpoint(self, endpoint=None, params={}, **kwargs):
@@ -1015,6 +1012,7 @@ class Ticker(object):
                          inplace=True)
             df.rename_axis(['symbol', 'expirationDate', 'optionType'],
                            inplace=True)
+            df.fillna(0, inplace=True)
             return df
         else:
             return "No option chain data found"
@@ -1049,9 +1047,21 @@ class Ticker(object):
                 d[symbol] = data[symbol]
         if all(isinstance(d[key], pd.DataFrame) for key in d):
             if len(d) == 1:
-                return d[self.symbols[0]]
-            return pd.concat(list(d.values()), keys=list(d.keys()),
-                             names=['symbol', 'date'], sort=False)
+                df = d[self.symbols[0]]
+            else:
+                df = pd.concat(list(d.values()), keys=list(d.keys()),
+                               names=['symbol', 'date'], sort=False)
+            if 'dividends' in df.columns:
+                df[['dividends']] = df[['dividends']].fillna(value=0)
+            if 'splits' in df.columns:
+                df[['splits']] = df[['splits']].fillna(value=0)
+            columns = ['high', 'close', 'volume', 'low', 'open']
+            columns.append('adjclose') if 'adjclose' in df.columns else columns
+            try:
+                df[columns] = df.groupby(['symbol'])[columns].ffill()
+            except KeyError:
+                df.fillna(method='ffill', inplace=True)
+            return df
         return d
 
     def history(
