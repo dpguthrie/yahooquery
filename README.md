@@ -7,10 +7,6 @@
 [![Build Status](https://travis-ci.com/dpguthrie/yahooquery.svg?branch=master)](https://travis-ci.com/dpguthrie/yahooquery)
 [![codecov](https://codecov.io/gh/dpguthrie/yahooquery/branch/master/graph/badge.svg)](https://codecov.io/gh/dpguthrie/yahooquery)
 
-.. image:: https://img.shields.io/pypi/dm/yfinance.svg?maxAge=2592000&label=installs&color=%2327B1FF
-    :target: https://pypi.python.org/pypi/yfinance
-    :alt: PyPi downloads
-
 Python wrapper around an unofficial Yahoo Finance API.  Check out an interactive demo at (https://yahooquery-streamlit.herokuapp.com)
 
 ![Yahooquery Demo](demo/demo.gif)
