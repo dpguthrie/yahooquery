@@ -1056,7 +1056,8 @@ class Ticker(object):
             if 'splits' in df.columns:
                 df[['splits']] = df[['splits']].fillna(value=0)
             columns = ['high', 'close', 'volume', 'low', 'open']
-            columns.append('adjclose') if 'adjclose' in df.columns else columns
+            columns = columns.append('adjclose') if 'adjclose' in df.columns \
+                else columns
             try:
                 df[columns] = df.groupby(['symbol'])[columns].ffill()
             except KeyError:
