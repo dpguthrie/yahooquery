@@ -1051,13 +1051,13 @@ class Ticker(object):
             else:
                 df = pd.concat(list(d.values()), keys=list(d.keys()),
                                names=['symbol', 'date'], sort=False)
-            if 'dividends' in df.columns:
+            columns = list(df.columns)
+            if 'dividends' in columns:
                 df[['dividends']] = df[['dividends']].fillna(value=0)
-            if 'splits' in df.columns:
+                columns.remove('dividends')
+            if 'splits' in columns:
                 df[['splits']] = df[['splits']].fillna(value=0)
-            columns = ['high', 'close', 'volume', 'low', 'open']
-            columns = columns.append('adjclose') if 'adjclose' in df.columns \
-                else columns
+                columns.remove('splits')
             try:
                 df[columns] = df.groupby(['symbol'])[columns].ffill()
             except KeyError:
