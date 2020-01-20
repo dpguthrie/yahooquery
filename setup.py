@@ -15,7 +15,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="yahooquery",
-    version="1.1.0",
+    version="1.1.1",
     author="Doug Guthrie",
     author_email="douglas.p.guthrie@gmail.com",
     description="Retrieve nearly all data from Yahoo Finance for one or more ticker symbols",
