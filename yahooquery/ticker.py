@@ -1,7 +1,9 @@
 from datetime import datetime
 import pandas as pd
+import re
 
-from yahooquery.utils import _convert_to_timestamp, _history_dataframe
+from yahooquery.utils import (
+    _convert_to_list, _convert_to_timestamp, _history_dataframe)
 from concurrent.futures import as_completed
 from requests_futures.sessions import FuturesSession
 
@@ -173,7 +175,7 @@ class Ticker(object):
         self.session = FuturesSession(max_workers=kwargs.get('max_workers', 8))
         if kwargs.get('proxies'):
             self.session.proxies = kwargs.get('proxies')
-        self.symbols = symbols if isinstance(symbols, list) else [symbols]
+        self.symbols = _convert_to_list(symbols)
         self.formatted = kwargs.get('formatted', True)
         self.endpoints = []
         self._expiration_dates = {}
@@ -349,7 +351,7 @@ class Ticker(object):
 
         Parameters
         ----------
-        endpoints: list
+        endpoints: list or str
             Desired endpoints for retrieval
 
         Notes
@@ -359,11 +361,10 @@ class Ticker(object):
         Raises
         ------
         ValueError
-            If invalid endpoint is specified or invalid format is given
+            If invalid endpoint is specified
         """
         if not isinstance(endpoints, list):
-            raise ValueError("A list is expected.  {} is not a list.".format(
-                endpoints))
+            endpoints = re.findall(r"[a-zA-Z]+", endpoints)
         if any(elem not in self.ENDPOINTS for elem in endpoints):
             raise ValueError("""
                 One of {} is not a valid value.
