@@ -1,6 +1,7 @@
 from datetime import datetime
 import pandas as pd
 import re
+import urllib.parse
 
 from yahooquery.utils import (
     _convert_to_list, _convert_to_timestamp, _history_dataframe)
@@ -253,7 +254,7 @@ class Ticker(object):
                 else:
                     try:
                         obj[k] = datetime.fromtimestamp(v).strftime('%Y-%m-%d')
-                    except TypeError:
+                    except (TypeError, OSError):
                         obj[k] = v
             elif isinstance(v, dict):
                 if 'raw' in v:
@@ -305,7 +306,8 @@ class Ticker(object):
         for future in as_completed(futures):
             response = future.result()
             json = self._validate_response(response.json())
-            symbol = response.url.rsplit('/')[-1].rsplit('?')[0]
+            symbol = urllib.parse.unquote(
+                response.url.rsplit('/')[-1].rsplit('?')[0])
             try:
                 d = json[self._urls_dict[self._url_key]['key']]['result'][0]
                 if len(self.endpoints) > 1 or self.endpoints[0] is None:
@@ -1001,7 +1003,8 @@ class Ticker(object):
         for future in as_completed(futures):
             response = future.result()
             json = self._validate_response(response.json())
-            symbol = response.url.rsplit("/")[-1].rsplit('?')[0]
+            symbol = urllib.parse.unquote(
+                response.url.rsplit("/")[-1].rsplit('?')[0])
             date = response.url.rsplit("=")[-1]
             data = json['optionChain']['result'][0]
             df = self._options_to_dataframe(
