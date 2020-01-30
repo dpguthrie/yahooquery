@@ -6,7 +6,7 @@ from yahooquery import Ticker
 
 
 TICKERS = [
-    Ticker('aapl'), Ticker(['aapl', 'msft']), Ticker(['aapl', 'aaapl']),
+    Ticker('aapl'), Ticker('aapl msft'), Ticker(['aapl', 'aaapl']),
     Ticker('hasgx'), Ticker('aapl', formatted=False)
 ]
 
@@ -31,11 +31,6 @@ def test_option_chain(ticker):
     assert ticker.option_chain is not None
 
 
-def test_bad_multiple_endpoints_no_list(ticker):
-    with pytest.raises(ValueError):
-        assert ticker.get_endpoints("assetProfile summaryProfile")
-
-
 def test_bad_multiple_endpoints_wrong(ticker):
     with pytest.raises(ValueError):
         assert ticker.get_endpoints(["asetProfile", "summaryProfile"])
@@ -43,6 +38,10 @@ def test_bad_multiple_endpoints_wrong(ticker):
 
 def test_multiple_endpoints(ticker):
     assert ticker.get_endpoints(["assetProfile", "summaryProfile"]) is not None
+
+
+def test_multiple_endpoints_str(ticker):
+    assert ticker.get_endpoints("assetProfile summaryProfile") is not None
 
 
 def test_all_endpoints(ticker):
