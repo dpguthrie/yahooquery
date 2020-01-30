@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+1.1.2
+-----
+- Allow for user to use a string as a list of symbols to pass to Ticker class.
+  For example, previous version would require user to pass
+  `['fb', 'msft', 'goog']` to retrieve those three symbols.  Now, the user
+  can pass `'fb msft goog'` or `'fb,msft,goog'`.
+- Allow user to pass string, as well as list, to `get_endpoints` method.  For
+  example, `['assetProfile', 'balanceSheetHistory']` is equivalent to
+  `'assetProfile balanceSheetHistory'`.
+
 1.1.1
 -----
 - Fill NA values from history dataframe.  Event data (dividends and splits)
@@ -28,8 +38,10 @@ Change Log
 
 1.0.12
 ------
-- Changed private Ticker variables (_ENDPOINTS, _PERIODS, and _INTERVALS) to public
-- Updated README for new multiple endpoint methods as well as a comparison to yfinance
+- Changed private Ticker variables (_ENDPOINTS, _PERIODS, and _INTERVALS)
+  to public
+- Updated README for new multiple endpoint methods as well as a comparison
+  to yfinance
 - Forced dictionary return when formatted = False.
 
 1.0.11
