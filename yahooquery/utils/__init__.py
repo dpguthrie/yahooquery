@@ -1,6 +1,14 @@
 from datetime import datetime
 import time
 import pandas as pd
+import re
+
+
+def _convert_to_list(symbols):
+    if isinstance(symbols, list):
+        return symbols
+    else:
+        return re.findall(r"[\w\-.=^]+", symbols)
 
 
 def _convert_to_timestamp(date=None, start=True):
