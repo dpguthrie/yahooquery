@@ -6,8 +6,8 @@ from yahooquery import Ticker
 
 
 TICKERS = [
-    Ticker('aapl'), Ticker('aapl ^GSPC btcusd=x'), Ticker(['aapl', 'aaapl']),
-    Ticker('hasgx'), Ticker('aapl', formatted=False)
+    Ticker('aapl'), Ticker('aapl ^GSPC btcusd=x brk-b logo.is'),
+    Ticker(['aapl', 'aaapl']), Ticker('hasgx'), Ticker('aapl', formatted=False)
 ]
 
 FINANCIALS = ['cash_flow', 'income_statement', 'balance_sheet']
