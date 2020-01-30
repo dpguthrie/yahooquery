@@ -31,6 +31,10 @@ Or pass a list of tickers.
 
 ```python
 tickers = Ticker(['aapl', 'msft'])
+# is equivalent to
+tickers = Ticker('aapl msft')
+# is equivalent to
+tickers = Ticker('aapl, msft')
 ```
 
 ## Data
@@ -81,7 +85,7 @@ How about more than one ticker?
 
 ```python
 # Pass a list of tickers to the Ticker class
-tickers = Ticker(['aapl', 'msft'])
+tickers = Ticker('aapl msft')
 
 tickers.asset_profile
 {'aapl': {'address1': 'One Apple Park Way', 'city': 'Cupertino', ... }, 'msft': {'address1': 'One Microsoft Way', 'city': 'Redmond', ... }}
@@ -190,7 +194,7 @@ df.xs(('fb', 'puts'), level=['symbol', 'option_type'])
 df.loc[df['inTheMoney'] == True]
 
 # Only include Apple in the money options
-df.loc[df['inTheMoney'] == True].xs('aapl') 
+df.loc[df['inTheMoney'] == True].xs('aapl')
 ```
 
 ## Historical Pricing
@@ -215,13 +219,13 @@ aapl.history(end='2018-12-31')  # Default start date is 1900-01-01
 
 Available periods and intervals can be seen through `Ticker.PERIODS` and `Ticker.INTERVALS`, respectively.
 
-If trying to retrieve more than one ticker, one dataframe will be returned and the column `ticker` can be used to identify each row appropriately.
+If trying to retrieve more than one ticker, one dataframe will be returned and the ticker can be accessed in the `symbol` level of the `pandas.MultiIndex`.
 
 ```python
-tickers = Ticker(['aapl', 'msft'])
+tickers = Ticker('aapl msft')
 tickers.history()
 ```
-| symbol | dates               |   volume |    open |    low |   high |   close |
+| symbol | date                |   volume |    open |    low |   high |   close |
 |:-------|:--------------------|---------:|--------:|-------:|-------:|--------:|
 | AAPL   | 2019-01-02 07:30:00 | 37039700 | 154.89  | 154.23 | 158.85 |  157.92 |
 | AAPL   | 2019-01-03 07:30:00 | 91312200 | 143.98  | 142    | 145.72 |  142.19 |
@@ -231,11 +235,13 @@ tickers.history()
 ## Multiple Endpoints
 
 Multiple endpoints can be accessed in one call for a given symbol through two separate endpoints:  `get_endpoints` and `all_endpoints`.  The `get_endpoints` method
-takes in a `list` of allowable endpoints.  Conversely, the `all_endpoints` property will retrieve all base endpoints.
+takes in a `list` or `str` of allowable endpoints.  Conversely, the `all_endpoints` property will retrieve all base endpoints.
 
 ```python
 aapl = Ticker('aapl')
 endpoints = ['assetProfile', 'esgScores', 'incomeStatementHistory']
+# or
+endpoints = ['assetProfile esgScores incomeStatementHistory']
 data = aapl.get_endpoints(endpoints)
 
 # or
