@@ -4,7 +4,7 @@ import re
 try:
     import urllib.parse as parse  # noqa
 except ImportError:
-    import urlib as parse
+    import urllib as parse
 
 from yahooquery.utils import (
     _convert_to_list, _convert_to_timestamp, _history_dataframe)
