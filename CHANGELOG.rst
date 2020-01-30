@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+1.1.3
+-----
+- Fix bug related to symbols that have characters that need to be url
+  encoded (^)
+
 1.1.2
 -----
 - Allow for user to use a string as a list of symbols to pass to Ticker class.
