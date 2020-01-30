@@ -6,7 +6,7 @@ from yahooquery import Ticker
 
 
 TICKERS = [
-    Ticker('aapl'), Ticker('aapl msft'), Ticker(['aapl', 'aaapl']),
+    Ticker('aapl'), Ticker('aapl ^GSPC btcusd=x'), Ticker(['aapl', 'aaapl']),
     Ticker('hasgx'), Ticker('aapl', formatted=False)
 ]
 
