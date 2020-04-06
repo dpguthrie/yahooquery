@@ -431,7 +431,7 @@ class Ticker(_YahooFinance):
             'list_result': True})
         dataframes = []
         for k in data.keys():
-            if isinstance(data[k], str):
+            if isinstance(data[k], str) or data[k].get('description'):
                 return data
             else:
                 dataframes.extend([
@@ -453,11 +453,8 @@ class Ticker(_YahooFinance):
                 ', '.join(self._symbols))
 
     def _financials_dataframes(self, data):
-        try:
-            data_type = data['meta']['type'][0]
-            symbol = data['meta']['symbol'][0]
-        except KeyError:
-            return data
+        data_type = data['meta']['type'][0]
+        symbol = data['meta']['symbol'][0]
         try:
             df = pd.DataFrame.from_records(data[data_type])
             df['reportedValue'] = \
