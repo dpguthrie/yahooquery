@@ -453,8 +453,11 @@ class Ticker(_YahooFinance):
                 ', '.join(self._symbols))
 
     def _financials_dataframes(self, data):
-        data_type = data['meta']['type'][0]
-        symbol = data['meta']['symbol'][0]
+        try:
+            data_type = data['meta']['type'][0]
+            symbol = data['meta']['symbol'][0]
+        except KeyError:
+            return data
         try:
             df = pd.DataFrame.from_records(data[data_type])
             df['reportedValue'] = \
