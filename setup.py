@@ -1,8 +1,9 @@
 from setuptools import setup, find_packages
 
 INSTALL_REQUIRES = [
-    'pandas',
-    'requests-futures',
+    'pandas>=0.24',
+    'requests-futures==1.0.0',
+    'selenium==3.141.0',
 ]
 
 TEST_REQUIRES = [
@@ -15,7 +16,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="yahooquery",
-    version="1.1.3",
+    version="2.0.0",
     author="Doug Guthrie",
     author_email="douglas.p.guthrie@gmail.com",
     description="Retrieve nearly all data from Yahoo Finance for one or more ticker symbols",
