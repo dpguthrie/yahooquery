@@ -50,7 +50,7 @@ class Ticker(_YahooFinance):
     """
     def __init__(self, symbols, **kwargs):
         self._symbols = _convert_to_list(symbols)
-        super().__init__(**kwargs)
+        super(Ticker, self).__init__(**kwargs)
 
     def _quote_summary(self, modules):
         kwargs = {}
