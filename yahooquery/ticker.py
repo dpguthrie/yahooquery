@@ -1,18 +1,12 @@
-from datetime import datetime
 import pandas as pd
 import re
-try:
-    import urllib.parse as parse  # noqa
-except ImportError:
-    import urllib as parse
 
 from yahooquery.utils import (
-    _convert_to_list, _convert_to_timestamp, _history_dataframe)
-from concurrent.futures import as_completed
-from requests_futures.sessions import FuturesSession
+    _convert_to_list, _convert_to_timestamp, _history_dataframe, _flatten_list)
+from yahooquery.base import _YahooFinance
 
 
-class Ticker(object):
+class Ticker(_YahooFinance):
     """
     Base class for interacting with Yahoo Finance API
 
@@ -25,7 +19,7 @@ class Ticker(object):
 
     Notes
     -----
-    When formatted is set to False, all base endpoints will return as
+    When formatted is set to True, all quote_summary modules will return as
     dictionaries.  There are two reasons for this:
 
     1. Quantitative values are expressed as dictionaries.  For example:
@@ -36,7 +30,7 @@ class Ticker(object):
            "longFmt": "11,555,466"
        }
 
-       When formatted is set to True, the _format_data method will return
+       When formatted is set to False, the _format_data method will return
        the value in the "raw" key.
 
     2. Dates are either expressed as timestamps:
@@ -50,282 +44,42 @@ class Ticker(object):
             "fmt": "2019-11-07"
         }
 
-        When formatted is set to True, the _format_data method will return the
+        When formatted is set to False, the _format_data method will return the
         date expressed in the format YYYY-MM-DD by either converting from the
         timestamp or retrieving the "fmt" key.
     """
-    _BASE_API_URL = "https://query2.finance.yahoo.com"
-
-    _CHART_API_URL = "https://query1.finance.yahoo.com"
-
-    ENDPOINTS = [
-        'assetProfile', 'incomeStatementHistory',
-        'incomeStatementHistoryQuarterly',
-        'balanceSheetHistory', 'balanceSheetHistoryQuarterly',
-        'cashflowStatementHistory', 'cashflowStatementHistoryQuarterly',
-        'financialData', 'defaultKeyStatistics', 'calendarEvents',
-        'secFilings', 'recommendationTrend', 'upgradeDowngradeHistory',
-        'institutionOwnership', 'fundOwnership',
-        'majorHoldersBreakdown', 'insiderTransactions', 'insiderHolders',
-        'netSharePurchaseActivity', 'earnings', 'earningsHistory',
-        'earningsTrend', 'industryTrend', 'indexTrend', 'sectorTrend',
-        'summaryDetail', 'price', 'quoteType', 'summaryProfile', 'fundProfile',
-        'fundPerformance', 'topHoldings', 'esgScores'
-    ]
-
-    _ENDPOINT_DICT = {
-        'assetProfile': {
-            'convert_dates': [
-                'governanceEpochDate', 'compensationAsOfEpochDate']},
-        'balanceSheetHistory': {
-            'filter': 'balanceSheetStatements', 'convert_dates': ['endDate']},
-        'balanceSheetHistoryQuarterly': {
-            'filter': 'balanceSheetStatements', 'convert_dates': ['endDate']},
-        'calendarEvents': {
-            'convert_dates': [
-                'earningsDate', 'exDividendDate', 'dividendDate']},
-        'cashflowStatementHistory': {
-            'filter': 'cashflowStatements', 'convert_dates': ['endDate']},
-        'cashflowStatementHistoryQuarterly': {
-            'filter': 'cashflowStatements', 'convert_dates': ['endDate']},
-        'defaultKeyStatistics': {
-            'convert_dates': [
-                'sharesShortPreviousMonthDate', 'dateShortInterest',
-                'lastFiscalYearEnd', 'nextFiscalYearEnd', 'fundInceptionDate',
-                'lastSplitDate', 'mostRecentQuarter']},
-        'earnings': {'convert_dates': ['earningsDate']},
-        'earningsHistory': {
-            'filter': 'history', 'convert_dates': ['quarter']},
-        'earningsTrend': {'convert_dates': []},
-        'esgScores': {'convert_dates': []},
-        'financialData': {'convert_dates': []},
-        'fundOwnership': {
-            'filter': 'ownershipList', 'convert_dates': ['reportDate']},
-        'fundPerformance': {'convert_dates': ['asOfDate']},
-        'fundProfile': {'convert_dates': []},
-        'indexTrend': {'convert_dates': []},
-        'incomeStatementHistory': {
-            'filter': 'incomeStatementHistory', 'convert_dates': ['endDate']},
-        'incomeStatementHistoryQuarterly': {
-            'filter': 'incomeStatementHistory', 'convert_dates': ['endDate']},
-        'industryTrend': {'convert_dates': []},
-        'insiderHolders': {
-            'filter': 'holders', 'convert_dates':
-            ['latestTransDate', 'positionDirectDate']},
-        'insiderTransactions': {
-            'filter': 'transactions', 'convert_dates': ['startDate']},
-        'institutionOwnership': {
-            'filter': 'ownershipList', 'convert_dates': ['reportDate']},
-        'majorHoldersBreakdown': {'convert_dates': []},
-        'price': {'convert_dates': []},
-        'quoteType': {'convert_dates': ['firstTradeDateEpochUtc']},
-        'recommendationTrend': {'filter': 'trend', 'convert_dates': []},
-        'secFilings': {'filter': 'filings', 'convert_dates': ['epochDate']},
-        'netSharePurchaseActivity': {'convert_dates': []},
-        'sectorTrend': {'convert_dates': []},
-        'summaryDetail': {
-            'convert_dates': ['exDividendDate', 'expireDate', 'startDate']},
-        'summaryProfile': {'convert_dates': []},
-        'topHoldings': {'convert_dates': []},
-        'upgradeDowngradeHistory': {
-            'filter': 'history', 'convert_dates': ['epochGradeDate']}
-    }
-
-    _STYLE_BOX = {
-        'http://us.i1.yimg.com/us.yimg.com/i/fi/3_0stylelargeeq1.gif':
-            ('Large Cap Stocks', 'Value'),
-        'http://us.i1.yimg.com/us.yimg.com/i/fi/3_0stylelargeeq2.gif':
-            ('Large Cap Stocks', 'Blend'),
-        'http://us.i1.yimg.com/us.yimg.com/i/fi/3_0stylelargeeq3.gif':
-            ('Large Cap Stocks', 'Growth'),
-        'http://us.i1.yimg.com/us.yimg.com/i/fi/3_0stylelargeeq4.gif':
-            ('Mid Cap Stocks', 'Value'),
-        'http://us.i1.yimg.com/us.yimg.com/i/fi/3_0stylelargeeq5.gif':
-            ('Mid Cap Stocks', 'Blend'),
-        'http://us.i1.yimg.com/us.yimg.com/i/fi/3_0stylelargeeq6.gif':
-            ('Mid Cap Stocks', 'Growth'),
-        'http://us.i1.yimg.com/us.yimg.com/i/fi/3_0stylelargeeq7.gif':
-            ('Small Cap Stocks', 'Value'),
-        'http://us.i1.yimg.com/us.yimg.com/i/fi/3_0stylelargeeq8.gif':
-            ('Small Cap Stocks', 'Blend'),
-        'http://us.i1.yimg.com/us.yimg.com/i/fi/3_0stylelargeeq9.gif':
-            ('Small Cap Stocks', 'Growth')
-    }
-
-    _FUND_DETAILS = [
-        'holdings', 'equityHoldings', 'bondHoldings', 'bondRatings',
-        'sectorWeightings']
-
-    INTERVALS = [
-        '1m', '2m', '5m', '15m',
-        '30m', '60m', '90m', '1h',
-        '1d', '5d', '1wk', '1mo', '3mo'
-    ]
-
-    PERIODS = [
-        '1d', '5d', '1mo', '3mo',
-        '6mo', '1y', '2y', '5y',
-        '10y', 'ytd', 'max'
-    ]
-
     def __init__(self, symbols, **kwargs):
-        """Initialize class
+        self._symbols = _convert_to_list(symbols)
+        super().__init__(**kwargs)
 
-        Parameters
-        ----------
-        symbols: str or list
-            Symbol or list collection of symbols
-        """
-        self.session = FuturesSession(max_workers=kwargs.get('max_workers', 8))
-        if kwargs.get('proxies'):
-            self.session.proxies = kwargs.get('proxies')
-        self.symbols = _convert_to_list(symbols)
-        self.formatted = kwargs.get('formatted', True)
-        self.endpoints = []
-        self._expiration_dates = {}
-        self._url_key = 'base'
+    def _quote_summary(self, modules):
+        kwargs = {}
+        params = {'modules': ','.join(modules)}
+        if len(modules) == 1:
+            kwargs.update({'addl_key': modules[0]})
+        data = self._get_data(key='quoteSummary', params=params, **kwargs)
+        dates = _flatten_list(
+            [self._MODULES_DICT[module]['convert_dates']
+             for module in modules])
+        return data if self.formatted else self._format_data(data, dates)
 
-    @property
-    def _base_urls(self):
-        return ["{}/v10/finance/quoteSummary/{}".format(
-            self._BASE_API_URL, symbol) for symbol in self.symbols]
-
-    @property
-    def _options_urls(self):
-        return ["{}/v7/finance/options/{}".format(
-            self._BASE_API_URL, symbol) for symbol in self.symbols]
+    def _quote_summary_dataframe(self, module, **kwargs):
+        data = self._quote_summary([module])
+        if not kwargs.get('data_filter'):
+            data_filter = self._MODULES_DICT[module]['filter']
+            kwargs.update({'data_filter': data_filter})
+        return self._to_dataframe(data, **kwargs)
 
     @property
-    def _chart_urls(self):
-        return ["{}/v8/finance/chart/{}".format(
-            self._CHART_API_URL, symbol) for symbol in self.symbols]
+    def symbols(self):
+        return self._symbols
 
-    @property
-    def _base_params(self):
-        if self.endpoints[0]:
-            return {'modules': ','.join(self.endpoints)}
-        return {}
+    @symbols.setter
+    def symbols(self, symbols):
+        self._symbols = _convert_to_list(symbols)
 
-    @property
-    def _chart_params(self):
-        return {"events": ','.join(['div', 'split'])}
-
-    @property
-    def _options_params(self):
-        return {}
-
-    @property
-    def params(self):
-        temp = self._urls_dict[self._url_key]['params']
-        temp.update(self.optional_params)
-        params = {k: str(v) if v is True or v is False else str(v)
-                  for k, v in temp.items()}
-        return params
-
-    @property
-    def _urls_dict(self):
-        return {
-            'base': {
-                'urls': self._base_urls, 'key': 'quoteSummary',
-                'params': self._base_params},
-            'options': {
-                'urls': self._options_urls, 'key': 'optionChain',
-                'params': self._options_params},
-            'chart': {
-                'urls': self._chart_urls, 'key': 'chart',
-                'params': self._chart_params}
-        }
-
-    @property
-    def _convert_dates(self):
-        dates = []
-        for endpoint in self.endpoints:
-            dates.extend([date for date
-                         in self._ENDPOINT_DICT[endpoint]['convert_dates']])
-        return dates
-
-    def _format_data(self, obj):
-        for k, v in obj.items():
-            if k in self._convert_dates:
-                if isinstance(v, dict):
-                    obj[k] = v.get('fmt', v)
-                elif isinstance(v, list):
-                    try:
-                        obj[k] = [item.get('fmt') for item in v]
-                    except AttributeError:
-                        obj[k] = v
-                else:
-                    try:
-                        obj[k] = datetime.fromtimestamp(v).strftime('%Y-%m-%d')
-                    except (TypeError, OSError):
-                        obj[k] = v
-            elif isinstance(v, dict):
-                if 'raw' in v:
-                    obj[k] = v.get('raw')
-                elif 'min' in v:
-                    obj[k] = v
-                else:
-                    obj[k] = self._format_data(v)
-            elif isinstance(v, list):
-                if len(v) == 0:
-                    obj[k] = v
-                elif isinstance(v[0], dict):
-                    for i, list_item in enumerate(v):
-                        obj[k][i] = self._format_data(list_item)
-                else:
-                    obj[k] = v
-            else:
-                obj[k] = v
-        return obj
-
-    def _validate_response(self, response):
-        """Ensures response from API is valid
-
-        Parameters
-        ----------
-        response: requests-futures.response
-            A requests-futures.response object
-
-        Returns
-        -------
-        response:  Parsed JSON
-            A json-formatted response
-        """
-        if response[self._urls_dict[self._url_key]['key']]['error']:
-            error = response[self._urls_dict[self._url_key]['key']]['error']
-            return error.get('description')
-        if not response[self._urls_dict[self._url_key]['key']]['result']:
-            return 'No data found'
-        return response
-
-    def _get_endpoint(self, endpoint=None, params={}, **kwargs):
-        self.optional_params = params
-        self.endpoints = endpoint if isinstance(endpoint, list) else [endpoint]
-        formatted = kwargs.get('formatted', self.formatted)
-        data = {}
-        self._url_key = kwargs.pop('url_key', 'base')
-        futures = [self.session.get(url=url, params=self.params)
-                   for url in self._urls_dict[self._url_key]['urls']]
-        for future in as_completed(futures):
-            response = future.result()
-            json = self._validate_response(response.json())
-            symbol = parse.unquote(response.url.rsplit('/')[-1].rsplit('?')[0])
-            try:
-                d = json[self._urls_dict[self._url_key]['key']]['result'][0]
-                if len(self.endpoints) > 1 or self.endpoints[0] is None:
-                    data[symbol] = \
-                        self._format_data(d) if formatted else d
-                else:
-                    data[symbol] = \
-                        self._format_data(d[self.endpoints[0]]) if formatted \
-                        else d[self.endpoints[0]]
-            except TypeError:
-                data[symbol] = json
-        return data
-
-    def _to_dataframe(self, endpoint=None, params={}, **kwargs):
-        data = self._get_endpoint(endpoint, params, **kwargs)
-        if self.formatted:
+    def _to_dataframe(self, data, **kwargs):
+        if not self.formatted:
             dataframes = []
             try:
                 for symbol in self.symbols:
@@ -340,23 +94,38 @@ class Ticker(object):
                         df = pd.DataFrame(final_data)
                     dataframes.append(df)
                 if kwargs.get('from_dict', False):
-                    return pd.concat(dataframes, axis=1)
-                return pd.concat(
-                    dataframes, keys=self.symbols, names=['symbol', 'row'],
-                    sort=False)
+                    df = pd.concat(dataframes, axis=1)
+                else:
+                    df = pd.concat(
+                        dataframes, keys=self.symbols, names=['symbol', 'row'],
+                        sort=False)
+                return df
             except TypeError:
                 return data
         else:
             return data
 
-    def get_endpoints(self, endpoints, **kwargs):
+    @property
+    def all_modules(self):
         """
-        Obtain specific endpoints for given symbol(s)
+        Returns all quoteSummary modules, indexed by module title
+        for each symbol
+
+        Notes
+        -----
+        Only returns JSON
+        """
+        return self._quote_summary(
+            self._CONFIG['quoteSummary']['query']['modules']['options'])
+
+    def get_modules(self, modules):
+        """
+        Obtain specific quoteSummary modules for given symbol(s)
 
         Parameters
         ----------
-        endpoints: list or str
-            Desired endpoints for retrieval
+        modules: list or str
+            Desired modules for retrieval
 
         Notes
         -----
@@ -365,31 +134,21 @@ class Ticker(object):
         Raises
         ------
         ValueError
-            If invalid endpoint is specified
+            If invalid module is specified
         """
-        if not isinstance(endpoints, list):
-            endpoints = re.findall(r"[a-zA-Z]+", endpoints)
-        if any(elem not in self.ENDPOINTS for elem in endpoints):
+        all_modules = \
+            self._CONFIG['quoteSummary']['query']['modules']['options']
+        if not isinstance(modules, list):
+            modules = re.findall(r"[a-zA-Z]+", modules)
+        if any(elem not in all_modules for elem in modules):
             raise ValueError("""
-                One of {} is not a valid value.
-                Valid values are {})""".format(
-                    ', '.join(endpoints),
-                    ', '.join(self.ENDPOINTS)
-                ))
-        return self._get_endpoint(endpoints, **kwargs)
+                One of {} is not a valid value.  Valid values are {}.
+            """.format(
+                ', '.join(modules),
+                ', '.join(all_modules)
+            ))
+        return self._quote_summary(modules)
 
-    @property
-    def all_endpoints(self):
-        """
-        Returns all base endpoints, indexed by endpoint title for each symbol
-
-        Notes
-        -----
-        Only returns JSON
-        """
-        return self._get_endpoint(self.ENDPOINTS)
-
-    # RETURN DICTIONARY
     @property
     def asset_profile(self):
         """Asset Profile
@@ -399,9 +158,9 @@ class Ticker(object):
         Returns
         -------
         dict
-            assetProfile endpoint data
+            assetProfile module data
         """
-        return self._get_endpoint("assetProfile")
+        return self._quote_summary(['assetProfile'])
 
     @property
     def calendar_events(self):
@@ -413,9 +172,9 @@ class Ticker(object):
         Returns
         -------
         dict
-            calendarEvents endpoint data
+            calendarEvents module data
         """
-        return self._get_endpoint("calendarEvents")
+        return self._quote_summary(['calendarEvents'])
 
     @property
     def earnings(self):
@@ -426,9 +185,9 @@ class Ticker(object):
         Returns
         -------
         dict
-            earnings endpoint data
+            earnings module data
         """
-        return self._get_endpoint("earnings")
+        return self._quote_summary(['earnings'])
 
     @property
     def earnings_trend(self):
@@ -440,9 +199,9 @@ class Ticker(object):
         Returns
         -------
         dict
-            earningsTrend endpoint data
+            earningsTrend module data
         """
-        return self._get_endpoint("earningsTrend")
+        return self._quote_summary(['earningsTrend'])
 
     @property
     def esg_scores(self):
@@ -454,9 +213,9 @@ class Ticker(object):
         Returns
         -------
         dict
-            esgScores endpoint data
+            esgScores module data
         """
-        return self._get_endpoint("esgScores")
+        return self._quote_summary(['esgScores'])
 
     @property
     def financial_data(self):
@@ -467,9 +226,29 @@ class Ticker(object):
         Returns
         -------
         dict
-            financialData endpoint data
+            financialData module data
         """
-        return self._get_endpoint("financialData")
+        return self._quote_summary(['financialData'])
+
+    @property
+    def news(self):
+        """News articles related to given symbol(s)
+
+        Obtain news articles related to a given symbol(s).  Data includes
+        the title of the article, summary, url, author_name, publisher
+
+        Notes
+        -----
+        It's recommended to use only one symbol for this property as the data
+        returned does not distinguish between what symbol the news stories
+        belong to
+
+        Returns
+        -------
+        dict
+        """
+        return self._get_data(
+            'news', {}, **{'list_result': True})
 
     @property
     def index_trend(self):
@@ -481,9 +260,9 @@ class Ticker(object):
         Returns
         -------
         dict
-            indexTrend endpoint data
+            indexTrend module data
         """
-        return self._get_endpoint("indexTrend")
+        return self._quote_summary(['indexTrend'])
 
     @property
     def industry_trend(self):
@@ -494,9 +273,9 @@ class Ticker(object):
         Returns
         -------
         dict
-            industryTrend endpoint data
+            industryTrend module data
         """
-        return self._get_endpoint("industryTrend")
+        return self._quote_summary(['industryTrend'])
 
     @property
     def key_stats(self):
@@ -507,9 +286,9 @@ class Ticker(object):
         Returns
         -------
         dict
-            defaultKeyStatistics endpoint data
+            defaultKeyStatistics module data
         """
-        return self._get_endpoint("defaultKeyStatistics")
+        return self._quote_summary(['defaultKeyStatistics'])
 
     @property
     def major_holders(self):
@@ -521,9 +300,22 @@ class Ticker(object):
         Returns
         -------
         dict
-            majorHoldersBreakdown endpoint data
+            majorHoldersBreakdown module data
         """
-        return self._get_endpoint("majorHoldersBreakdown")
+        return self._quote_summary(['majorHoldersBreakdown'])
+
+    @property
+    def page_views(self):
+        """Page Views
+
+        Short, Mid, and Long-term trend data regarding a symbol(s) page views
+
+        Returns
+        -------
+        dict
+            pageViews module data
+        """
+        return self._quote_summary(['pageViews'])
 
     @property
     def price(self):
@@ -535,9 +327,9 @@ class Ticker(object):
         Returns
         -------
         dict
-            price endpoint data
+            price module data
         """
-        return self._get_endpoint("price")
+        return self._quote_summary(['price'])
 
     @property
     def quote_type(self):
@@ -548,9 +340,21 @@ class Ticker(object):
         Returns
         -------
         dict
-            quoteType endpoint data
+            quoteType module data
         """
-        return self._get_endpoint("quoteType")
+        return self._quote_summary(['quoteType'])
+
+    @property
+    def recommendations(self):
+        """Recommendations
+
+        Retrieve the top 5 symbols that are similar to a given symbol
+
+        Returns
+        -------
+        dict
+        """
+        return self._get_data('recommendations')
 
     @property
     def share_purchase_activity(self):
@@ -561,9 +365,9 @@ class Ticker(object):
         Returns
         -------
         dict
-            netSharePurchaseActivity endpoint data
+            netSharePurchaseActivity module data
         """
-        return self._get_endpoint("netSharePurchaseActivity")
+        return self._quote_summary(['netSharePurchaseActivity'])
 
     @property
     def summary_detail(self):
@@ -574,9 +378,9 @@ class Ticker(object):
         Returns
         -------
         dict
-            summaryDetail endpoint data
+            summaryDetail module data
         """
-        return self._get_endpoint("summaryDetail")
+        return self._quote_summary(['summaryDetail'])
 
     @property
     def summary_profile(self):
@@ -587,69 +391,131 @@ class Ticker(object):
         Returns
         -------
         dict
-            summaryProfile endpoint data
+            summaryProfile module data
         """
-        return self._get_endpoint("summaryProfile")
+        return self._quote_summary(['summaryProfile'])
 
-    # RETURN DATAFRAMES
-    def _financials(self, endpoint, data_filter, frequency):
-        if frequency.lower() == "q":
-            endpoint += "Quarterly"
-        return self._to_dataframe(endpoint, data_filter=data_filter)
+    @property
+    def technical_insights(self):
+        """Technical Insights
 
-    def balance_sheet(self, frequency="A"):
+        Technical trading information as well as company metrics related
+        to innovativeness, sustainability, and hiring.  Metrics can also
+        be compared against the company's sector
+
+        Returns
+        -------
+        dict
+        """
+        return self._get_data('insights')
+
+    @property
+    def validation(self):
+        """Symbol Validation
+
+        Validate existence of given symbol(s)
+
+        Returns
+        -------
+        dict
+        """
+        return self._get_data('validation')
+
+    def _financials(self, financials_type, frequency, premium=False):
+        frequency = 'annual' if frequency[:1].lower() == 'a' else 'quarterly'
+        key = 'fundamentals_premium' if premium else 'fundamentals'
+        types = self._CONFIG[key]['query']['type']['options'][financials_type]
+        prefixed_types = ['{}{}'.format(frequency, t) for t in types] + \
+                         ['trailing{}'.format(t) for t in types]
+        data = self._get_data(key, {'type': ','.join(prefixed_types)}, **{
+            'list_result': True})
+        dataframes = []
+        for k in data.keys():
+            if isinstance(data[k], str):
+                return data
+            else:
+                dataframes.extend([
+                    self._financials_dataframes(data[k][i])
+                    for i in range(len(data[k]))])
+        try:
+            df = pd.concat(dataframes)
+            for prefix in [frequency, 'trailing']:
+                df['dataType'] = df['dataType'].apply(
+                    lambda x: str(x).lstrip(prefix))
+            df['asOfDate'] = pd.to_datetime(df['asOfDate'], format='%Y-%m-%d')
+            df = df.pivot_table(
+                index=['symbol', 'asOfDate'], columns='dataType',
+                values='reportedValue')
+            return pd.DataFrame(df.to_records()).set_index('symbol')
+        except ValueError:
+            return '{} data unavailable for {}'.format(
+                financials_type.replace('_', ' ').title(),
+                ', '.join(self._symbols))
+
+    def _financials_dataframes(self, data):
+        data_type = data['meta']['type'][0]
+        symbol = data['meta']['symbol'][0]
+        try:
+            df = pd.DataFrame.from_records(data[data_type])
+            df['reportedValue'] = \
+                df['reportedValue'].apply(lambda x: x.get('raw'))
+            df['dataType'] = data_type
+            df['symbol'] = symbol
+            return df
+        except KeyError:
+            # No data is available for that type
+            pass
+
+    def balance_sheet(self, frequency='a'):
         """Balance Sheet
 
         Retrieves balance sheet data for most recent four quarters or most
-        recent four years.
+        recent four years as well as trailing 12 months.
 
         Parameters
         ----------
         frequency: str, default 'A', optional
             Specify either annual or quarterly balance sheet.  Value should
             be 'a' or 'q'.
+
         Returns
         -------
         pandas.DataFrame
-            balanceSheetHistory, balanceSheetHistoryQuarterly endpoint data
         """
-        return self._financials(
-            "balanceSheetHistory", "balanceSheetStatements", frequency)
+        return self._financials('balance_sheet', frequency)
 
-    def cash_flow(self, frequency="a"):
+    def cash_flow(self, frequency='a'):
         """Cash Flow
 
         Retrieves cash flow data for most recent four quarters or most
-        recent four years.
+        recent four years as well as the trailing 12 months
 
         Parameters
         ----------
-        frequency: str, default 'A', optional
+        frequency: str, default 'a', optional
             Specify either annual or quarterly cash flow statement.  Value
             should be 'a' or 'q'.
+
         Returns
         -------
         pandas.DataFrame
-            cashflowStatementHistory, cashflowStatementHistoryQuarterly
-            endpoint data
         """
-        return self._financials(
-            "cashflowStatementHistory", "cashflowStatements", frequency)
+        return self._financials('cash_flow', frequency)
 
     @property
     def company_officers(self):
         """Company Officers
 
         Retrieves top executives for given symbol(s) and their total pay
-        package.  Uses the assetProfile endpoint to retrieve data
+        package.  Uses the assetProfile module to retrieve data
 
         Returns
         -------
         pandas.DataFrame
-            assetProfile endpoint data
+            assetProfile module data
         """
-        return self._to_dataframe(
-            "assetProfile", data_filter="companyOfficers")
+        data = self._quote_summary(["assetProfile"])
+        return self._to_dataframe(data, data_filter="companyOfficers")
 
     @property
     def earning_history(self):
@@ -661,9 +527,9 @@ class Ticker(object):
         Returns
         -------
         pandas.DataFrame
-            earningsHistory endpoint data
+            earningsHistory module data
         """
-        return self._to_dataframe("earningsHistory", data_filter="history")
+        return self._quote_summary_dataframe('earningsHistory')
 
     @property
     def fund_ownership(self):
@@ -674,9 +540,9 @@ class Ticker(object):
         Returns
         -------
         pandas.DataFrame
-            fundOwnership endpoint data
+            fundOwnership module data
         """
-        return self._to_dataframe("fundOwnership", data_filter="ownershipList")
+        return self._quote_summary_dataframe('fundOwnership')
 
     @property
     def grading_history(self):
@@ -688,30 +554,27 @@ class Ticker(object):
         Returns
         -------
         pandas.DataFrame
-            upgradeDowngradeHistory endpoint data
+            upgradeDowngradeHistory module data
         """
-        return self._to_dataframe(
-            "upgradeDowngradeHistory", data_filter="history")
+        return self._quote_summary_dataframe('upgradeDowngradeHistory')
 
-    def income_statement(self, frequency="a"):
+    def income_statement(self, frequency='a'):
         """Income Statement
 
         Retrieves income statement data for most recent four quarters or most
-        recent four years.
+        recent four years as well as trailing 12 months.
 
         Parameters
         ----------
         frequency: str, default 'A', optional
             Specify either annual or quarterly income statement.  Value should
             be 'a' or 'q'.
+
         Returns
         -------
         pandas.DataFrame
-            incomeStatementHistory, incomeStatementHistoryQuarterly
-            endpoint data
         """
-        return self._financials(
-            "incomeStatementHistory", "incomeStatementHistory", frequency)
+        return self._financials('income_statement', frequency)
 
     @property
     def insider_holders(self):
@@ -722,9 +585,9 @@ class Ticker(object):
         Returns
         -------
         pandas.DataFrame
-            insiderHolders endpoint data
+            insiderHolders module data
         """
-        return self._to_dataframe("insiderHolders", data_filter="holders")
+        return self._quote_summary_dataframe('insiderHolders')
 
     @property
     def insider_transactions(self):
@@ -735,10 +598,9 @@ class Ticker(object):
         Returns
         -------
         pandas.DataFrame
-            insiderTransactions endpoint data
+            insiderTransactions module data
         """
-        return self._to_dataframe(
-            "insiderTransactions", data_filter="transactions")
+        return self._quote_summary_dataframe('insiderTransactions')
 
     @property
     def institution_ownership(self):
@@ -749,10 +611,9 @@ class Ticker(object):
         Returns
         -------
         pandas.DataFrame
-            institutionOwnership endpoint data
+            institutionOwnership module data
         """
-        return self._to_dataframe(
-            "institutionOwnership", data_filter="ownershipList")
+        return self._quote_summary_dataframe('institutionOwnership')
 
     @property
     def recommendation_trend(self):
@@ -764,9 +625,9 @@ class Ticker(object):
         Returns
         -------
         pandas.DataFrame
-            recommendationTrend endpoint data
+            recommendationTrend module data
         """
-        return self._to_dataframe("recommendationTrend", data_filter="trend")
+        return self._quote_summary_dataframe('recommendationTrend')
 
     @property
     def sec_filings(self):
@@ -779,135 +640,9 @@ class Ticker(object):
         pandas.DataFrame
             secFilings endpoint data
         """
-        return self._to_dataframe("secFilings", data_filter="filings")
+        return self._quote_summary_dataframe('secFilings')
 
     # FUND SPECIFIC
-
-    @property
-    def fund_category_holdings(self):
-        """Fund Category Holdings
-
-        High-level holding breakdown (cash, bonds, equity, etc.) for a given
-        symbol(s)
-
-        .. warning:: This endpoint will only return data for specific
-                     securities (funds and etfs)
-
-        Returns
-        -------
-        pandas.DataFrame
-            topHoldings endpoint data subset
-        """
-        data_dict = self._get_endpoint("topHoldings")
-        for symbol in self.symbols:
-            for key in self._FUND_DETAILS:
-                try:
-                    del data_dict[symbol][key]
-                except TypeError:
-                    return data_dict
-        return pd.DataFrame(
-            [pd.Series(data_dict[symbol]) for symbol in self.symbols],
-            index=self.symbols)
-
-    @property
-    def fund_performance(self):
-        """Fund Performance
-
-        Historical return data for a given symbol(s) and symbol(s) specific
-        category
-
-        .. warning:: This endpoint will only return data for specific
-                     securities (funds and etfs)
-
-        Returns
-        -------
-        pandas.DataFrame
-            fundPerformance endpoint data
-        """
-        return self._get_endpoint("fundPerformance")
-
-    @property
-    def fund_profile(self):
-        """Fund Profile
-
-        Summary level information for a given symbol(s)
-
-        .. warning:: This endpoint will only return data for specific
-                     securities (funds and etfs)
-
-        Returns
-        -------
-        pandas.DataFrame
-            fundProfile endpoint data
-        """
-        return self._get_endpoint("fundProfile")
-
-    @property
-    def fund_holding_info(self):
-        """Fund Holding Information
-
-        Contains information for a funds top holdings, bond ratings, bond
-        holdings, equity holdings, sector weightings, and category breakdown
-
-        .. warning:: This endpoint will only return data for specific
-                     securities (funds and etfs)
-
-        Returns
-        -------
-        dict
-            topHoldings endpoint data
-        """
-        return self._get_endpoint("topHoldings")
-
-    @property
-    def fund_top_holdings(self):
-        """Fund Top Holdings
-
-        Retrieves Top 10 holdings for a given symbol(s)
-
-        .. warning:: This endpoint will only return data for specific
-                     securities (funds and etfs)
-
-        Returns
-        -------
-        pandas.DataFrame
-            topHoldings endpoint data subset
-        """
-        return self._to_dataframe("topHoldings", data_filter="holdings")
-
-    @property
-    def fund_bond_ratings(self):
-        """Fund Bond Ratings
-
-        Retrieves aggregated bond rating data for a given symbol(s)
-
-        .. warning:: This endpoint will only return data for specific
-                     securities (funds and etfs)
-
-        Returns
-        -------
-        pandas.DataFrame
-            topHoldings endpoint data subset
-        """
-        return self._to_dataframe(
-            "topHoldings", data_filter="bondRatings", from_dict=True)
-
-    @property
-    def fund_sector_weightings(self):
-        """Fund Sector Weightings
-
-        Retrieves aggregated sector weightings for a given symbol(s)
-
-        .. warning:: This endpoint will only return data for specific
-                     securities (funds and etfs)
-
-        Returns
-        -------
-        pandas.DataFrame
-            topHoldings endpoint data subset
-        """
-        return self._to_dataframe(
-            "topHoldings", data_filter="sectorWeightings", from_dict=True)
 
     def _fund_holdings(self, holding_type):
         data = self.fund_holding_info
@@ -931,9 +666,35 @@ class Ticker(object):
         Returns
         -------
         dict
-            topHoldings endpoint data subset
+            topHoldings module data subset
         """
         return self._fund_holdings("bondHoldings")
+
+    @property
+    def fund_category_holdings(self):
+        """Fund Category Holdings
+
+        High-level holding breakdown (cash, bonds, equity, etc.) for a given
+        symbol(s)
+
+        .. warning:: This endpoint will only return data for specific
+                     securities (funds and etfs)
+
+        Returns
+        -------
+        pandas.DataFrame
+            topHoldings module data subset
+        """
+        data_dict = self._quote_summary(["topHoldings"])
+        for symbol in self.symbols:
+            for key in self._FUND_DETAILS:
+                try:
+                    del data_dict[symbol][key]
+                except TypeError:
+                    return data_dict
+        return pd.DataFrame(
+            [pd.Series(data_dict[symbol]) for symbol in self.symbols],
+            index=self.symbols)
 
     @property
     def fund_equity_holdings(self):
@@ -947,131 +708,211 @@ class Ticker(object):
         Returns
         -------
         dict
-            topHoldings endpoint data subset
+            topHoldings module data subset
         """
         return self._fund_holdings("equityHoldings")
 
-    # OPTIONS
-
-    def _get_options(self):
-        data = self._get_endpoint(
-            url_key='options', formatted=False)
-        for symbol in self.symbols:
-            self._expiration_dates[symbol] = {}
-            try:
-                for exp_date in data[symbol]['expirationDates']:
-                    self._expiration_dates[symbol][exp_date] = \
-                        pd.to_datetime(exp_date, unit='s')
-            except TypeError:
-                # No data
-                pass
-
-    def _options_to_dataframe(self, options, symbol, date):
-        dataframes = []
-        for optionType in ['calls', 'puts']:
-            df = pd.DataFrame(options[optionType])
-            df['optionType'] = optionType
-            dataframes.append(df)
-        df = pd.concat(dataframes, sort=False)
-        df['symbol'] = symbol
-        df['expirationDate'] = self._expiration_dates[symbol][int(date)]
-        try:
-            df['lastTradeDate'] = pd.to_datetime(df['lastTradeDate'], unit='s')
-        except KeyError:
-            pass
-        return df
-
     @property
-    def option_chain(self):
-        """Option Chain
+    def fund_performance(self):
+        """Fund Performance
 
-        Retrieves calls and puts for each expiration date for a given symbol(s)
+        Historical return data for a given symbol(s) and symbol(s) specific
+        category
+
+        .. warning:: This endpoint will only return data for specific
+                     securities (funds and etfs)
 
         Returns
         -------
         pandas.DataFrame
-            option chain for each expiration date
+            fundPerformance module data
         """
-        dataframes = []
-        futures = []
-        if not self._expiration_dates:
-            self._get_options()
-        for url in self._urls_dict['options']['urls']:
-            symbol = url.rsplit('/')[-1]
-            futures.extend(
-                [self.session.get(url=url, params={
-                    'date': date})
-                 for date in list(self._expiration_dates[symbol].keys())])
-        for future in as_completed(futures):
-            response = future.result()
-            json = self._validate_response(response.json())
-            symbol = parse.unquote(response.url.rsplit("/")[-1].rsplit('?')[0])
-            date = response.url.rsplit("=")[-1]
-            data = json['optionChain']['result'][0]
-            df = self._options_to_dataframe(
-                data['options'][0], symbol, date)
-            dataframes.append(df)
-        if dataframes:
-            df = pd.concat(dataframes, sort=False)
-            df.set_index(['symbol', 'expirationDate', 'optionType'],
-                         inplace=True)
-            df.rename_axis(['symbol', 'expirationDate', 'optionType'],
-                           inplace=True)
-            df.fillna(0, inplace=True)
-            return df
-        else:
-            return "No option chain data found"
+        return self._quote_summary(["fundPerformance"])
+
+    @property
+    def fund_profile(self):
+        """Fund Profile
+
+        Summary level information for a given symbol(s)
+
+        .. warning:: This endpoint will only return data for specific
+                     securities (funds and etfs)
+
+        Returns
+        -------
+        pandas.DataFrame
+            fundProfile endpoint data
+        """
+        return self._quote_summary(["fundProfile"])
+
+    @property
+    def fund_holding_info(self):
+        """Fund Holding Information
+
+        Contains information for a funds top holdings, bond ratings, bond
+        holdings, equity holdings, sector weightings, and category breakdown
+
+        .. warning:: This endpoint will only return data for specific
+                     securities (funds and etfs)
+
+        Returns
+        -------
+        dict
+            topHoldings module data
+        """
+        return self._quote_summary(["topHoldings"])
+
+    @property
+    def fund_top_holdings(self):
+        """Fund Top Holdings
+
+        Retrieves Top 10 holdings for a given symbol(s)
+
+        .. warning:: This endpoint will only return data for specific
+                     securities (funds and etfs)
+
+        Returns
+        -------
+        pandas.DataFrame
+            topHoldings module data subset
+        """
+        return self._quote_summary_dataframe(
+            'topHoldings', data_filter='holdings')
+
+    @property
+    def fund_bond_ratings(self):
+        """Fund Bond Ratings
+
+        Retrieves aggregated bond rating data for a given symbol(s)
+
+        .. warning:: This endpoint will only return data for specific
+                     securities (funds and etfs)
+
+        Returns
+        -------
+        pandas.DataFrame
+            topHoldings module data subset
+        """
+        return self._quote_summary_dataframe(
+            'topHoldings', data_filter='bondRatings', from_dict=True)
+
+    @property
+    def fund_sector_weightings(self):
+        """Fund Sector Weightings
+
+        Retrieves aggregated sector weightings for a given symbol(s)
+
+        .. warning:: This endpoint will only return data for specific
+                     securities (funds and etfs)
+
+        Returns
+        -------
+        pandas.DataFrame
+            topHoldings module data subset
+        """
+        return self._quote_summary_dataframe(
+            'topHoldings', data_filter='sectorWeightings', from_dict=True)
+
+    # PREMIUM
+
+    def p_balance_sheet(self, frequency='a'):
+        """Balance Sheet
+
+        Retrieves balance sheet data for most recent four quarters or most
+        recent four years as well as trailing 12 months.
+
+        Parameters
+        ----------
+        frequency: str, default 'A', optional
+            Specify either annual or quarterly balance sheet.  Value should
+            be 'a' or 'q'.
+
+        Notes
+        -----
+        You must be subscribed to Yahoo Finance Premium and be logged in
+        for this method to return any data
+
+        Returns
+        -------
+        pandas.DataFrame
+        """
+        return self._financials('balance_sheet', frequency, premium=True)
+
+    def p_cash_flow(self, frequency='a'):
+        """Cash Flow
+
+        Retrieves cash flow data for most recent four quarters or most
+        recent four years as well as the trailing 12 months
+
+        Parameters
+        ----------
+        frequency: str, default 'a', optional
+            Specify either annual or quarterly cash flow statement.  Value
+            should be 'a' or 'q'.
+
+        Notes
+        -----
+        You must be subscribed to Yahoo Finance Premium and be logged in
+        for this method to return any data
+
+        Returns
+        -------
+        pandas.DataFrame
+        """
+        return self._financials('cash_flow', frequency, premium=True)
+
+    def p_income_statement(self, frequency='a'):
+        """Income Statement
+
+        Retrieves income statement data for most recent four quarters or most
+        recent four years as well as trailing 12 months.
+
+        Parameters
+        ----------
+        frequency: str, default 'A', optional
+            Specify either annual or quarterly income statement.  Value should
+            be 'a' or 'q'.
+
+        Notes
+        -----
+        You must be subscribed to Yahoo Finance Premium and be logged in
+        for this method to return any data
+
+        Returns
+        -------
+        pandas.DataFrame
+        """
+        return self._financials('income_statement', frequency, premium=True)
+
+    @property
+    def p_company_360(self):
+        return self._get_data('company360')
+
+    @property
+    def p_portal(self):
+        return self._get_data('premium_portal')
+
+    def p_reports(self, report_id):
+        return self._get_data('reports', {'reportId': report_id})
+
+    def p_ideas(self, idea_id):
+        return self._get_data('trade_ideas', {'ideaId': idea_id})
+
+    @property
+    def p_technical_events(self):
+        return self._get_data('technical_events')
+
+    @property
+    def p_value_analyzer(self):
+        return self._get_data('value_analyzer')
+
+    @property
+    def p_value_analyzer_drilldown(self):
+        return self._get_data('value_analyzer_drilldown')
 
     # HISTORICAL PRICE DATA
 
-    def _get_historical_data(self, period, interval, start, end, **kwargs):
-        if start or period is None or period.lower() == 'max':
-            start = _convert_to_timestamp(start)
-            end = _convert_to_timestamp(end, start=False)
-            params = {'period1': start, 'period2': end}
-        else:
-            period = period.lower()
-            if period not in self.PERIODS:
-                raise ValueError("Period values must be one of {}".format(
-                    ', '.join(self.PERIODS)))
-            params = {'range': period}
-        if interval not in self.INTERVALS:
-            raise ValueError("Interval values must be one of {}".format(
-                ', '.join(self.INTERVALS)))
-        params['interval'] = interval.lower()
-        data = self._get_endpoint(
-            url_key='chart', params=params, formatted=False)
-        return data
-
-    def _historical_data_to_dataframe(self, data, **kwargs):
-        d = {}
-        for symbol in self.symbols:
-            if 'timestamp' in data[symbol]:
-                d[symbol] = _history_dataframe(data, symbol)
-            else:
-                d[symbol] = data[symbol]
-        if all(isinstance(d[key], pd.DataFrame) for key in d):
-            if len(d) == 1:
-                df = d[self.symbols[0]]
-            else:
-                df = pd.concat(list(d.values()), keys=list(d.keys()),
-                               names=['symbol', 'date'], sort=False)
-            columns = list(df.columns)
-            if 'dividends' in columns:
-                df[['dividends']] = df[['dividends']].fillna(value=0)
-                columns.remove('dividends')
-            if 'splits' in columns:
-                df[['splits']] = df[['splits']].fillna(value=0)
-                columns.remove('splits')
-            try:
-                df[columns] = df.groupby(['symbol'])[columns].ffill()
-            except (KeyError, ValueError):
-                df.fillna(method='ffill', inplace=True)
-            return df
-        return d
-
-    def history(
-            self, period='ytd', interval='1d', start=None, end=None, **kwargs):
+    def history(self, period='ytd', interval='1d', start=None, end=None):
         """
         Historical pricing data
 
@@ -1095,7 +936,88 @@ class Ticker(object):
         pandas.DataFrame
             historical pricing data
         """
-        data = self._get_historical_data(
-            period, interval, start, end, **kwargs)
-        df = self._historical_data_to_dataframe(data, **kwargs)
+        config = self._CONFIG['chart']
+        periods = config['query']['range']['options']
+        intervals = config['query']['interval']['options']
+        if start or period is None or period.lower() == 'max':
+            start = _convert_to_timestamp(start)
+            end = _convert_to_timestamp(end, start=False)
+            params = {'period1': start, 'period2': end}
+        else:
+            period = period.lower()
+            if period not in periods:
+                raise ValueError("Period values must be one of {}".format(
+                    ', '.join(periods)))
+            params = {'range': period}
+        if interval not in intervals:
+            raise ValueError("Interval values must be one of {}".format(
+                ', '.join(intervals)))
+        params['interval'] = interval.lower()
+        data = self._get_data('chart', params)
+        df = self._historical_data_to_dataframe(data)
+        return df
+
+    def _historical_data_to_dataframe(self, data):
+        d = {}
+        for symbol in self._symbols:
+            if 'timestamp' in data[symbol]:
+                d[symbol] = _history_dataframe(data, symbol)
+            else:
+                d[symbol] = data[symbol]
+        if all(isinstance(d[key], pd.DataFrame) for key in d):
+            if len(d) == 1:
+                df = d[self._symbols[0]]
+            else:
+                df = pd.concat(list(d.values()), keys=list(d.keys()),
+                               names=['symbol', 'date'], sort=False)
+            columns = list(df.columns)
+            if 'dividends' in columns:
+                df[['dividends']] = df[['dividends']].fillna(value=0)
+                columns.remove('dividends')
+            if 'splits' in columns:
+                df[['splits']] = df[['splits']].fillna(value=0)
+                columns.remove('splits')
+            try:
+                df[columns] = df.groupby(['symbol'])[columns].ffill()
+            except (KeyError, ValueError):
+                df.fillna(method='ffill', inplace=True)
+            return df
+        return d
+
+    @property
+    def option_chain(self):
+        data = self._get_data('options', {'getAllData': True})
+        dataframes = []
+        for symbol in self._symbols:
+            try:
+                if data[symbol]['options']:
+                    dataframes.append(
+                        self._option_dataframe(data[symbol]['options'], symbol)
+                    )
+            except TypeError:
+                pass
+        if dataframes:
+            df = pd.concat(dataframes, sort=False)
+            df.set_index(
+                ['symbol', 'expiration', 'optionType'], inplace=True)
+            df.rename_axis(
+                ['symbol', 'expiration', 'optionType'], inplace=True)
+            df.fillna(0, inplace=True)
+            return df
+        return 'No option chain data found'
+
+    def _option_dataframe(self, data, symbol):
+        dataframes = []
+        for optionType in ['calls', 'puts']:
+            df = pd.concat(
+                [pd.DataFrame(data[i][optionType]) for i in range(len(data))])
+            df['optionType'] = optionType
+            dataframes.append(df)
+        df = pd.concat(dataframes, sort=False)
+        df['symbol'] = symbol
+        try:
+            df['expiration'] = pd.to_datetime(df['expiration'], unit='s')
+            df['lastTradeDate'] = pd.to_datetime(df['lastTradeDate'], unit='s')
+        except KeyError:
+            pass
         return df
