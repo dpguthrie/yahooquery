@@ -6,21 +6,19 @@ python:
     - 3.7
     - 3.8
 addons:
-    apt:
-        sources:
-            - google-chrome
-        packages:
-            - google-chrome-stable
-before_script:
-    - export DISPLAY=:99.0
-    - sh -e /etc/init.d/xvfb -start
-    - sleep 3
+    chrome: stable
 before_install:
     - python --version
     - pip install -U pip
     - pip install -U pytest
     - pip install codecov
 install:
+    - wget -N http://chromedriver.storage.googleapis.com/2.30/chromedriver_linux64.zip -P ~/
+    - unzip ~/chromedriver_linux64.zip
+    - rm ~/chromedriver_linux64.zip
+    - sudo mv -f ~/chromedriver /usr/local/share/
+    - sudo chmod +x /usr/local/share/chromedriver
+    - sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
     - pip install Cython
     - pip install -r requirements.txt
     - pip install ".[test]" .
