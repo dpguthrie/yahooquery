@@ -17,7 +17,7 @@ def _init_session(session, **kwargs):
         if kwargs.get('proxies'):
             session.proxies = kwargs.get('proxies')
     retries = \
-        Retry(total=3, backoff_factor=1, status_forcelist=[502, 503, 504])
+        Retry(total=3, backoff_factor=1, status_forcelist=[404, 502, 503, 504])
     session.mount('http://', HTTPAdapter(max_retries=retries))
     return session
 
