@@ -4,6 +4,8 @@ import pandas as pd
 import re
 from requests import Session
 from requests_futures.sessions import FuturesSession
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 
 
 def _init_session(session, **kwargs):
@@ -14,6 +16,9 @@ def _init_session(session, **kwargs):
             session = Session()
         if kwargs.get('proxies'):
             session.proxies = kwargs.get('proxies')
+    retries = \
+        Retry(total=3, backoff_factor=1, status_forcelist=[502, 503, 504])
+    session.mount('http://', HTTPAdapter(max_retries=retries))
     return session
 
 
