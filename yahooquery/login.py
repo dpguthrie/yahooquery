@@ -39,7 +39,8 @@ class Login(object):
 
     def get_cookies(self):
         try:
-            self.driver.execute_script(f"window.open('{self.LOGIN_URL}');")
+            self.driver.execute_script("window.open('{}');".format(
+                self.LOGIN_URL))
             self.driver.switch_to.window(self.driver.window_handles[-1])
             self.driver.find_element_by_id('login-username').send_keys(
                 self.email)
