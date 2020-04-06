@@ -2,6 +2,23 @@ from datetime import datetime
 import time
 import pandas as pd
 import re
+from requests import Session
+from requests_futures.sessions import FuturesSession
+
+
+def _init_session(session, **kwargs):
+    if session is None:
+        if kwargs.get('asynchronous'):
+            session = FuturesSession(max_workers=kwargs.get('max_workers', 8))
+        else:
+            session = Session()
+        if kwargs.get('proxies'):
+            session.proxies = kwargs.get('proxies')
+    return session
+
+
+def _flatten_list(ls):
+    return [item for sublist in ls for item in sublist]
 
 
 def _convert_to_list(symbols):
