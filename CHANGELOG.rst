@@ -1,6 +1,33 @@
 Change Log
 ==========
 
+2.0.0
+-----
+- Have Ticker class inherit from a base class, defined in base.py as
+  _YahooFinance.  The base class contains the order of operations to
+  retrieve data (construct parameters, construct URLs, validate response,
+  and format the data).
+- Yahoo login functionality, which allows a user to retrieve Premium data if
+  they are a subscriber
+  - All available financials data (income_statement, balance_sheet, cash_flow)
+  - Company 360 (innovation score, significant developments, supply chain,
+    hiring statistics, and company outlook)
+  - Premium portal (research reports, trade ideas, technical events, value analyzer,
+    and company snapshots)
+  - Technical events
+  - Value analyzer (High-level value analysis)
+  - Value analyzer Drilldown (Detailed information about a symbol(s) value)
+  - Research reports
+  - Trade ideas
+- New (free) data!
+  - news
+  - page_views
+  - recommendations
+  - technical_insights
+  - validation
+- Change several properties and methods (get_endpoints -> get_modules,
+  all_endpoints -> all_modules)
+
 1.1.3
 -----
 - Fix bug related to symbols that have characters that need to be url

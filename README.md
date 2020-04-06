@@ -9,7 +9,12 @@
 
 Python wrapper around an unofficial Yahoo Finance API.  Check out an interactive demo at (https://yahooquery-streamlit.herokuapp.com)
 
-![Yahooquery Demo](demo/demo.gif)
+## 2.0.0 UPDATES
+
+- Yahoo Finance Premium data (for subscribed users)
+- Option to make asynchronous and synchronous requests
+- Faster option data retrieval
+- **EVEN MORE DATA**
 
 ## Install
 
@@ -31,11 +36,22 @@ Or pass a list of tickers.
 
 ```python
 tickers = Ticker(['aapl', 'msft'])
+
 # is equivalent to
 tickers = Ticker('aapl msft')
+
 # is equivalent to
 tickers = Ticker('aapl, msft')
 ```
+
+### New to 2.0.0
+
+Additional keyword arguments can be passed to the class to modify certain behavior:
+- `asynchronous`:  Pass `asynchronous=True` and requests made with multiple symbols will be made asynchronously.  Default is `False`
+- `max_workers`:  Pass `max_workers=<n>` and modify how many workers are available to make asynchronous requests.  This is only used when `asynchronous=True` is passed as well.  Default is `8`
+- `proxies`:  Pass `proxies={'http': ..., 'https': ...}` to use a proxy when making a request.  This is **recommended** when making asynchronous requests.
+- `formatted`: Pass `formatted=True` to receive most numeric data in the following form:  `'price': {'raw': 126000000000, 'fmt': '$126B'}`  Default is `False`
+- `username` and `password`:  If you subscribe to Yahoo Finance Premium, pass your `username` and `password`.  You will be logged in and will now be able to access premium properties / methods.  All premium properties / methods begin with `p_`.  **You do not need to be logged in to access all other properties and methods.**
 
 ## Data
 
@@ -116,6 +132,25 @@ tickers.summary_profile
 
 ```
 
+### New in 2.0.0
+
+```python
+# News Articles
+aapl.news
+
+# Trend data related to a symbols page views
+aapl.page_views
+
+# Top 5 recommended symbols based on a symbol(s)
+aapl.recommendations
+
+# Technical trading insights
+aapl.technical_insights
+
+# Validate symbol's existence
+aapl.validation
+```
+
 ### Dataframes
 
 ```python
@@ -137,6 +172,52 @@ aapl.balance_sheet(frequency="q")
 aapl.balance_sheet("q")
 aapl.cash_flow()
 aapl.income_statement()
+```
+
+## Premium (New in 2.0.0)
+
+### Login
+
+If you subscribe to Yahoo Finance Premium, you can utilize this package to retrieve premium data as well.  You can pass your login credentials (username and password) when you initialize the `Ticker` class:
+
+```python
+tickers = Ticker('aapl msft fb', username='my_email@gmail.com', password='my_password')
+```
+
+Or you can login after initializing the `Ticker` class:
+
+```python
+tickers.login('my_email@gmail.com', 'my_password')
+```
+
+It will take around 15-20 seconds to log you in.  After that, utilize the following properties and methods to retrieve premium data:
+
+```python
+# Methods
+tickers.p_balance_sheet()
+tickers.p_income_statement()
+tickers.p_cash_flow()
+
+# The following allows you to retrieve premium reports and ideas related to a given symbol(s).  Report IDs and Idea IDs can be retrieved through the p_portal property
+tickers.p_reports(report_id)
+tickers.p_ideas(idea_id)
+
+# Properties
+tickers.p_company_360
+tickers.p_portal
+tickers.p_technical_events
+tickers.p_value_analyzer
+tickers.p_value_analyzer_drilldown
+```
+
+### Change Symbols
+
+Instead of initializing another class with different symbols, simply do the following:
+
+```python
+tickers.symbols = 'goog amzn'
+# or
+tickers.symbols = ['goog', 'amzn']
 ```
 
 ## Fund Specific
@@ -234,21 +315,29 @@ tickers.history()
 
 ## Multiple Endpoints
 
-Multiple endpoints can be accessed in one call for a given symbol through two separate endpoints:  `get_endpoints` and `all_endpoints`.  The `get_endpoints` method
-takes in a `list` or `str` of allowable endpoints.  Conversely, the `all_endpoints` property will retrieve all base endpoints.
+### New in 2.0.0
+
+The property and method to retrieve multiple endpoints have changed:
+- from `get_endpoints` to `get_modules`
+- from `all_endpoints` to `all_modules`
+
+### Accessing Multiple Modules
+
+Multiple endpoints can be accessed in one call for a given symbol through two separate modules:  `get_modules` and `all_modules`.  The `get_modules` method
+takes in a `list` or `str` of allowable modules.  Conversely, the `all_modules` property will retrieve all modules.
 
 ```python
 aapl = Ticker('aapl')
-endpoints = ['assetProfile', 'esgScores', 'incomeStatementHistory']
+modules = ['assetProfile', 'esgScores', 'incomeStatementHistory']
 # or
-endpoints = ['assetProfile esgScores incomeStatementHistory']
-data = aapl.get_endpoints(endpoints)
+modules = ['assetProfile esgScores incomeStatementHistory']
+data = aapl.get_modules(modules)
 
 # or
 
-data = aapl.all_endpoints
+data = aapl.all_modules
 
-# The symbol(s) and endpoints become the keys in the dictionary
+# The symbol(s) and modules become the keys in the dictionary
 
 data['aapl']['assetProfile']
 data['aapl']['esgScores']
@@ -258,8 +347,44 @@ data['aapl']['incomeStatementHistory']
 ### Notes
 
 - The data will always be returned as a dictionary
-- `Ticker.ENDPOINTS` will show you the list of allowable endpoints you can pass to the `get_endpoints` method
+- `Ticker.MODULES` will show you the list of allowable modules you can pass to the `get_modules` method
 
-## Caution
+## Miscellaneous Functions (New in 2.0.0)
 
-This package uses asynchronous requests through the requests-futures package.  If you're downloading a lot of data, be mindful of the impact you're having on Yahoo's servers.  The default number of workers is set at 8 but can be changed through the `max_workers` argument when initializing a `Ticker`.
+Additional data can be obtained from Yahoo Finance outside of the `Ticker` class.  The following functions can be utilized to retrieve
+additional data unrelated to a ticker symbol:
+
+```python
+from yahooquery import get_currencies, get_market_summary, get_trending
+```
+
+They take in keyword arguments of `lang`, `region`, and `corsDomain`.  The defaults are as follows:
+
+```python
+default = {
+    'lang': 'en-US',
+    'region': 'US',
+    'corsDomain': 'finance.yahoo.com'
+}
+```
+
+Those defaults, or keyword arguments, are used as query parameters in the requests made to Yahoo Finance.
+
+```python
+# Obtain a list of all currencies
+d = get_currencies()
+
+# View market summary statistics
+d = get_market_summary()
+
+# View trending tickers for a region (default is 'US')
+d = get_trending()
+```
+
+One more function allows you to view a list of exchanges Yahoo Finance supports.  It takes no arguments or keyword arguments and returns a `pandas.DataFrame`.
+
+```python
+from yahooquery import get_exchanges
+
+df = get_exchanges()
+```
