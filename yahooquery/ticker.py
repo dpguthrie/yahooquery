@@ -431,7 +431,7 @@ class Ticker(_YahooFinance):
             'list_result': True})
         dataframes = []
         for k in data.keys():
-            if isinstance(data[k], str) or data[k].get('description'):
+            if isinstance(data[k], str) or data[k][0].get('description'):
                 return data
             else:
                 dataframes.extend([
