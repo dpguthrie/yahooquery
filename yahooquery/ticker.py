@@ -443,12 +443,15 @@ class Ticker(_YahooFinance):
         data = self._get_data(key, {'type': ','.join(prefixed_types)}, **{
             'list_result': True})
         dataframes = []
-        for k in data.keys():
-            if isinstance(data[k], str) or data[k][0].get('description'):
-                return data
-            dataframes.extend([
-                self._financials_dataframes(data[k][i])
-                for i in range(len(data[k]))])
+        try:
+            for k in data.keys():
+                if isinstance(data[k], str) or data[k][0].get('description'):
+                    return data
+                dataframes.extend([
+                    self._financials_dataframes(data[k][i])
+                    for i in range(len(data[k]))])
+        except AttributeError:
+            return data
         try:
             df = pd.concat(dataframes)
             for prefix in [frequency, 'trailing']:
