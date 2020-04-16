@@ -3,7 +3,7 @@ import itertools
 import os
 from datetime import datetime
 
-from yahooquery import Ticker
+from yahooquery import Screener, Ticker
 from yahooquery import (
     get_currencies, get_exchanges, get_market_summary, get_trending)
 
@@ -129,3 +129,19 @@ def test_get_market_summary():
 
 def test_get_trending():
     assert get_trending() is not None
+
+
+def test_screener():
+    s = Screener()
+    assert s.get_screeners('most_actives') is not None
+
+
+def test_available_screeners():
+    s = Screener()
+    assert s.available_screeners is not None
+
+
+def test_bad_screener():
+    with pytest.raises(ValueError):
+        s = Screener()
+        assert s.get_screeners('most_active')
