@@ -14,8 +14,21 @@ class Ticker(_YahooFinance):
     ----------
     symbols: str or list
         Symbol or list collection of symbols
-    formatted: bool, default True, optional
-        Format output prior to returning data.
+
+    Keyword Arguments
+    -----------------
+    formatted: bool, default False, optional
+        Quantitative values are given as dictionaries with at least two
+        keys:  'raw' and 'fmt'.  The 'raw' key expresses value numerically
+        and the 'fmt' key expresses the value as a string.  See Notes for more
+        detail
+    asynchronous: bool, default False, optional
+        Defines whether the requests are made synchronously or asynchronously.
+    max_workers: int, default 8, optional
+        Defines the number of workers used to make asynchronous requests.
+        This only matters when asynchronous=True
+    proxies: dict, default None, optional
+        Allows for the session to use a proxy when making requests
 
     Notes
     -----
@@ -433,10 +446,9 @@ class Ticker(_YahooFinance):
         for k in data.keys():
             if isinstance(data[k], str) or data[k][0].get('description'):
                 return data
-            else:
-                dataframes.extend([
-                    self._financials_dataframes(data[k][i])
-                    for i in range(len(data[k]))])
+            dataframes.extend([
+                self._financials_dataframes(data[k][i])
+                for i in range(len(data[k]))])
         try:
             df = pd.concat(dataframes)
             for prefix in [frequency, 'trailing']:
@@ -887,6 +899,10 @@ class Ticker(_YahooFinance):
     @property
     def p_company_360(self):
         return self._get_data('company360')
+
+    @property
+    def p_technical_insights(self):
+        return self._get_data('premium_insights')
 
     @property
     def p_portal(self):
