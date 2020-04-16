@@ -21,7 +21,7 @@ Python wrapper around an unofficial Yahoo Finance API.  Check out an interactive
 - [Ticker](#ticker)
 - [Premium](#premium)
 - [Fund Specific](#fund-specific)
-- [Options][#options]
+- [Options](#options)
 - [Historical Pricing](#historical-pricing)
 - [Multiple Modules](#multiple-modules)
 - [Screeners](#screeners)
