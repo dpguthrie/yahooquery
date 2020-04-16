@@ -234,6 +234,20 @@ class _YahooFinance(object):
                 'symbols': {'required': True, 'default': None}
             }
         },
+        'esg_chart': {
+            'path': 'https://query2.finance.yahoo.com/v1/finance/esgChart',
+            'responseField': 'esgChart',
+            'query': {
+                'symbol': {'required': True, 'default': None}
+            }
+        },
+        'esg_peer_scores': {
+            'path': 'https://query2.finance.yahoo.com/v1/finance/esgPeerScores',
+            'responseField': 'esgPeerScores',
+            'query': {
+                'symbol': {'required': True, 'default': None}
+            }
+        },
         'recommendations': {
             'path': 'https://query2.finance.yahoo.com/v6/finance/recommendationsbysymbol/{symbol}',
             'response_field': 'finance',
@@ -245,6 +259,23 @@ class _YahooFinance(object):
             'query': {
                 'symbol': {'required': True, 'default': None},
                 'reportsCount': {'required': False, 'default': None}
+            }
+        },
+        'premium_insights': {
+            'path': 'https://query2.finance.yahoo.com/ws/insights/v2/finance/premium/insights',
+            'response_field': 'finance',
+            'query': {
+                'symbol': {'required': True, 'default': None},
+                'reportsCount': {'required': False, 'default': None}
+            }
+        },
+        'screener': {
+            'path': 'https://query2.finance.yahoo.com/v1/finance/screener/predefined/saved',
+            'response_field': 'finance',
+            'query': {
+                'formatted': {'required': False, 'default': False},
+                'scrIds': {'required': True, 'default': None},
+                'count': {'required': False, 'default': 25},
             }
         },
         'company360': {
