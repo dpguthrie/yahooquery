@@ -1,7 +1,6 @@
 import time
 from concurrent.futures import as_completed
 from datetime import datetime
-from json import JSONDecodeError
 
 from requests_futures.sessions import FuturesSession
 
@@ -417,7 +416,7 @@ class _YahooFinance(object):
             else:
                 data = self._sync_requests(response_field, urls, params, **kwargs)
             return data
-        except JSONDecodeError:
+        except ValueError:
             return {'error': 'HTTP 404 Not Found.  Please try again'}
 
     def _construct_params(self, config, params):
