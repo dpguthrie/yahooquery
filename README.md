@@ -16,6 +16,17 @@ Python wrapper around an unofficial Yahoo Finance API.  Check out an interactive
 - Faster option data retrieval
 - **EVEN MORE DATA**
 
+## Table of Contents
+- [Install](#install)
+- [Ticker](#ticker)
+- [Premium](#premium)
+- [Fund Specific](#fund-specific)
+- [Options][#options]
+- [Historical Pricing](#historical-pricing)
+- [Multiple Modules](#multiple-modules)
+- [Screeners](#screeners)
+- [Miscellaneous Functions](#miscellaneous-functions)
+
 ## Install
 
 ```bash
@@ -51,7 +62,7 @@ Additional keyword arguments can be passed to the class to modify certain behavi
 - `max_workers`:  Pass `max_workers=<n>` and modify how many workers are available to make asynchronous requests.  This is only used when `asynchronous=True` is passed as well.  Default is `8`
 - `proxies`:  Pass `proxies={'http': ..., 'https': ...}` to use a proxy when making a request.  This is **recommended** when making asynchronous requests.
 - `formatted`: Pass `formatted=True` to receive most numeric data in the following form:  `'price': {'raw': 126000000000, 'fmt': '$126B'}`  Default is `False`
-- `username` and `password`:  If you subscribe to Yahoo Finance Premium, pass your `username` and `password`.  You will be logged in and will now be able to access premium properties / methods.  All premium properties / methods begin with `p_`.  **You do not need to be logged in to access all other properties and methods.**
+- `username` and `password`:  If you subscribe to Yahoo Finance Premium, pass your `username` and `password`.  You will be logged in and will now be able to access premium properties / methods.  All premium properties / methods begin with `p_`.  **Disable two-factor authentication for this to work.  You do not need to be logged in to access all other properties and methods.**
 
 ## Data
 
@@ -174,7 +185,7 @@ aapl.cash_flow()
 aapl.income_statement()
 ```
 
-## Premium (New in 2.0.0)
+## Premium
 
 ### Login
 
@@ -313,7 +324,7 @@ tickers.history()
 | MSFT   | 2019-12-12 07:30:00 | 24612100 | 151.65  | 151.02 | 153.44 |  153.24 |
 | MSFT   | 2019-12-13 14:00:01 | 23850062 | 153.003 | 152.85 | 154.89 |  154.53 |
 
-## Multiple Endpoints
+## Multiple Modules
 
 ### New in 2.0.0
 
@@ -349,7 +360,62 @@ data['aapl']['incomeStatementHistory']
 - The data will always be returned as a dictionary
 - `Ticker.MODULES` will show you the list of allowable modules you can pass to the `get_modules` method
 
-## Miscellaneous Functions (New in 2.0.0)
+## Screener
+
+The `Screener` class is the access point to retrieve predefined Yahoo Finance lists (most actives, cryptocurrencies, day gainers, day losers, etc.).  It's also simple to use.
+
+```python
+from yahooquery import Screener
+
+s = Screener()
+```
+
+View list of available predefined lists from Yahoo Finance
+
+```python
+# View available screeners along with description and nice name
+s.SCREENERS
+
+# or just view list of keys
+s.available_screeners
+```
+
+Then pass a key to the `get_screeners` function on the `Screener` instance:
+
+```python
+# Stocks ordered in descending order by intraday trade volume 
+data = s.get_screeners('most_actives')
+
+# Pass a number of quotes to return, default is 25
+data = s.get_screeners('most_actives', count=10)
+```
+
+Data will be returned as a dictionary:
+
+```python
+data['most_actives']
+```
+
+The list will be in the `quotes` key:
+
+```python
+data['most_actives']['quotes']
+```
+
+Or pass a list of multiple keys:
+
+```python
+data = s.get_screeners(['most_actives', 'day_gainers', 'day_losers'])
+
+# is equivalent to
+data = s.get_screeners('most_actives day_gainers day_losers')
+
+data['most_actives']['quotes']
+data['day_gainers']['quotes']
+data['day_losers']['quotes']
+```
+
+## Miscellaneous Functions
 
 Additional data can be obtained from Yahoo Finance outside of the `Ticker` class.  The following functions can be utilized to retrieve
 additional data unrelated to a ticker symbol:
