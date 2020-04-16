@@ -1,14 +1,17 @@
 import time
-from datetime import datetime
-from requests_futures.sessions import FuturesSession
 from concurrent.futures import as_completed
+from datetime import datetime
+from json.decoder import JSONDecodeError
+
+from requests_futures.sessions import FuturesSession
+
+from yahooquery.login import Login
+from yahooquery.utils import _init_session
+
 try:
     from urllib import parse
 except ImportError:
     import urlparse as parse
-
-from yahooquery.utils import _init_session
-from yahooquery.login import Login
 
 
 class _YahooFinance(object):
@@ -408,11 +411,14 @@ class _YahooFinance(object):
         params = self._construct_params(config, params)
         urls = self._construct_urls(config, params)
         response_field = config['response_field']
-        if isinstance(self.session, FuturesSession):
-            data = self._async_requests(response_field, urls, params, **kwargs)
-        else:
-            data = self._sync_requests(response_field, urls, params, **kwargs)
-        return data
+        try:
+            if isinstance(self.session, FuturesSession):
+                data = self._async_requests(response_field, urls, params, **kwargs)
+            else:
+                data = self._sync_requests(response_field, urls, params, **kwargs)
+            return data
+        except JSONDecodeError:
+            return 'HTTP 404 Not Found.  Please try again'
 
     def _construct_params(self, config, params):
         required_params = [
