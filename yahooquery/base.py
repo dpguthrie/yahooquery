@@ -311,6 +311,13 @@ class _YahooFinance(object):
                 'ideaId': {'required': True, 'default': None}
             }
         },
+        'research': {
+            'path': 'https://query2.finance.yahoo.com/v1/finance/premium/visualization',
+            'response_field': 'finance',
+            'query': {
+                'crumb': {'required': True, 'default': None}
+            }
+        },
         'reports': {
             'path': 'https://query2.finance.yahoo.com/v1/finance/premium/researchreports/overlay',
             'response_field': 'researchReportsOverlay',
@@ -357,16 +364,16 @@ class _YahooFinance(object):
             self.DEFAULT_QUERY_PARAMS[k] = kwargs.pop(k, v)
         self.formatted = kwargs.pop('formatted', False)
         self.session = _init_session(kwargs.pop('session', None), **kwargs)
-        self._login = False
+        self.crumb = kwargs.pop('crumb', None)
         if kwargs.get('username') and kwargs.get('password'):
             self.login(kwargs.get('username'), kwargs.get('password'))
 
     def login(self, username, password):
         yf_login = Login(username, password)
-        cookies = yf_login.get_cookies()
+        d = yf_login.get_cookies()
         try:
-            [self.session.cookies.set(c['name'], c['value']) for c in cookies]
-            self._login = True
+            [self.session.cookies.set(c['name'], c['value']) for c in d['cookies']]
+            self.crumb = d['crumb']
         except TypeError:
             print('Invalid credentials provided.  Please check username and'
                   ' password and try again')
@@ -408,7 +415,7 @@ class _YahooFinance(object):
     def _get_data(self, key, params={}, **kwargs):
         config = self._CONFIG[key]
         params = self._construct_params(config, params)
-        urls = self._construct_urls(config, params)
+        urls = self._construct_urls(config, params, **kwargs)
         response_field = config['response_field']
         try:
             if isinstance(self.session, FuturesSession):
@@ -426,7 +433,8 @@ class _YahooFinance(object):
         for required in required_params:
             if not params.get(required):
                 params.update(
-                    {required: config['query'][required]['default']})
+                    {required: getattr(
+                        self, required, config['query'][required]['default'])})
         optional_params = [
             k for k in config['query'] if not config['query'][k]['required']
             and config['query'][k]['default'] is not None
@@ -444,7 +452,7 @@ class _YahooFinance(object):
             return [dict(params, symbol=symbol) for symbol in self._symbols]
         return params
 
-    def _construct_urls(self, config, params):
+    def _construct_urls(self, config, params, **kwargs):
         if 'symbol' in config['query']:
             urls = [self.session.get(
                 url=config['path'], params=p) for p in params]
@@ -471,7 +479,7 @@ class _YahooFinance(object):
         for response in urls:
             json = self._validate_response(response.json(), response_field)
             symbol = self._get_symbol(response, params)
-            if symbol:
+            if symbol is not None:
                 data[symbol] = \
                     self._construct_data(json, response_field, **kwargs)
             else:
@@ -490,8 +498,7 @@ class _YahooFinance(object):
             if 'finance' in response:
                 if response['finance'].get('error'):
                     return response['finance']['error']['description']
-                else:
-                    return response
+                return response
             return {response_field: {'result': [response]}}
 
     def _get_symbol(self, response, params):
@@ -499,7 +506,7 @@ class _YahooFinance(object):
             query_params = dict(
                 parse.parse_qsl(parse.urlsplit(response.url).query))
             return query_params['symbol']
-        elif 'symbols' in params:
+        if 'symbols' in params:
             return None
         return parse.unquote(response.url.rsplit('/')[-1].split('?')[0])
 
