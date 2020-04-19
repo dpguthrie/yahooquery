@@ -1,6 +1,18 @@
 Change Log
 ==========
 
+2.2.0
+- New Research class that allows a user with a premium subscription
+  to retrieve research reports and trade ideas from Yahoo Finance.
+  List of trade ideas through Yahoo Finance can be seen at:
+  https://finance.yahoo.com/research/trade-ideas.  Research reports
+  can be seen at https://finance.yahoo.com/research.
+
+2.1.0
+- New Screener class that allows a user to retrieve predefined Yahoo
+  Finance lists.  Some of these lists include most active, day gainers,
+  day losers, cryptocurrencies, and sectors / industries
+
 2.0.0
 -----
 - Have Ticker class inherit from a base class, defined in base.py as
