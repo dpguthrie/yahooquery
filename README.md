@@ -9,31 +9,32 @@
 
 Python wrapper around an unofficial Yahoo Finance API.  Check out an interactive demo at (https://yahooquery-streamlit.herokuapp.com)
 
-## 2.0.0 UPDATES
+# 2.0.0 UPDATES
 
 - Yahoo Finance Premium data (for subscribed users)
 - Option to make asynchronous and synchronous requests
 - Faster option data retrieval
 - **EVEN MORE DATA**
 
-## Table of Contents
+# Table of Contents
 - [Install](#install)
 - [Ticker](#ticker)
-- [Premium](#premium)
-- [Fund Specific](#fund-specific)
-- [Options](#options)
-- [Historical Pricing](#historical-pricing)
-- [Multiple Modules](#multiple-modules)
+  - [Premium](#premium)
+  - [Fund Specific](#fund-specific)
+  - [Options](#options)
+  - [Historical Pricing](#historical-pricing)
+  - [Multiple Modules](#multiple-modules)
+- [Research](#research)
 - [Screener](#screener)
 - [Miscellaneous Functions](#miscellaneous-functions)
 
-## Install
+# Install
 
 ```bash
 pip install yahooquery
 ```
 
-## Ticker
+# Ticker
 
 The `Ticker` module is the access point to the Yahoo Finance API.  Pass a ticker symbol to the `Ticker` class.
 
@@ -64,7 +65,7 @@ Additional keyword arguments can be passed to the class to modify certain behavi
 - `formatted`: Pass `formatted=True` to receive most numeric data in the following form:  `'price': {'raw': 126000000000, 'fmt': '$126B'}`  Default is `False`
 - `username` and `password`:  If you subscribe to Yahoo Finance Premium, pass your `username` and `password`.  You will be logged in and will now be able to access premium properties / methods.  All premium properties / methods begin with `p_`.  **Disable two-factor authentication for this to work.  You do not need to be logged in to access all other properties and methods.**
 
-## Data
+### Data
 
 Based on the data you'd like, the result will either be accessed through a `dict` or as a `pandas.DataFrame`.  Accessing data is incredibly easy and pythonic.
 
@@ -360,7 +361,7 @@ data['aapl']['incomeStatementHistory']
 - The data will always be returned as a dictionary
 - `Ticker.MODULES` will show you the list of allowable modules you can pass to the `get_modules` method
 
-## Screener
+# Screener
 
 The `Screener` class is the access point to retrieve predefined Yahoo Finance lists (most actives, cryptocurrencies, day gainers, day losers, etc.).  It's also simple to use.
 
@@ -414,8 +415,118 @@ data['most_actives']['quotes']
 data['day_gainers']['quotes']
 data['day_losers']['quotes']
 ```
+# Research
 
-## Miscellaneous Functions
+The `Research` class is the access point to retrieve either research reports or trade ideas from Yahoo Finance.  **You must be a subscriber to Yahoo Finance Premium to utilize this class.**
+
+```python
+from yahooquery import Research
+
+r = Research(username='my_email@gmail.com', password='my_password')
+
+```
+
+It's important to note that all keyword arguments that you can pass to the `Ticker` class are available in the `Research` class as well.
+
+```python
+r = Research(username='my_email@gmail.com', password='my_password', asynchronous=True, formatted=True)
+```
+
+After initializing the class though, retrieving data is incredibly simple.
+
+```python
+# Retrieve research reports
+r.reports()
+
+# Retrieve trade ideas
+r.trades()
+```
+
+Both functions allow for filtering as well as increasing the number of results returned.
+
+## Size
+
+```python
+
+# Each method takes a size argument that determines the amount of reports or trade ideas returned
+r.reports(500)
+r.trades(1000)
+```
+
+**Requests are made in batches of 100**
+
+## Filters
+
+### Reports
+
+- `investment_rating`: see `Research.TRENDS['options']` for available options
+- `sector`: see `Research.SECTORS['options']` for available options
+- `report_type`: see `Research.REPORT_TYPES['options']` for available options
+- `report_date`: see `Research.DATES['options']` for available options
+
+```python
+# Filter by sectors
+r.reports(sector=['Basic Materials', 'Real Estate'])
+
+# is equivalent to
+r.reports(sector='Basic Materials, Real Estate')
+
+# Combine filters
+r.reports(25, sector='Basic Materials', report_date='Last Week', investment_rating=['Bearish', 'Bullish'])
+```
+
+### Trade Ideas
+
+- `trend`: see `Research.TRENDS['options']` for available options
+- `sector`: see `Research.SECTORS['options']` for available options
+- `term`: see `Research.TERMS['options']` for available options
+- `startdatetime`: see `Research.DATES['options']` for available options
+
+```python
+# Filter by sectors
+r.trades(sector=['Basic Materials', 'Real Estate'])
+
+# is equivalent to
+r.trades(sector='Basic Materials, Real Estate')
+
+# Combine filters
+r.trades(25, sector='Basic Materials', startdatetime='Last Week', trend=['Bearish', 'Bullish'])
+```
+
+# Advanced Usage
+
+**FOR YAHOO FINANCE PREMIUM SUBSCRIBERS**:  There might be a use case for combining the functionalities of both the `Ticker` and `Research` class.  And, ideally, the user wouldn't have to utilize the login functionality in both instances.  Here's how you would do that:
+
+```python
+from yahooquery import Research, Ticker
+
+r = Research(username='my_email@gmail.com', password='my_password', asynchronous=True)
+
+# I want to retrieve last week's Bullish Analyst Report's for the Financial Services sector
+df = r.reports(sector='Financial Services', report_date='Last Week', investment_rating='Bullish', report_type='Analyst Report')
+
+# But now I want to get the data I find relevant and run my own analysis
+
+# Using aapl as a default symbol (we will change that later).  But, the important part is passing the current session and crumb from our Research instance
+tickers = Ticker('aapl', session=r.session, crumb=r.crumb)
+
+# Now, I can loop through the dataframe and retrieve relevant data for each ticker within the dataframe utilizing the Ticker instance
+for i, row in df.iterrows():
+    tickers.symbols = row['Tickers']
+    data = tickers.p_company_360
+    # Do something with data
+    # ...
+
+# Or, pass all tickers to the Ticker instance
+ticker_list = df['Tickers'].tolist()
+ticker_list = list(set(_flatten_list(ticker_list)))
+tickers = Ticker(ticker_list, session=r.session, crumb=r.crumb)
+data = tickers.p_company_360
+# Do something with data
+# ...
+```
+
+# Miscellaneous Functions
 
 Additional data can be obtained from Yahoo Finance outside of the `Ticker` class.  The following functions can be utilized to retrieve
 additional data unrelated to a ticker symbol:
