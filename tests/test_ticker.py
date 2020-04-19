@@ -3,7 +3,7 @@ import itertools
 import os
 from datetime import datetime
 
-from yahooquery import Screener, Ticker
+from yahooquery import Research, Screener, Ticker
 from yahooquery import (
     get_currencies, get_exchanges, get_market_summary, get_trending)
 
@@ -14,6 +14,11 @@ TICKERS = [
     Ticker('aapl ^GSPC btcusd=x brk-b logo.is', asynchronous=True),
     Ticker(['aapl', 'aaapl']), Ticker('hasgx'),
     Ticker('btcusd=x', formatted=True)
+]
+
+RESEARCH = [
+    Research(
+        username=os.getenv('YF_USERNAME'), password=os.getenv('YF_PASSWORD'))
 ]
 
 FINANCIALS = ['cash_flow', 'income_statement', 'balance_sheet',
@@ -40,6 +45,11 @@ def test_premium(ticker, prop):
 
 @pytest.fixture(params=TICKERS)
 def ticker(request):
+    return request.param
+
+
+@pytest.fixture(params=RESEARCH)
+def research(request):
     return request.param
 
 
@@ -145,3 +155,43 @@ def test_bad_screener():
     with pytest.raises(ValueError):
         s = Screener()
         assert s.get_screeners('most_active')
+
+
+def test_reports(research):
+    assert research.reports() is not None
+
+
+def test_reports_one_arg(research):
+    assert research.reports(report_date='Last Week') is not None
+
+
+def test_reports_multiple_filters(research):
+    assert research.reports(
+        investment_rating='Bearish,Bullish',
+        report_date='Last Week',
+        sector=['Basic Materials', 'Real Estate'],
+        report_type='Analyst Report'
+    ) is not None
+
+
+def test_reports_bad_arg(research):
+    with pytest.raises(ValueError):
+        assert research.reports(investment_type='Bearish')
+
+
+def test_reports_bad_option(research):
+    with pytest.raises(ValueError):
+        assert research.reports(report_type='Bad Report Type')
+
+
+def test_reports_bad_multiple(research):
+    with pytest.raises(ValueError):
+        assert research.reports(report_date=['Last Week', 'Last Year'])
+
+
+def test_trades(research):
+    assert research.trades() is not None
+
+
+def test_trades_size(research):
+    assert research.trades(300) is not None
