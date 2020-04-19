@@ -200,7 +200,8 @@ class Research(_YahooFinance):
     
         Examples:
             >>> from yahooquery import Research
-            >>> r = Research(username=username, password=password)
+            >>> import os
+            >>> r = Research(username=os.getenv('YF_USERNAME'), password=os.getenv('YF_PASSWORD))
             >>> df = r.reports()  # Default size of 100
             >>> df = r.reports(500, investment_rating='Bearish,Bullish', report_date='Last Week')
             >>> df = r.reports(1000, sector='Basic Materials, Real Estate', investment_rating=['Bearish','Bullish'])    
@@ -231,7 +232,7 @@ class Research(_YahooFinance):
 
         Examples:
             >>> from yahooquery import Research
-            >>> r = Research(username, password)
+            >>> r = Research(username=os.getenv('YF_USERNAME'), password=os.getenv('YF_PASSWORD))
             >>> df = r.trades()  # Default size of 100
             >>> df = r.trades(500, trend='Bearish', report_date='Last Week')
             >>> df = r.trades(1000, sector='Basic Materials, Real Estate', trend=['Bearish','Bullish'])    
