@@ -1037,6 +1037,8 @@ class Ticker(_YahooFinance):
         try:
             df['expiration'] = pd.to_datetime(df['expiration'], unit='s')
             df['lastTradeDate'] = pd.to_datetime(df['lastTradeDate'], unit='s')
+        except ValueError:
+            df['expiration'] = [d.get('fmt') for d in df['expiration']]
         except KeyError:
             pass
         return df
