@@ -1680,9 +1680,20 @@ class Screener(_YahooFinance):
 
     @property
     def available_screeners(self):
+        """Return list of keys available to pass to
+           :func:`Screener.get_screeners`
+        """
         return list(self.SCREENERS.keys())
 
     def get_screeners(self, screen_ids, count=25):
+        """Return list of predefined screeners from Yahoo Finance
+
+        Parameters:
+        screen_ids (str or list): Keys corresponding to list
+            screen_ids = 'most_actives day_gainers'
+            screen_ids = ['most_actives', 'day_gainers']
+        count (int): Number of items to return, default=25
+        """
         screen_ids = self._check_screen_ids(screen_ids)
         scrIds = [self.SCREENERS[screener]['id'] for screener in screen_ids]
         return self._get_data(
