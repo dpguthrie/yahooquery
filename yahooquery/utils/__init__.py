@@ -26,16 +26,17 @@ def _flatten_list(ls):
     return [item for sublist in ls for item in sublist]
 
 
-def _convert_to_list(symbols):
+def _convert_to_list(symbols, comma_split=False):
     if isinstance(symbols, list):
         return symbols
-    else:
-        return re.findall(r"[\w\-.=^]+", symbols)
+    if comma_split:
+        return [x.strip() for x in symbols.split(',')]
+    return re.findall(r"[\w\-.=^]+", symbols)
 
 
 def _convert_to_timestamp(date=None, start=True):
     if date is None:
-        date = int((-2208988800 * start) + (time.time() * (not start)))
+        date = int((-858880800 * start) + (time.time() * (not start)))
     elif isinstance(date, datetime):
         date = int(time.mktime(date.timetuple()))
     else:
