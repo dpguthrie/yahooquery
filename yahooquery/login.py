@@ -1,9 +1,11 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 import random
+import re
+
+from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 class Login(object):
@@ -32,6 +34,8 @@ class Login(object):
         ))
         self.chrome_options.add_argument('headless')
         self.chrome_options.add_argument('--log-level=3')
+        self.chrome_options.add_argument('--ignore-certificate-errors')
+        self.chrome_options.add_argument('--ignore-ssl-errors')
         self.driver = webdriver.Chrome(
             chrome_options=self.chrome_options,
             desired_capabilities=self.chrome_options.to_capabilities()
@@ -52,9 +56,14 @@ class Login(object):
             password_element.send_keys(self.password)
             self.driver.find_element_by_xpath(
                 "//button[@id='login-signin']").click()
+            self.driver.find_element_by_link_text('Finance').click()
             cookies = self.driver.get_cookies()
+            crumb = re.findall(
+                '"CrumbStore":{"crumb":"(.+?)"', self.driver.page_source)
+            if crumb:
+                crumb = crumb[0].replace('\\u002F', '/')
             self.driver.quit()
-            return cookies
+            return {'cookies': cookies, 'crumb': crumb}
         except TimeoutException:
             return "A timeout exception has occured.  Most likely it's due to \
                     invalid login credentials.  Please try again."
