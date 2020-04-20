@@ -1,5 +1,5 @@
 name = 'yahooquery'
-__version__ = "2.2.0"
+__version__ = "2.2.1"
 
 from .research import Research  # noqa
 from .ticker import Ticker  # noqa
