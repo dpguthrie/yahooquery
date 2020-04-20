@@ -1,6 +1,9 @@
 Change Log
 ==========
 
+2.2.1
+- Fix timestamp conversion in the _fomrat_data method of the _YahooFinance class
+
 2.2.0
 - New Research class that allows a user with a premium subscription
   to retrieve research reports and trade ideas from Yahoo Finance.
