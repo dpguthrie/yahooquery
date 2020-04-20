@@ -107,7 +107,7 @@ class _YahooFinance(object):
             'filter': 'ownershipList', 'convert_dates': ['reportDate']},
         'majorHoldersBreakdown': {'convert_dates': []},
         'pageViews': {'convert_dates': []},
-        'price': {'convert_dates': []},
+        'price': {'convert_dates': ['preMarketTime', 'regularMarketTime']},
         'quoteType': {'convert_dates': ['firstTradeDateEpochUtc']},
         'recommendationTrend': {'filter': 'trend', 'convert_dates': []},
         'secFilings': {'filter': 'filings', 'convert_dates': ['epochDate']},
@@ -390,7 +390,7 @@ class _YahooFinance(object):
                         obj[k] = v
                 else:
                     try:
-                        obj[k] = datetime.fromtimestamp(v).strftime('%Y-%m-%d')
+                        obj[k] = datetime.fromtimestamp(v).strftime('%Y-%m-%d %H:%M:%S')
                     except (TypeError, OSError):
                         obj[k] = v
             elif isinstance(v, dict):
