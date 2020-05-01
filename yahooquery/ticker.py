@@ -459,7 +459,7 @@ class Ticker(_YahooFinance):
                     lambda x: str(x).lstrip(prefix))
             df['asOfDate'] = pd.to_datetime(df['asOfDate'], format='%Y-%m-%d')
             df = df.pivot_table(
-                index=['symbol', 'asOfDate'], columns='dataType',
+                index=['symbol', 'asOfDate', 'periodType'], columns='dataType',
                 values='reportedValue')
             return pd.DataFrame(df.to_records()).set_index('symbol')
         except ValueError:
@@ -476,6 +476,7 @@ class Ticker(_YahooFinance):
                 df['reportedValue'].apply(lambda x: x.get('raw'))
             df['dataType'] = data_type
             df['symbol'] = symbol
+            df['periodType'] = data[data_type][-1].get('periodType')
             return df
         except KeyError:
             # No data is available for that type
