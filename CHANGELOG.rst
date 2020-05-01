@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+2.2.2
+- Fix bug in retrieving cash flow / income statement data.  Most recent month
+  was combining with TTM.  A new column was created in the dataframe called
+  'periodType'.  Annual data will be shown as '12M', quarterly data will be
+  shown as '3M', and trailing 12 month data will be shown as 'TTM'.
+
 2.2.1
 - Fix timestamp conversion in the _fomrat_data method of the _YahooFinance class
 
