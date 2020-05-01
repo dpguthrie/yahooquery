@@ -9,7 +9,11 @@
 
 Python wrapper around an unofficial Yahoo Finance API.  Check out an interactive demo at (https://yahooquery-streamlit.herokuapp.com)
 
-# 2.0.0 UPDATES
+# 2.2.2 Update
+
+- Bug fix related to the retrieval of income statement and cash flow data.  The most recent month and TTM were being combined and returning incorrect data for the last month.  The dataframe has been modified to include an additional column called 'periodType'.  From that, you'll be able to delineate between quarterly, annual, or trailing 12 month data.
+
+# 2.0.0 Updates
 
 - Yahoo Finance Premium data (for subscribed users)
 - Option to make asynchronous and synchronous requests
@@ -56,6 +60,8 @@ tickers = Ticker('aapl msft')
 # is equivalent to
 tickers = Ticker('aapl, msft')
 ```
+
+
 
 ### New to 2.0.0
 
