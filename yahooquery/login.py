@@ -2,7 +2,7 @@ import random
 import re
 
 from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -56,7 +56,10 @@ class Login(object):
             password_element.send_keys(self.password)
             self.driver.find_element_by_xpath(
                 "//button[@id='login-signin']").click()
-            self.driver.find_element_by_link_text('Finance').click()
+            try:
+                self.driver.find_element_by_link_text('Finance').click()
+            except NoSuchElementException:
+                self.driver.find_element_by_xpath('//a[@href="https://finance.yahoo.com/"]').click()
             cookies = self.driver.get_cookies()
             crumb = re.findall(
                 '"CrumbStore":{"crumb":"(.+?)"', self.driver.page_source)
