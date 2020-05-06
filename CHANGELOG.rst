@@ -1,23 +1,36 @@
 Change Log
 ==========
 
+2.2.3
+-----
+- Add :code:`valuation_measures` as a property to the :code:`Ticker` class.
+  Additionally, for Yahoo Finance premium subscribers, they can access the
+  :code:`p_valuation_measures` and supply either :code:`a`, :code:`q`, or
+  :code:`m` (annual, quarterly, monthly).  The data returned with these can
+  be seen in the `Statistics` tab through the Yahoo Finance front-end.
+  
+.. image:: demo/valuation_measures.PNG
+
 2.2.2
-- Fix bug in retrieving cash flow / income statement data.  Most recent month
-  was combining with TTM.  A new column was created in the dataframe called
-  'periodType'.  Annual data will be shown as '12M', quarterly data will be
-  shown as '3M', and trailing 12 month data will be shown as 'TTM'.
+-----
+- Fix bug in retrieving cash flow / income statement data.  Most recent month was 
+  combining with TTM. A new column was created in the dataframe called 'periodType'.
+  Annual data will be shown as '12M', quarterly data will be shown as '3M', and
+  trailing 12 month data will be shown as 'TTM'.
 
 2.2.1
-- Fix timestamp conversion in the _fomrat_data method of the _YahooFinance class
+-----
+- Fix timestamp conversion in the _format_data method of the _YahooFinance class
 
 2.2.0
-- New Research class that allows a user with a premium subscription
-  to retrieve research reports and trade ideas from Yahoo Finance.
-  List of trade ideas through Yahoo Finance can be seen at:
-  https://finance.yahoo.com/research/trade-ideas.  Research reports
-  can be seen at https://finance.yahoo.com/research.
+-----
+- New Research class that allows a user with a premium subscription to retrieve
+  research reports and trade ideas from Yahoo Finance.  List of trade ideas
+  through Yahoo Finance can be seen at: https://finance.yahoo.com/research/trade-ideas.
+  Research reports can be seen at https://finance.yahoo.com/research.
 
 2.1.0
+-----
 - New Screener class that allows a user to retrieve predefined Yahoo
   Finance lists.  Some of these lists include most active, day gainers,
   day losers, cryptocurrencies, and sectors / industries
@@ -28,8 +41,8 @@ Change Log
   _YahooFinance.  The base class contains the order of operations to
   retrieve data (construct parameters, construct URLs, validate response,
   and format the data).
-- Yahoo login functionality, which allows a user to retrieve Premium data if
-  they are a subscriber
+- Yahoo login functionality, which allows a user to retrieve Premium data if they are a subscriber
+
   - All available financials data (income_statement, balance_sheet, cash_flow)
   - Company 360 (innovation score, significant developments, supply chain,
     hiring statistics, and company outlook)
@@ -40,12 +53,15 @@ Change Log
   - Value analyzer Drilldown (Detailed information about a symbol(s) value)
   - Research reports
   - Trade ideas
+
 - New (free) data!
+
   - news
   - page_views
   - recommendations
   - technical_insights
   - validation
+
 - Change several properties and methods (get_endpoints -> get_modules,
   all_endpoints -> all_modules)
 
