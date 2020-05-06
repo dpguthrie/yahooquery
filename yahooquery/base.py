@@ -59,7 +59,26 @@ class _YahooFinance(object):
             'DepreciationAndAmortization', 'PurchaseOfBusiness',
             'InvestingCashFlow', 'ChangesInAccountReceivables',
             'StockBasedCompensation', 'OtherNonCashItems',
-            'BeginningCashPosition']
+            'BeginningCashPosition'],
+        'valuation': [
+            'ForwardPeRatio', 'PsRatio', 'PbRatio',
+            'EnterprisesValueEBITDARatio', 'EnterprisesValueRevenueRatio',
+            'PeRatio', 'MarketCap', 'EnterpriseValue', 'PegRatio'],
+    }
+
+    FUNDAMENTALS_TIME_ARGS = {
+        'a': {
+            'prefix': 'annual',
+            'period_type': '12M'
+        },
+        'q': {
+            'prefix': 'quarterly',
+            'period_type': '3M'
+        },
+        'm': {
+            'prefix': 'monthly',
+            'period_type': '1M'
+        }
     }
 
     _MODULES_DICT = {

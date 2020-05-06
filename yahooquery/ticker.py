@@ -435,10 +435,15 @@ class Ticker(_YahooFinance):
         return self._get_data('validation')
 
     def _financials(self, financials_type, frequency, premium=False):
-        frequency = 'annual' if frequency[:1].lower() == 'a' else 'quarterly'
+        try:
+            time_dict = self.FUNDAMENTALS_TIME_ARGS[frequency[:1].lower()]
+            prefix = time_dict['prefix']
+            period_type = time_dict['period_type']
+        except KeyError as e:
+            raise(e)
         key = 'fundamentals_premium' if premium else 'fundamentals'
         types = self._CONFIG[key]['query']['type']['options'][financials_type]
-        prefixed_types = ['{}{}'.format(frequency, t) for t in types] + \
+        prefixed_types = ['{}{}'.format(prefix, t) for t in types] + \
                          ['trailing{}'.format(t) for t in types]
         data = self._get_data(key, {'type': ','.join(prefixed_types)}, **{
             'list_result': True})
@@ -448,15 +453,15 @@ class Ticker(_YahooFinance):
                 if isinstance(data[k], str) or data[k][0].get('description'):
                     return data
                 dataframes.extend([
-                    self._financials_dataframes(data[k][i])
+                    self._financials_dataframes(data[k][i], period_type)
                     for i in range(len(data[k]))])
         except AttributeError:
             return data
         try:
             df = pd.concat(dataframes)
-            for prefix in [frequency, 'trailing']:
+            for p in [prefix, 'trailing']:
                 df['dataType'] = df['dataType'].apply(
-                    lambda x: str(x).lstrip(prefix))
+                    lambda x: str(x).lstrip(p))
             df['asOfDate'] = pd.to_datetime(df['asOfDate'], format='%Y-%m-%d')
             df = df.pivot_table(
                 index=['symbol', 'asOfDate', 'periodType'], columns='dataType',
@@ -467,7 +472,7 @@ class Ticker(_YahooFinance):
                 financials_type.replace('_', ' ').title(),
                 ', '.join(self._symbols))
 
-    def _financials_dataframes(self, data):
+    def _financials_dataframes(self, data, period_type):
         data_type = data['meta']['type'][0]
         symbol = data['meta']['symbol'][0]
         try:
@@ -476,11 +481,23 @@ class Ticker(_YahooFinance):
                 df['reportedValue'].apply(lambda x: x.get('raw'))
             df['dataType'] = data_type
             df['symbol'] = symbol
-            df['periodType'] = data[data_type][-1].get('periodType')
+            df['periodType'] = data[data_type][-1].get('periodType', period_type)
             return df
         except KeyError:
             # No data is available for that type
             pass
+
+    @property
+    def valuation_measures(self):
+        """Valuation Measures
+        Retrieves valuation measures for most recent four quarters as well
+        as the most recent date
+
+        Notes
+        -----
+        Only quarterly data is available for non-premium subscribers
+        """
+        return self._financials('valuation', 'q')
 
     def balance_sheet(self, frequency='a'):
         """Balance Sheet
@@ -921,6 +938,13 @@ class Ticker(_YahooFinance):
     @property
     def p_technical_events(self):
         return self._get_data('technical_events')
+
+    def p_valuation_measures(self, frequency='q'):
+        """Valuation Measures
+        Retrieves valuation measures for all available dates for given
+        symbol(s)
+        """
+        return self._financials('valuation', frequency, premium=True)
 
     @property
     def p_value_analyzer(self):
