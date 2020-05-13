@@ -52,8 +52,6 @@ def _init_session(session, **kwargs):
         session.mount('https://', TimeoutHTTPAdapter(
             max_retries=retries,
             timeout=kwargs.get('timeout', DEFAULT_TIMEOUT)))
-        session.hooks['response'] = \
-            [lambda response, *args, **kwargs: response.raise_for_status()]
         session.headers.update({
             "User-Agent": random.choice(USER_AGENT_LIST)
         })
