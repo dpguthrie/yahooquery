@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+2.2.4
+-----
+- Increase the number of items available through the :code:`income_statement`,
+  :code:`cash_flow`, :code:`p_income_statement`, and :code:`p_cash_flow` methods
+  on the :code:`Ticker` class.
+- Update how the session is initialized; specifically, include a timeout in the
+  requests that are made, include a hook for bad status codes, and mount the
+  adapter / retry to https requests
+
 2.2.3
 -----
 - Add :code:`valuation_measures` as a property to the :code:`Ticker` class.
