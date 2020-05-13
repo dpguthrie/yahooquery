@@ -1,11 +1,39 @@
-from datetime import datetime
-import time
-import pandas as pd
+import random
 import re
+import time
+from datetime import datetime
+
+import pandas as pd
 from requests import Session
-from requests_futures.sessions import FuturesSession
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
+from requests_futures.sessions import FuturesSession
+
+DEFAULT_TIMEOUT = 5
+
+USER_AGENT_LIST = [
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36',
+]
+
+
+class TimeoutHTTPAdapter(HTTPAdapter):
+    def __init__(self, *args, **kwargs):
+        self.timeout = DEFAULT_TIMEOUT
+        if "timeout" in kwargs:
+            self.timeout = kwargs['timeout']
+            del kwargs['timeout']
+        super().__init__(*args, **kwargs)
+
+    def send(self, request, **kwargs):
+        timeout = kwargs.get('timeout')
+        if timeout is None:
+            kwargs['timeout'] = self.timeout
+        return super().send(request, **kwargs)
 
 
 def _init_session(session, **kwargs):
@@ -16,9 +44,19 @@ def _init_session(session, **kwargs):
             session = Session()
         if kwargs.get('proxies'):
             session.proxies = kwargs.get('proxies')
-    retries = \
-        Retry(total=3, backoff_factor=1, status_forcelist=[502, 503, 504])
-    session.mount('http://', HTTPAdapter(max_retries=retries))
+        retries = Retry(
+            total=3,
+            backoff_factor=1,
+            status_forcelist=[429, 500, 502, 503, 504],
+            method_whitelist=["HEAD", "GET", "OPTIONS", "POST", "TRACE"])
+        session.mount('https://', TimeoutHTTPAdapter(
+            max_retries=retries,
+            timeout=kwargs.get('timeout', DEFAULT_TIMEOUT)))
+        session.hooks['response'] = \
+            [lambda response, *args, **kwargs: response.raise_for_status()]
+        session.headers.update({
+            "User-Agent": random.choice(USER_AGENT_LIST)
+        })
     return session
 
 
