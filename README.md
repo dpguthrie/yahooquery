@@ -197,7 +197,9 @@ aapl.income_statement()
 
 ### Login
 
-If you subscribe to Yahoo Finance Premium, you can utilize this package to retrieve premium data as well.  You can pass your login credentials (username and password) when you initialize the `Ticker` class:
+The login functionality utilizes Selenium, and specifically [chromedriver](https://chromedriver.chromium.org/getting-started), to perform the login.  In order for it to work, you need to either add the location to your PATH or extract it to the appropriate default location based on your operating system.  
+
+Then, simply pass your login credentials (username and password) when you initialize the `Ticker` class:
 
 ```python
 tickers = Ticker('aapl msft fb', username='my_email@gmail.com', password='my_password')
