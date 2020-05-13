@@ -27,7 +27,7 @@ class TimeoutHTTPAdapter(HTTPAdapter):
         if "timeout" in kwargs:
             self.timeout = kwargs['timeout']
             del kwargs['timeout']
-        super().__init__(*args, **kwargs)
+        super(TimeoutHTTPAdapter, self).__init__(*args, **kwargs)
 
     def send(self, request, **kwargs):
         timeout = kwargs.get('timeout')
@@ -52,6 +52,11 @@ def _init_session(session, **kwargs):
         session.mount('https://', TimeoutHTTPAdapter(
             max_retries=retries,
             timeout=kwargs.get('timeout', DEFAULT_TIMEOUT)))
+        # TODO: Figure out how to utilize this within the validate_response
+        # TODO: This will be a much better way of handling bad requests than
+        # TODO: what I'm currently doing.
+        # session.hooks['response'] = \
+        #     [lambda response, *args, **kwargs: response.raise_for_status()]
         session.headers.update({
             "User-Agent": random.choice(USER_AGENT_LIST)
         })
