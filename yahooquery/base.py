@@ -23,29 +23,89 @@ class _YahooFinance(object):
 
     FUNDAMENTALS_OPTIONS = {
         'income_statement': [
-            'OperatingExpense', 'TotalRevenue', 'BasicEPS',
-            'NetIncomeCommonStockholders', 'NetIncome', 'OperatingIncome',
-            'OtherIncomeExpense', 'CostOfRevenue',
-            'SellingGeneralAndAdministration', 'ResearchAndDevelopment',
-            'InterestExpense', 'DilutedAverageShares', 'TaxProvision',
-            'GrossProfit', 'Ebitda', 'BasicAverageShares', 'DilutedEPS',
-            'PretaxIncome', 'NetIncomeContinuousOperations'],
+            'Amortization', 'AmortizationOfIntangiblesIncomeStatement',
+            'AverageDilutionEarnings', 'BasicAccountingChange', 'BasicAverageShares',
+            'BasicContinuousOperations', 'BasicDiscontinuousOperations', 'BasicEPS',
+            'BasicEPSOtherGainsLosses', 'BasicExtraordinary', 'ContinuingAndDiscontinuedBasicEPS',
+            'ContinuingAndDiscontinuedDilutedEPS', 'CostOfRevenue', 'DepletionIncomeStatement',
+            'DepreciationAmortizationDepletionIncomeStatement', 'DepreciationAndAmortizationInIncomeStatement',
+            'DepreciationIncomeStatement', 'DilutedAccountingChange', 'DilutedAverageShares',
+            'DilutedContinuousOperations', 'DilutedDiscontinuousOperations', 'DilutedEPS',
+            'DilutedEPSOtherGainsLosses', 'DilutedExtraordinary', 'DilutedNIAvailtoComStockholders',
+            'DividendPerShare', 'EBIT', 'EBITDA', 'EarningsFromEquityInterest',
+            'EarningsFromEquityInterestNetOfTax', 'ExciseTaxes', 'GainOnSaleOfBusiness',
+            'GainOnSaleOfPPE', 'GainOnSaleOfSecurity', 'GeneralAndAdministrativeExpense',
+            'GrossProfit', 'ImpairmentOfCapitalAssets', 'InsuranceAndClaims',
+            'InterestExpense', 'InterestExpenseNonOperating', 'InterestIncome',
+            'InterestIncomeNonOperating', 'MinorityInterests', 'NetIncome', 'NetIncomeCommonStockholders',
+            'NetIncomeContinuousOperations', 'NetIncomeDiscontinuousOperations',
+            'NetIncomeExtraordinary', 'NetIncomeFromContinuingAndDiscontinuedOperation',
+            'NetIncomeFromContinuingOperationNetMinorityInterest', 'NetIncomeFromTaxLossCarryforward',
+            'NetIncomeIncludingNoncontrollingInterests', 'NetInterestIncome',
+            'NetNonOperatingInterestIncomeExpense', 'NormalizedBasicEPS', 'NormalizedDilutedEPS',
+            'NormalizedEBITDA', 'NormalizedIncome', 'OperatingExpense', 'OperatingIncome',
+            'OperatingRevenue', 'OtherGandA', 'OtherIncomeExpense', 'OtherNonOperatingIncomeExpenses',
+            'OtherOperatingExpenses', 'OtherSpecialCharges', 'OtherTaxes',
+            'OtherunderPreferredStockDividend', 'PreferredStockDividends',
+            'PretaxIncome', 'ProvisionForDoubtfulAccounts', 'ReconciledCostOfRevenue',
+            'ReconciledDepreciation', 'RentAndLandingFees', 'RentExpenseSupplemental',
+            'ReportedNormalizedBasicEPS', 'ReportedNormalizedDilutedEPS', 'ResearchAndDevelopment',
+            'RestructuringAndMergernAcquisition', 'SalariesAndWages', 'SecuritiesAmortization',
+            'SellingAndMarketingExpense', 'SellingGeneralAndAdministration', 'SpecialIncomeCharges',
+            'TaxEffectOfUnusualItems', 'TaxLossCarryforwardBasicEPS', 'TaxLossCarryforwardDilutedEPS',
+            'TaxProvision', 'TaxRateForCalcs', 'TotalExpenses', 'TotalOperatingIncomeAsReported',
+            'TotalOtherFinanceCost', 'TotalRevenue', 'TotalUnusualItems',
+            'TotalUnusualItemsExcludingGoodwill', 'WriteOff'],
         'balance_sheet': [
-            'TotalLiabilitiesNetMinorityInterest', 'AccountsPayable',
-            'CashAndCashEquivalents',
-            'TotalNonCurrentLiabilitiesNetMinorityInterest',
-            'CurrentAccruedExpenses', 'GrossPPE', 'CurrentLiabilities',
-            'CurrentAssets', 'TotalNonCurrentAssets', 'IncomeTaxPayable',
-            'AccountsReceivable', 'NetPPE', 'CurrentDebt',
-            'OtherShortTermInvestments', 'CurrentDeferredRevenue',
-            'CashCashEquivalentsAndMarketableSecurities',
-            'StockholdersEquity', 'GainsLossesNotAffectingRetainedEarnings',
-            'AccumulatedDepreciation', 'Inventory', 'NonCurrentDeferredRevenue',
-            'LongTermDebt', 'OtherNonCurrentLiabilities',
-            'InvestmentsAndAdvances', 'RetainedEarnings', 'Goodwill',
-            'OtherIntangibleAssets', 'TotalAssets', 'OtherNonCurrentAssets',
-            'OtherCurrentLiabilities', 'NonCurrentDeferredTaxesLiabilities',
-            'OtherCurrentAssets', 'CapitalStock'],
+            'AccountsPayable', 'AccountsReceivable', 'AccruedInterestReceivable',
+            'AccumulatedDepreciation', 'AdditionalPaidInCapital',
+            'AllowanceForDoubtfulAccountsReceivable', 'AssetsHeldForSaleCurrent',
+            'AvailableForSaleSecurities', 'BuildingsAndImprovements', 'CapitalLeaseObligations',
+            'CapitalStock', 'CashAndCashEquivalents', 'CashCashEquivalentsAndShortTermInvestments',
+            'CashEquivalents', 'CashFinancial', 'CommercialPaper', 'CommonStock',
+            'CommonStockEquity', 'ConstructionInProgress', 'CurrentAccruedExpenses',
+            'CurrentAssets', 'CurrentCapitalLeaseObligation', 'CurrentDebt',
+            'CurrentDebtAndCapitalLeaseObligation', 'CurrentDeferredAssets',
+            'CurrentDeferredLiabilities', 'CurrentDeferredRevenue', 'CurrentDeferredTaxesAssets',
+            'CurrentDeferredTaxesLiabilities', 'CurrentLiabilities', 'CurrentNotesPayable',
+            'CurrentProvisions', 'DefinedPensionBenefit', 'DerivativeProductLiabilities',
+            'DividendsPayable', 'DuefromRelatedPartiesCurrent', 'DuefromRelatedPartiesNonCurrent',
+            'DuetoRelatedPartiesCurrent', 'DuetoRelatedPartiesNonCurrent', 'EmployeeBenefits',
+            'FinancialAssets', 'FinancialAssetsDesignatedasFairValueThroughProfitorLossTotal',
+            'FinishedGoods', 'FixedAssetsRevaluationReserve', 'ForeignCurrencyTranslationAdjustments',
+            'GainsLossesNotAffectingRetainedEarnings', 'GeneralPartnershipCapital', 'Goodwill',
+            'GoodwillAndOtherIntangibleAssets', 'GrossAccountsReceivable', 'GrossPPE',
+            'HedgingAssetsCurrent', 'HeldToMaturitySecurities', 'IncomeTaxPayable',
+            'InterestPayable', 'InventoriesAdjustmentsAllowances', 'Inventory',
+            'InvestedCapital', 'InvestmentProperties', 'InvestmentinFinancialAssets',
+            'InvestmentsAndAdvances', 'InvestmentsInOtherVenturesUnderEquityMethod',
+            'InvestmentsinAssociatesatCost', 'InvestmentsinJointVenturesatCost',
+            'InvestmentsinSubsidiariesatCost', 'LandAndImprovements', 'Leases',
+            'LiabilitiesHeldforSaleNonCurrent', 'LimitedPartnershipCapital',
+            'LineOfCredit', 'LoansReceivable', 'LongTermCapitalLeaseObligation',
+            'LongTermDebt', 'LongTermDebtAndCapitalLeaseObligation', 'LongTermEquityInvestment',
+            'LongTermProvisions', 'MachineryFurnitureEquipment', 'MinimumPensionLiabilities',
+            'MinorityInterest', 'NetDebt', 'NetPPE', 'NetTangibleAssets', 'NonCurrentAccountsReceivable',
+            'NonCurrentAccruedExpenses', 'NonCurrentDeferredAssets', 'NonCurrentDeferredLiabilities',
+            'NonCurrentDeferredRevenue', 'NonCurrentDeferredTaxesAssets', 'NonCurrentDeferredTaxesLiabilities',
+            'NonCurrentNoteReceivables', 'NonCurrentPensionAndOtherPostretirementBenefitPlans',
+            'NonCurrentPrepaidAssets', 'NotesReceivable', 'OrdinarySharesNumber',
+            'OtherCapitalStock', 'OtherCurrentAssets', 'OtherCurrentBorrowings',
+            'OtherCurrentLiabilities', 'OtherEquityAdjustments', 'OtherEquityInterest',
+            'OtherIntangibleAssets', 'OtherInventories', 'OtherInvestments', 'OtherNonCurrentAssets',
+            'OtherNonCurrentLiabilities', 'OtherPayable', 'OtherProperties', 'OtherReceivables',
+            'OtherShortTermInvestments', 'Payables', 'PayablesAndAccruedExpenses',
+            'PensionandOtherPostRetirementBenefitPlansCurrent', 'PreferredSecuritiesOutsideStockEquity',
+            'PreferredSharesNumber', 'PreferredStock', 'PreferredStockEquity',
+            'PrepaidAssets', 'Properties', 'RawMaterials', 'Receivables',
+            'ReceivablesAdjustmentsAllowances', 'RestrictedCash', 'RestrictedCommonStock',
+            'RetainedEarnings', 'ShareIssued', 'StockholdersEquity', 'TangibleBookValue',
+            'TaxesReceivable', 'TotalAssets', 'TotalCapitalization', 'TotalDebt',
+            'TotalEquityGrossMinorityInterest', 'TotalLiabilitiesNetMinorityInterest',
+            'TotalNonCurrentAssets', 'TotalNonCurrentLiabilitiesNetMinorityInterest',
+            'TotalPartnershipCapital', 'TotalTaxPayable', 'TradeandOtherPayablesNonCurrent',
+            'TradingSecurities', 'TreasurySharesNumber', 'TreasuryStock', 'UnrealizedGainLoss',
+            'WorkInProcess', 'WorkingCapital'],
         'cash_flow': [
             'RepaymentOfDebt', 'RepurchaseOfCapitalStock', 'CashDividendsPaid',
             'CommonStockIssuance', 'ChangeInWorkingCapital',
@@ -391,7 +451,8 @@ class _YahooFinance(object):
         yf_login = Login(username, password)
         d = yf_login.get_cookies()
         try:
-            [self.session.cookies.set(c['name'], c['value']) for c in d['cookies']]
+            [self.session.cookies.set(c['name'], c['value'])
+             for c in d['cookies']]
             self.crumb = d['crumb']
         except TypeError:
             print('Invalid credentials provided.  Please check username and'
@@ -409,7 +470,8 @@ class _YahooFinance(object):
                         obj[k] = v
                 else:
                     try:
-                        obj[k] = datetime.fromtimestamp(v).strftime('%Y-%m-%d %H:%M:%S')
+                        obj[k] = datetime.fromtimestamp(
+                            v).strftime('%Y-%m-%d %H:%M:%S')
                     except (TypeError, OSError):
                         obj[k] = v
             elif isinstance(v, dict):
@@ -438,9 +500,11 @@ class _YahooFinance(object):
         response_field = config['response_field']
         try:
             if isinstance(self.session, FuturesSession):
-                data = self._async_requests(response_field, urls, params, **kwargs)
+                data = self._async_requests(
+                    response_field, urls, params, **kwargs)
             else:
-                data = self._sync_requests(response_field, urls, params, **kwargs)
+                data = self._sync_requests(
+                    response_field, urls, params, **kwargs)
             return data
         except ValueError:
             return {'error': 'HTTP 404 Not Found.  Please try again'}
