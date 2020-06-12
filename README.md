@@ -315,7 +315,7 @@ aapl.history(period='max')
 aapl.history(start='2019-05-01')  # Default end date is now
 aapl.history(end='2018-12-31')  # Default start date is 1900-01-01
 
-# Period options = 1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max
+# Period options = 1d, 5d, 7d, 60d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max
 # Interval options = 1m, 2m, 5m, 15m, 30m, 60m, 90m, 1h, 1d, 5d, 1wk, 1mo, 3mo
 ```
 
