@@ -7,7 +7,12 @@
 [![Build Status](https://travis-ci.com/dpguthrie/yahooquery.svg?branch=master)](https://travis-ci.com/dpguthrie/yahooquery)
 [![codecov](https://codecov.io/gh/dpguthrie/yahooquery/branch/master/graph/badge.svg)](https://codecov.io/gh/dpguthrie/yahooquery)
 
-Python wrapper around an unofficial Yahoo Finance API.  Check out an interactive demo at (https://yahooquery-streamlit.herokuapp.com)
+Python wrapper around an unofficial Yahoo Finance API.  
+
+- **Interactive Demo**:  <a target="_blank" href="https://yahooquery-streamlit.herokuapp.com">https://yahooquery-streamlit.herokuapp.com</a>
+- **Blog Post**:  <a target="_blank" href="https://towardsdatascience.com/the-unofficial-yahoo-finance-api-32dcf5d53df">https://towardsdatascience.com/the-unofficial-yahoo-finance-api-32dcf5d53df</a>
+
+The blog post contains similar introductory materials as you'll see below, but also has a Jupyter notebook detailing comparisons to yfinance.
 
 # 2.2.2 Update
 
