@@ -1,6 +1,5 @@
-import requests
 import pandas as pd
-
+import requests
 
 BASE_URL = 'https://query2.finance.yahoo.com'
 

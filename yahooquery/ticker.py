@@ -1,9 +1,11 @@
-import pandas as pd
 import re
 
-from yahooquery.utils import (
-    _convert_to_list, _convert_to_timestamp, _history_dataframe, _flatten_list)
+import pandas as pd
+from requests_futures.sessions import FuturesSession
+
 from yahooquery.base import _YahooFinance
+from yahooquery.utils import (_convert_to_timestamp, _flatten_list,
+                              _history_dataframe)
 
 
 class Ticker(_YahooFinance):
@@ -17,18 +19,41 @@ class Ticker(_YahooFinance):
 
     Keyword Arguments
     -----------------
+    asynchronous: bool, default False, optional
+        Defines whether the requests are made synchronously or asynchronously.
+    backoff_factor: float, default 0.3, optional
+        A factor, in seconds, to apply between attempts after a second try.
+        Done only when there is a failed request and error code is in the
+        status_forcelist
+    country: str, default 'united states', optional
+        This allows you to alter the following query parameters that are
+        sent with each request:  lang, region, and corsDomain.
     formatted: bool, default False, optional
         Quantitative values are given as dictionaries with at least two
         keys:  'raw' and 'fmt'.  The 'raw' key expresses value numerically
         and the 'fmt' key expresses the value as a string.  See Notes for more
         detail
-    asynchronous: bool, default False, optional
-        Defines whether the requests are made synchronously or asynchronously.
     max_workers: int, default 8, optional
         Defines the number of workers used to make asynchronous requests.
         This only matters when asynchronous=True
     proxies: dict, default None, optional
         Allows for the session to use a proxy when making requests
+    retry: int, default 5, optional
+        Number of times to retry on a failed request
+    status_forcelist: list, default [404, 429, 500, 502, 503, 504], optional
+        A set of integer HTTP status codes taht we should force a retry on
+    timeout: int, default 5, optional
+        Stop waiting for a response after a given number of seconds
+    user_agent: str, default random.choice, optional
+        A browser's user-agent string that is sent with the headers on each
+        request
+    validate: bool, default False, optional
+        Validate existence of symbols during instantiation
+    verify: bool or str, default True, optional
+        Used to verify SSL certificates for HTTPS requests.  Can either be
+        a boolean, in which case it controsl whether we verify the server's
+        TLS certificate, or a string in which case it must be a path to a CA
+        bundle to use.
 
     Notes
     -----
@@ -61,9 +86,12 @@ class Ticker(_YahooFinance):
         date expressed in the format YYYY-MM-DD by either converting from the
         timestamp or retrieving the "fmt" key.
     """
-    def __init__(self, symbols, **kwargs):
-        self._symbols = _convert_to_list(symbols)
+    def __init__(self, symbols, validate=False, **kwargs):
         super(Ticker, self).__init__(**kwargs)
+        self.symbols = symbols
+        self.invalid_symbols = None
+        if validate:
+            self.validation
 
     def _quote_summary(self, modules):
         kwargs = {}
@@ -82,14 +110,6 @@ class Ticker(_YahooFinance):
             data_filter = self._MODULES_DICT[module]['filter']
             kwargs.update({'data_filter': data_filter})
         return self._to_dataframe(data, **kwargs)
-
-    @property
-    def symbols(self):
-        return self._symbols
-
-    @symbols.setter
-    def symbols(self, symbols):
-        self._symbols = _convert_to_list(symbols)
 
     def _to_dataframe(self, data, **kwargs):
         if not self.formatted:
@@ -190,6 +210,34 @@ class Ticker(_YahooFinance):
         return self._quote_summary(['calendarEvents'])
 
     @property
+    def earnings_calendar(self):
+        """Earnings
+
+        Historical earnings data for given symbol(s)
+
+        Returns
+        -------
+        pandas.DataFrame
+        """
+        if isinstance(self.session, FuturesSession):
+            return "Asynchronous requests not implemented for this property."
+        dataframes = []
+        classes = "Va(m) H(20px) Bd(0) M(0) P(0) Fz(s) Pstart(10px) O(n):f Fw(500) C($gray)"
+        url = "https://finance.yahoo.com/calendar/earnings"
+        params = {'size': 100, 'symbol': ','.join(self.symbols)}
+        for i in range(0, len(self.symbols) * 500, 100):
+            params['offset'] = i
+            r = self.session.get(url, params=params)
+            text = r.text
+            try:
+                dataframes.append(pd.read_html(text)[0])
+            except IndexError:
+                pass
+            if classes in text:
+                break
+        return pd.concat(dataframes, ignore_index=True)
+
+    @property
     def earnings(self):
         """Earnings
 
@@ -243,12 +291,19 @@ class Ticker(_YahooFinance):
         """
         return self._quote_summary(['financialData'])
 
-    @property
-    def news(self):
+    def news(self, count=25, start=None):
         """News articles related to given symbol(s)
 
         Obtain news articles related to a given symbol(s).  Data includes
         the title of the article, summary, url, author_name, publisher
+
+        Parameters
+        ----------
+        count: int
+            Desired number of news items to return
+        start: str or datetime
+            Date to begin retrieving news items.  If date is a str, utilize
+            the following format: YYYY-MM-DD.
 
         Notes
         -----
@@ -260,8 +315,10 @@ class Ticker(_YahooFinance):
         -------
         dict
         """
+        if start:
+            start = _convert_to_timestamp(start)
         return self._get_data(
-            'news', {}, **{'list_result': True})
+            'news', {'count': count, 'start': start}, **{'list_result': True})
 
     @property
     def index_trend(self):
@@ -358,6 +415,18 @@ class Ticker(_YahooFinance):
         return self._quote_summary(['quoteType'])
 
     @property
+    def quotes(self):
+        """Quotes
+
+        Retrieve quotes for multiple symbols with one call
+
+        Returns
+        -------
+        dict
+        """
+        return self._get_data("quotes", **{'list_result': True})
+
+    @property
     def recommendations(self):
         """Recommendations
 
@@ -422,29 +491,30 @@ class Ticker(_YahooFinance):
         """
         return self._get_data('insights')
 
-    @property
-    def validation(self):
-        """Symbol Validation
-
-        Validate existence of given symbol(s)
-
-        Returns
-        -------
-        dict
-        """
-        return self._get_data('validation')
-
-    def _financials(self, financials_type, frequency, premium=False):
+    def _financials(
+            self,
+            financials_type,
+            frequency=None,
+            premium=False,
+            types=None,
+            trailing=True):
         try:
             time_dict = self.FUNDAMENTALS_TIME_ARGS[frequency[:1].lower()]
             prefix = time_dict['prefix']
             period_type = time_dict['period_type']
         except KeyError as e:
             raise(e)
+        except TypeError:
+            prefix = ''
+            period_type = ''
         key = 'fundamentals_premium' if premium else 'fundamentals'
-        types = self._CONFIG[key]['query']['type']['options'][financials_type]
-        prefixed_types = ['{}{}'.format(prefix, t) for t in types] + \
-                         ['trailing{}'.format(t) for t in types]
+        types = types or \
+            self._CONFIG[key]['query']['type']['options'][financials_type]
+        if trailing:
+            prefixed_types = ['{}{}'.format(prefix, t) for t in types] + \
+                            ['trailing{}'.format(t) for t in types]
+        else:
+            prefixed_types = ['{}{}'.format(prefix, t) for t in types]
         data = self._get_data(key, {'type': ','.join(prefixed_types)}, **{
             'list_result': True})
         dataframes = []
@@ -458,15 +528,24 @@ class Ticker(_YahooFinance):
         except AttributeError:
             return data
         try:
-            df = pd.concat(dataframes)
-            for p in [prefix, 'trailing']:
-                df['dataType'] = df['dataType'].apply(
-                    lambda x: str(x).lstrip(p))
-            df['asOfDate'] = pd.to_datetime(df['asOfDate'], format='%Y-%m-%d')
-            df = df.pivot_table(
-                index=['symbol', 'asOfDate', 'periodType'], columns='dataType',
-                values='reportedValue')
-            return pd.DataFrame(df.to_records()).set_index('symbol')
+            df = pd.concat(dataframes, sort=False)
+            if prefix:
+                ls = [prefix, 'trailing'] if trailing else [prefix]
+                for p in ls:
+                    df['dataType'] = df['dataType'].apply(
+                        lambda x: str(x).lstrip(p))
+                df['asOfDate'] = pd.to_datetime(df['asOfDate'], format='%Y-%m-%d')
+                df = df.pivot_table(
+                    index=['symbol', 'asOfDate', 'periodType'], columns='dataType',
+                    values='reportedValue')
+                return pd.DataFrame(df.to_records()).set_index('symbol')
+            else:
+                df['sourceDate'] = pd.to_datetime(
+                    df['sourceDate'],
+                    format='%Y-%m-%d')
+                df.rename(columns={'sourceDate': 'date'}, inplace=True)
+                df.set_index(['symbol', 'date'], inplace=True)
+                return df
         except ValueError:
             return '{} data unavailable for {}'.format(
                 financials_type.replace('_', ' ').title(),
@@ -477,15 +556,86 @@ class Ticker(_YahooFinance):
         symbol = data['meta']['symbol'][0]
         try:
             df = pd.DataFrame.from_records(data[data_type])
-            df['reportedValue'] = \
-                df['reportedValue'].apply(lambda x: x.get('raw'))
-            df['dataType'] = data_type
-            df['symbol'] = symbol
-            df['periodType'] = data[data_type][-1].get('periodType', period_type)
+            if period_type:
+                df['reportedValue'] = \
+                    df['reportedValue'].apply(lambda x: x.get('raw'))
+                df['dataType'] = data_type
+                df['symbol'] = symbol
+            else:
+                df['symbol'] = symbol
+                df['parentTopics'] = df['parentTopics'].apply(
+                    lambda x: x[0].get('topicLabel'))
             return df
         except KeyError:
             # No data is available for that type
             pass
+
+    def all_financial_data(self, frequency='a'):
+        """
+        Retrieve all financial data, including income statement,
+        balance sheet, cash flow, and valuation measures.
+
+        Notes
+        -----
+        The trailing twelve month (TTM) data is not available through this
+        method
+
+        Parameters
+        ----------
+        frequency: str, default 'a', optional
+            Specify either annual or quarterly.  Value should be 'a' or 'q'.
+        """
+        types = _flatten_list([
+            self.FUNDAMENTALS_OPTIONS[option]
+            for option in self.FUNDAMENTALS_OPTIONS
+        ])
+        return self._financials(
+            "cash_flow", frequency, types=types, trailing=False)
+
+    def get_financial_data(self, types, frequency='a', trailing=True):
+        """
+        Obtain specific data from either cash flow, income statement,
+        balance sheet, or valuation measures.
+
+        Notes
+        -----
+        See available options to pass to method through FUNDAMENTALS_OPTIONS
+
+        Parameters
+        ----------
+        types: list or str
+            Desired types of data for retrieval
+        frequency: str, default 'a', optional
+            Specify either annual or quarterly.  Value should be 'a' or 'q'.
+
+        Raises
+        ------
+        ValueError
+            If invalid type is specified
+        """
+        if not isinstance(types, list):
+            types = re.findall(r"[a-zA-Z]+", types)
+        return self._financials(
+            "cash_flow", frequency, types=types, trailing=trailing)
+
+    @property
+    def corporate_events(self):
+        return self._financials(
+            'cash_flow',
+            frequency=None,
+            types=self.CORPORATE_EVENTS,
+            trailing=False
+        )
+
+    @property
+    def corporate_guidance(self):
+        """
+        """
+        return self._financials(
+            'cash_flow',
+            frequency=None,
+            types=['sigdev_corporate_guidance'],
+            trailing=False)
 
     @property
     def valuation_measures(self):
@@ -499,7 +649,7 @@ class Ticker(_YahooFinance):
         """
         return self._financials('valuation', 'q')
 
-    def balance_sheet(self, frequency='a'):
+    def balance_sheet(self, frequency='a', trailing=True):
         """Balance Sheet
 
         Retrieves balance sheet data for most recent four quarters or most
@@ -507,17 +657,21 @@ class Ticker(_YahooFinance):
 
         Parameters
         ----------
-        frequency: str, default 'A', optional
+        frequency: str, default 'a', optional
             Specify either annual or quarterly balance sheet.  Value should
             be 'a' or 'q'.
+        trailing: bool, default True, optional
+            Specify whether or not you'd like trailing twelve month (TTM)
+            data returned
 
         Returns
         -------
         pandas.DataFrame
         """
-        return self._financials('balance_sheet', frequency)
+        return self._financials(
+            'balance_sheet', frequency, trailing=trailing)
 
-    def cash_flow(self, frequency='a'):
+    def cash_flow(self, frequency='a', trailing=True):
         """Cash Flow
 
         Retrieves cash flow data for most recent four quarters or most
@@ -528,12 +682,15 @@ class Ticker(_YahooFinance):
         frequency: str, default 'a', optional
             Specify either annual or quarterly cash flow statement.  Value
             should be 'a' or 'q'.
+        trailing: bool, default True, optional
+            Specify whether or not you'd like trailing twelve month (TTM)
+            data returned
 
         Returns
         -------
         pandas.DataFrame
         """
-        return self._financials('cash_flow', frequency)
+        return self._financials('cash_flow', frequency, trailing=trailing)
 
     @property
     def company_officers(self):
@@ -591,7 +748,7 @@ class Ticker(_YahooFinance):
         """
         return self._quote_summary_dataframe('upgradeDowngradeHistory')
 
-    def income_statement(self, frequency='a'):
+    def income_statement(self, frequency='a', trailing=True):
         """Income Statement
 
         Retrieves income statement data for most recent four quarters or most
@@ -602,12 +759,16 @@ class Ticker(_YahooFinance):
         frequency: str, default 'A', optional
             Specify either annual or quarterly income statement.  Value should
             be 'a' or 'q'.
+        trailing: bool, default True, optional
+            Specify whether or not you'd like trailing twelve month (TTM)
+            data returned
 
         Returns
         -------
         pandas.DataFrame
         """
-        return self._financials('income_statement', frequency)
+        return self._financials(
+            'income_statement', frequency, trailing=trailing)
 
     @property
     def insider_holders(self):
@@ -847,8 +1008,60 @@ class Ticker(_YahooFinance):
             'topHoldings', data_filter='sectorWeightings', from_dict=True)
 
     # PREMIUM
+    def p_all_financial_data(self, frequency='a'):
+        """
+        Retrieve all financial data, including income statement,
+        balance sheet, cash flow, and valuation measures.
 
-    def p_balance_sheet(self, frequency='a'):
+        Notes
+        -----
+        The trailing twelve month (TTM) data is not available through this
+        method
+
+        You must be subscribed to Yahoo Finance Premium and be logged in
+        for this method to return any data
+
+        Parameters
+        ----------
+        frequency: str, default 'a', optional
+            Specify either annual or quarterly.  Value should be 'a' or 'q'.
+        """
+        types = _flatten_list([
+            self.FUNDAMENTALS_OPTIONS[option]
+            for option in self.FUNDAMENTALS_OPTIONS
+        ])
+        return self._financials(
+            "cash_flow", frequency, premium=True, types=types, trailing=False)
+
+    def p_get_financial_data(self, types, frequency='a', trailing=True):
+        """
+        Obtain specific data from either cash flow, income statement,
+        balance sheet, or valuation measures.
+
+        Notes
+        -----
+        See available options to pass to method through FUNDAMENTALS_OPTIONS
+
+        You must be subscribed to Yahoo Finance Premium and be logged in
+        for this method to return any data
+
+        Parameters
+        ----------
+        types: list or str
+            Desired types of data for retrieval
+        frequency: str, default 'a', optional
+            Specify either annual or quarterly balance sheet.  Value should
+            be 'a' or 'q'.
+        trailing: bool, default True, optional
+            Specify whether or not you'd like trailing twelve month (TTM)
+            data returned
+        """
+        if not isinstance(types, list):
+            types = re.findall(r"[a-zA-Z]+", types)
+        return self._financials(
+            "cash_flow", frequency, True, types=types, trailing=trailing)
+
+    def p_balance_sheet(self, frequency='a', trailing=True):
         """Balance Sheet
 
         Retrieves balance sheet data for most recent four quarters or most
@@ -859,6 +1072,9 @@ class Ticker(_YahooFinance):
         frequency: str, default 'A', optional
             Specify either annual or quarterly balance sheet.  Value should
             be 'a' or 'q'.
+        trailing: bool, default True, optional
+            Specify whether or not you'd like trailing twelve month (TTM)
+            data returned
 
         Notes
         -----
@@ -869,9 +1085,10 @@ class Ticker(_YahooFinance):
         -------
         pandas.DataFrame
         """
-        return self._financials('balance_sheet', frequency, premium=True)
+        return self._financials(
+            'balance_sheet', frequency, premium=True, trailing=trailing)
 
-    def p_cash_flow(self, frequency='a'):
+    def p_cash_flow(self, frequency='a', trailing=True):
         """Cash Flow
 
         Retrieves cash flow data for most recent four quarters or most
@@ -882,6 +1099,9 @@ class Ticker(_YahooFinance):
         frequency: str, default 'a', optional
             Specify either annual or quarterly cash flow statement.  Value
             should be 'a' or 'q'.
+        trailing: bool, default True, optional
+            Specify whether or not you'd like trailing twelve month (TTM)
+            data returned
 
         Notes
         -----
@@ -892,9 +1112,20 @@ class Ticker(_YahooFinance):
         -------
         pandas.DataFrame
         """
-        return self._financials('cash_flow', frequency, premium=True)
+        return self._financials(
+            'cash_flow', frequency, premium=True, trailing=trailing)
 
-    def p_income_statement(self, frequency='a'):
+    @property
+    def p_corporate_events(self):
+        return self._financials(
+            'cash_flow',
+            frequency=None,
+            premium=True,
+            types=self.CORPORATE_EVENTS,
+            trailing=False
+        )
+
+    def p_income_statement(self, frequency='a', trailing=True):
         """Income Statement
 
         Retrieves income statement data for most recent four quarters or most
@@ -905,6 +1136,9 @@ class Ticker(_YahooFinance):
         frequency: str, default 'A', optional
             Specify either annual or quarterly income statement.  Value should
             be 'a' or 'q'.
+        trailing: bool, default True, optional
+            Specify whether or not you'd like trailing twelve month (TTM)
+            data returned
 
         Notes
         -----
@@ -915,7 +1149,8 @@ class Ticker(_YahooFinance):
         -------
         pandas.DataFrame
         """
-        return self._financials('income_statement', frequency, premium=True)
+        return self._financials(
+            'income_statement', frequency, premium=True, trailing=trailing)
 
     @property
     def p_company_360(self):
@@ -956,7 +1191,13 @@ class Ticker(_YahooFinance):
 
     # HISTORICAL PRICE DATA
 
-    def history(self, period='ytd', interval='1d', start=None, end=None):
+    def history(
+            self,
+            period='ytd',
+            interval='1d',
+            start=None,
+            end=None,
+            adj_timezone=True):
         """
         Historical pricing data
 
@@ -974,6 +1215,10 @@ class Ticker(_YahooFinance):
         end: str of datetime.datetime, default None, optional
             Specify a ending point to pull data from.  Can be expressed as a
             string with the format YYYY-MM-DD or as a datetime object.
+        adj_timezone: bool, default True, optional
+            Specify whether or not to apply the GMT offset to the timestamp
+            received from the API.  If True, the datetimeindex will be adjusted
+            to the specified ticker's timezone.
 
         Returns
         -------
@@ -998,33 +1243,22 @@ class Ticker(_YahooFinance):
                 ', '.join(intervals)))
         params['interval'] = interval.lower()
         data = self._get_data('chart', params)
-        df = self._historical_data_to_dataframe(data)
+        df = self._historical_data_to_dataframe(data, params, adj_timezone)
         return df
 
-    def _historical_data_to_dataframe(self, data):
+    def _historical_data_to_dataframe(self, data, params, adj_timezone):
         d = {}
         for symbol in self._symbols:
             if 'timestamp' in data[symbol]:
-                d[symbol] = _history_dataframe(data, symbol)
+                d[symbol] = _history_dataframe(data, symbol, params, adj_timezone)
             else:
                 d[symbol] = data[symbol]
         if all(isinstance(d[key], pd.DataFrame) for key in d):
-            if len(d) == 1:
-                df = d[self._symbols[0]]
-            else:
-                df = pd.concat(list(d.values()), keys=list(d.keys()),
-                               names=['symbol', 'date'], sort=False)
-            columns = list(df.columns)
-            if 'dividends' in columns:
+            df = pd.concat(d, names=['symbol', 'date'], sort=False)
+            if 'dividends' in df.columns:
                 df[['dividends']] = df[['dividends']].fillna(value=0)
-                columns.remove('dividends')
-            if 'splits' in columns:
+            if 'splits' in df.columns:
                 df[['splits']] = df[['splits']].fillna(value=0)
-                columns.remove('splits')
-            try:
-                df[columns] = df.groupby(['symbol'])[columns].ffill()
-            except (KeyError, ValueError):
-                df.fillna(method='ffill', inplace=True)
             return df
         return d
 
@@ -1047,6 +1281,8 @@ class Ticker(_YahooFinance):
             df.rename_axis(
                 ['symbol', 'expiration', 'optionType'], inplace=True)
             df.fillna(0, inplace=True)
+            df.sort_index(
+                level=['symbol', 'expiration', 'optionType'], inplace=True)
             return df
         return 'No option chain data found'
 
@@ -1054,7 +1290,8 @@ class Ticker(_YahooFinance):
         dataframes = []
         for optionType in ['calls', 'puts']:
             df = pd.concat(
-                [pd.DataFrame(data[i][optionType]) for i in range(len(data))])
+                [pd.DataFrame(data[i][optionType]) for i in range(len(data))],
+                sort=False)
             df['optionType'] = optionType
             dataframes.append(df)
         df = pd.concat(dataframes, sort=False)

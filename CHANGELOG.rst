@@ -1,6 +1,22 @@
 Change Log
 ==========
 
+2.2.5
+-----
+- Add more data accessors for the :code:`Ticker` class:  :code:`quotes`,
+  :code:`corporate_events`, :code:`all_financial_data`, :code:`get_financial_data`,
+  :code:`corporate_guidance`, :code:`p_all_financial_data`, and :code:`p_get_financial_data`
+- Financials methods now include optional argument to include / exclude the trailing
+  tweleve month (TTM) data.
+- The :code:`history` method on the :code:`Ticker` class now accepts an optional argument
+  to adjust the timezone (:code:`adj_timezone`) to the ticker's timezone. It defaults
+  to :code:`True`.
+- Further documentation of acceptable keyword arguments to the :code:`Ticker` class.
+- :code:`Ticker.news` is now a method.  It accepts two arguments:  :code:`count` - 
+  number of items to return; :code:`start` - start date to begin retrieving news items from
+- Bug fixes:  :code:`Ticker.history` method no longer returns extra rows when retrieving
+  intraday data.
+
 2.2.4
 -----
 - Increase the number of items available through the :code:`income_statement`,

@@ -45,10 +45,13 @@ def _init_session(session, **kwargs):
         if kwargs.get('proxies'):
             session.proxies = kwargs.get('proxies')
         retries = Retry(
-            total=3,
-            backoff_factor=1,
-            status_forcelist=[429, 500, 502, 503, 504],
-            method_whitelist=["HEAD", "GET", "OPTIONS", "POST", "TRACE"])
+            total=kwargs.get('retry', 5),
+            backoff_factor=kwargs.get('backoff_factor', .3),
+            status_forcelist=kwargs.get(
+                'status_forcelist', [429, 500, 502, 503, 504]),
+            method_whitelist=['HEAD', 'GET', 'OPTIONS', 'POST', 'TRACE'])
+        if kwargs.get('verify'):
+            session.verify = kwargs.get('verify')
         session.mount('https://', TimeoutHTTPAdapter(
             max_retries=retries,
             timeout=kwargs.get('timeout', DEFAULT_TIMEOUT)))
@@ -58,7 +61,8 @@ def _init_session(session, **kwargs):
         # session.hooks['response'] = \
         #     [lambda response, *args, **kwargs: response.raise_for_status()]
         session.headers.update({
-            "User-Agent": random.choice(USER_AGENT_LIST)
+            "User-Agent": kwargs.get(
+                'user_agent', random.choice(USER_AGENT_LIST))
         })
     return session
 
@@ -85,26 +89,35 @@ def _convert_to_timestamp(date=None, start=True):
     return date
 
 
-def _history_dataframe(data, symbol):
+def _history_dataframe(data, symbol, params, adj_timezone=True):
     df = pd.DataFrame(data[symbol]['indicators']['quote'][0])
     if data[symbol]['indicators'].get('adjclose'):
         df['adjclose'] = \
             data[symbol]['indicators']['adjclose'][0]['adjclose']
-    df.index = pd.to_datetime(data[symbol]['timestamp'], unit='s')
+    df.index = pd.to_datetime(data[symbol]['timestamp'], unit='s') + \
+        pd.Timedelta(
+            (data[symbol]['meta']['gmtoffset'] * adj_timezone), 's')
+    if params['interval'][-1] not in ['m', 'h']:
+        df.index = df.index.date
+    df.dropna(inplace=True)
     if data[symbol].get('events'):
         df = pd.merge(
-            df, _events_to_dataframe(data, symbol), how='left',
-            left_index=True, right_index=True)
+            df, _events_to_dataframe(data, symbol, params, adj_timezone),
+            how='left', left_index=True, right_index=True)
     return df
 
 
-def _events_to_dataframe(data, symbol):
+def _events_to_dataframe(data, symbol, params, adj_timezone):
     dataframes = []
     for event in ['dividends', 'splits']:
         try:
             df = pd.DataFrame(data[symbol]['events'][event].values())
             df.set_index('date', inplace=True)
-            df.index = pd.to_datetime(df.index, unit='s')
+            df.index = pd.to_datetime(df.index, unit='s') + \
+                pd.Timedelta(
+                    (data[symbol]['meta']['gmtoffset'] * adj_timezone), 's')
+            if params['interval'][-1] not in ['m', 'h']:
+                df.index = df.index.date
             if event == "dividends":
                 df.rename(columns={'amount': 'dividends'}, inplace=True)
             else:

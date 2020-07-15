@@ -1,11 +1,14 @@
+import re
 import time
 from concurrent.futures import as_completed
 from datetime import datetime
 
+import requests
 from requests_futures.sessions import FuturesSession
 
-from yahooquery.login import Login
-from yahooquery.utils import _init_session
+from yahooquery.login import YahooSelenium
+from yahooquery.utils import _convert_to_list, _init_session
+from yahooquery.utils.countries import COUNTRIES
 
 try:
     from urllib import parse
@@ -14,12 +17,6 @@ except ImportError:
 
 
 class _YahooFinance(object):
-
-    DEFAULT_QUERY_PARAMS = {
-        'lang': 'en-US',
-        'region': 'US',
-        'corsDomain': 'finance.yahoo.com'
-    }
 
     FUNDAMENTALS_OPTIONS = {
         'income_statement': [
@@ -125,6 +122,14 @@ class _YahooFinance(object):
             'EnterprisesValueEBITDARatio', 'EnterprisesValueRevenueRatio',
             'PeRatio', 'MarketCap', 'EnterpriseValue', 'PegRatio'],
     }
+
+    CORPORATE_EVENTS = [
+        'sigdev_corporate_guidance', 'sigdev_performance',
+        'sigdev_corporate_deals', 'sigdev_expansion_new_markets_new_units',
+        'sigdev_products', 'sigdev_ownership_control', 'sigdev_financing',
+        'sigdev_litigation_regulatory', 'sigdev_accounting_issues',
+        'sigdev_restructuring_reorganization_related', 'sigdev_reference',
+        'sigdev_special_events', 'sigdev_environment']
 
     FUNDAMENTALS_TIME_ARGS = {
         'a': {
@@ -390,6 +395,13 @@ class _YahooFinance(object):
                 'ideaId': {'required': True, 'default': None}
             }
         },
+        'visualization': {
+            'path': 'https://query2.finance.yahoo.com/v1/finance/visualization',
+            'response_field': 'finance',
+            'query': {
+                'crumb': {'required': True, 'default': None}
+            }
+        },
         'research': {
             'path': 'https://query2.finance.yahoo.com/v1/finance/premium/visualization',
             'response_field': 'finance',
@@ -432,6 +444,22 @@ class _YahooFinance(object):
                 'size': {'required': False, 'default': None}
             }
         },
+        'quotes': {
+            'path': 'https://query2.finance.yahoo.com/v6/finance/quote',
+            'response_field': 'quoteResponse',
+            'query': {
+                'symbols': {'required': True, 'default': None}
+            }
+        },
+        'search': {
+            'path': 'https://query2.finance.yahoo.com/v1/finance/search',
+            'response_field': 'quotes',
+            'query': {
+                'q': {'required': True, 'default': None},
+                'quotesCount': {'required': False, 'default': None},
+                'newsCount': {'required': False, 'default': None}
+            }
+        }
     }
 
     PERIODS = _CONFIG['chart']['query']['range']['options']
@@ -439,24 +467,89 @@ class _YahooFinance(object):
     MODULES = _CONFIG['quoteSummary']['query']['modules']['options']
 
     def __init__(self, **kwargs):
-        for k, v in self.DEFAULT_QUERY_PARAMS.items():
-            self.DEFAULT_QUERY_PARAMS[k] = kwargs.pop(k, v)
+        self.country = kwargs.get('country', 'united states').lower()
         self.formatted = kwargs.pop('formatted', False)
         self.session = _init_session(kwargs.pop('session', None), **kwargs)
         self.crumb = kwargs.pop('crumb', None)
         if kwargs.get('username') and kwargs.get('password'):
             self.login(kwargs.get('username'), kwargs.get('password'))
 
+    @property
+    def symbols(self):
+        """
+        List of symbol(s) used to retrieve information
+        """
+        return self._symbols
+
+    @symbols.setter
+    def symbols(self, symbols):
+        self._symbols = _convert_to_list(symbols)
+
+    @property
+    def country(self):
+        return self._country
+
+    @country.setter
+    def country(self, country):
+        if country.lower() not in COUNTRIES:
+            raise ValueError(
+                "{} is not a valid country.  Valid countries include {}".format(
+                    country, ', '.join(COUNTRIES.keys())
+                ))
+        self._country = country.lower()
+        self._default_query_params = COUNTRIES[self._country]
+
+    @property
+    def default_query_params(self):
+        """
+        Dictionary containing default query parameters that are sent with
+        each request.  The dictionary contains three keys:  lang, region, and
+        corsDomain.
+
+        Notes
+        -----
+        The query parameters will default to
+        {'lang': 'en-US', 'region': 'US', 'corsDomain': 'finance.yahoo.com'}
+
+        To change the default query parameters, set the country property equal
+        to a valid country.
+        """
+        return self._default_query_params
+
     def login(self, username, password):
-        yf_login = Login(username, password)
-        d = yf_login.get_cookies()
+        ys = YahooSelenium(username=username, password=password)
+        d = ys.yahoo_login()
         try:
             [self.session.cookies.set(c['name'], c['value'])
              for c in d['cookies']]
             self.crumb = d['crumb']
+            self.userId = d['userId']
         except TypeError:
             print('Invalid credentials provided.  Please check username and'
                   ' password and try again')
+
+    @property
+    def validation(self):
+        """Symbol Validation
+
+        Validate existence of given symbol(s) and modify the symbols property
+        to include only the valid symbols.  If invalid symbols were passed
+        an additional property, `invalid_symbols`, will be created.
+        """
+        data = self._get_data('validation')
+        if None in data:
+            data = data[None]
+        self._symbols = [k for k, v in data.items() if v]
+        self.invalid_symbols = [k for k, v in data.items() if not v]
+
+    # @property
+    # def _get_crumb(self):
+    #     r = requests.get("https://finance.yahoo.com/screener/new")
+    #     crumbs = re.findall('"crumb":"(.+?)"', r.text)
+    #     crumb = crumbs[-1].replace('\\u002F', '/')
+    #     if not crumb:
+    #         return 'Unable to retrieve crumb.  Try again'
+    #     return crumb
 
     def _format_data(self, obj, dates):
         for k, v in obj.items():
@@ -526,7 +619,7 @@ class _YahooFinance(object):
             params.update({optional: getattr(
                 self, optional, config['query'][optional]['default']
             )})
-        params.update(self.DEFAULT_QUERY_PARAMS)
+        params.update(self._default_query_params)
         params = {
             k: str(v).lower() if v is True or v is False else v
             for k, v in params.items()
