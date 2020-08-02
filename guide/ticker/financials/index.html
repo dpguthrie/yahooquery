@@ -1,0 +1,2956 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Python wrapper for unofficial Yahoo Finance API">
+      
+      
+      
+        <meta name="author" content="Doug Guthrie">
+      
+      <link rel="shortcut icon" href="../../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.4.0">
+    
+    
+      
+        <title>Financials - yahooquery</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.fe0cca5b.min.css">
+      
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.a46bcfb3.min.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#7e57c2">
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../../css/termynal.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="deep-purple" data-md-color-accent="">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#individual" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="../../.." title="yahooquery" class="md-header-nav__button md-logo" aria-label="yahooquery">
+      
+  <img src="../../../img/logo_transparent_2.png" alt="logo">
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            yahooquery
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Financials
+            
+          </span>
+        </div>
+      
+    </div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/dpguthrie/yahooquery/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    yahooquery
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="yahooquery" class="md-nav__button md-logo" aria-label="yahooquery">
+      
+  <img src="../../../img/logo_transparent_2.png" alt="logo">
+
+    </a>
+    yahooquery
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/dpguthrie/yahooquery/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    yahooquery
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      User Guide
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="User Guide" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        User Guide
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../" title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-2" type="checkbox" id="nav-2-2" checked>
+    
+    <label class="md-nav__link" for="nav-2-2">
+      Ticker
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Ticker" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-2">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Ticker
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../intro/" title="Ticker - Intro" class="md-nav__link">
+      Ticker - Intro
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../keyword_arguments/" title="Keyword Arguments" class="md-nav__link">
+      Keyword Arguments
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../modules/" title="Modules" class="md-nav__link">
+      Modules
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Financials
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="Financials" class="md-nav__link md-nav__link--active">
+      Financials
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#individual" class="md-nav__link">
+    Individual
+  </a>
+  
+    <nav class="md-nav" aria-label="Individual">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#balance_sheet" class="md-nav__link">
+    balance_sheet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cash_flow" class="md-nav__link">
+    cash_flow
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#income_statement" class="md-nav__link">
+    income_statement
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valuation_measures" class="md-nav__link">
+    valuation_measures
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiple" class="md-nav__link">
+    Multiple
+  </a>
+  
+    <nav class="md-nav" aria-label="Multiple">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#all_financial_data" class="md-nav__link">
+    all_financial_data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_financial_data" class="md-nav__link">
+    get_financial_data
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../options/" title="Options" class="md-nav__link">
+      Options
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../historical/" title="Historical Prices" class="md-nav__link">
+      Historical Prices
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../miscellaenous/" title="Miscellaenous" class="md-nav__link">
+      Miscellaenous
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../premium/" title="Premium" class="md-nav__link">
+      Premium
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../screener/" title="Screener" class="md-nav__link">
+      Screener
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../research/" title="Research" class="md-nav__link">
+      Research
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../advanced/" title="Advanced" class="md-nav__link">
+      Advanced
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../misc/" title="Miscellaneous Functions" class="md-nav__link">
+      Miscellaneous Functions
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../alternative/" title="Alternatives" class="md-nav__link">
+      Alternatives
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../release_notes/" title="Release Notes" class="md-nav__link">
+      Release Notes
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#individual" class="md-nav__link">
+    Individual
+  </a>
+  
+    <nav class="md-nav" aria-label="Individual">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#balance_sheet" class="md-nav__link">
+    balance_sheet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cash_flow" class="md-nav__link">
+    cash_flow
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#income_statement" class="md-nav__link">
+    income_statement
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valuation_measures" class="md-nav__link">
+    valuation_measures
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiple" class="md-nav__link">
+    Multiple
+  </a>
+  
+    <nav class="md-nav" aria-label="Multiple">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#all_financial_data" class="md-nav__link">
+    all_financial_data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_financial_data" class="md-nav__link">
+    get_financial_data
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/dpguthrie/yahooquery/edit/master/docs/guide/ticker/financials.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  
+                
+                
+                  <h1>Financials</h1>
+                
+                <h2 id="individual">Individual<a class="headerlink" href="#individual" title="Permanent link">&para;</a></h2>
+<h3 id="balance_sheet"><strong>balance_sheet</strong><a class="headerlink" href="#balance_sheet" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em>:  Retrieves balance sheet data for most recent four quarters or most recent four years as well as trailing 12 months.</li>
+<li><em>Return</em>:  <code>pandas.DataFrame</code></li>
+<li><em>Arguments</em></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">Argument</th>
+<th align="left">Type</th>
+<th align="left">Default</th>
+<th align="left">Required</th>
+<th align="left">Options</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">frequency</td>
+<td align="left"><code>str</code></td>
+<td align="left"><code>a</code></td>
+<td align="left">optional</td>
+<td align="left">Annual - <code>a</code><br>Quarter - <code>q</code></td>
+</tr>
+<tr>
+<td align="left">trailing</td>
+<td align="left"><code>bool</code></td>
+<td align="left"><code>True</code></td>
+<td align="left">optional</td>
+<td align="left"><code>True</code><br><code>False</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
+<span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">balance_sheet</span><span class="p">()</span>
+</span></code></pre></div>
+
+</div>
+<input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><label for="__tabbed_1_3">Data</label><div class="tabbed-content">
+<table>
+<thead>
+<tr>
+<th align="left">symbol</th>
+<th align="left">asOfDate</th>
+<th align="left">periodType</th>
+<th align="right">AccountsPayable</th>
+<th align="right">AccountsReceivable</th>
+<th align="right">AccumulatedDepreciation</th>
+<th align="right">AllowanceForDoubtfulAccountsReceivable</th>
+<th align="right">AvailableForSaleSecurities</th>
+<th align="right">CapitalStock</th>
+<th align="right">CashAndCashEquivalents</th>
+<th align="right">CashCashEquivalentsAndShortTermInvestments</th>
+<th align="right">CashEquivalents</th>
+<th align="right">CashFinancial</th>
+<th align="right">CommercialPaper</th>
+<th align="right">CommonStock</th>
+<th align="right">CommonStockEquity</th>
+<th align="right">CurrentAccruedExpenses</th>
+<th align="right">CurrentAssets</th>
+<th align="right">CurrentDebt</th>
+<th align="right">CurrentDebtAndCapitalLeaseObligation</th>
+<th align="right">CurrentDeferredLiabilities</th>
+<th align="right">CurrentDeferredRevenue</th>
+<th align="right">CurrentLiabilities</th>
+<th align="right">GainsLossesNotAffectingRetainedEarnings</th>
+<th align="right">Goodwill</th>
+<th align="right">GoodwillAndOtherIntangibleAssets</th>
+<th align="right">GrossAccountsReceivable</th>
+<th align="right">GrossPPE</th>
+<th align="right">Inventory</th>
+<th align="right">InvestedCapital</th>
+<th align="right">InvestmentinFinancialAssets</th>
+<th align="right">InvestmentsAndAdvances</th>
+<th align="right">LandAndImprovements</th>
+<th align="right">Leases</th>
+<th align="right">LongTermDebt</th>
+<th align="right">LongTermDebtAndCapitalLeaseObligation</th>
+<th align="right">MachineryFurnitureEquipment</th>
+<th align="right">NetDebt</th>
+<th align="right">NetPPE</th>
+<th align="right">NetTangibleAssets</th>
+<th align="right">NonCurrentDeferredLiabilities</th>
+<th align="right">NonCurrentDeferredRevenue</th>
+<th align="right">NonCurrentDeferredTaxesLiabilities</th>
+<th align="right">OrdinarySharesNumber</th>
+<th align="right">OtherCurrentAssets</th>
+<th align="right">OtherCurrentBorrowings</th>
+<th align="right">OtherCurrentLiabilities</th>
+<th align="right">OtherIntangibleAssets</th>
+<th align="right">OtherNonCurrentAssets</th>
+<th align="right">OtherNonCurrentLiabilities</th>
+<th align="right">OtherReceivables</th>
+<th align="right">OtherShortTermInvestments</th>
+<th align="right">Payables</th>
+<th align="right">PayablesAndAccruedExpenses</th>
+<th align="right">Properties</th>
+<th align="right">Receivables</th>
+<th align="right">RetainedEarnings</th>
+<th align="right">ShareIssued</th>
+<th align="right">StockholdersEquity</th>
+<th align="right">TangibleBookValue</th>
+<th align="right">TotalAssets</th>
+<th align="right">TotalCapitalization</th>
+<th align="right">TotalDebt</th>
+<th align="right">TotalEquityGrossMinorityInterest</th>
+<th align="right">TotalLiabilitiesNetMinorityInterest</th>
+<th align="right">TotalNonCurrentAssets</th>
+<th align="right">TotalNonCurrentLiabilitiesNetMinorityInterest</th>
+<th align="right">TradeandOtherPayablesNonCurrent</th>
+<th align="right">WorkingCapital</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2016-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">3.7294e+10</td>
+<td align="right">1.5754e+10</td>
+<td align="right">-3.4235e+10</td>
+<td align="right">-5.3e+07</td>
+<td align="right">1.7043e+11</td>
+<td align="right">3.1251e+10</td>
+<td align="right">2.0484e+10</td>
+<td align="right">6.7155e+10</td>
+<td align="right">1.1883e+10</td>
+<td align="right">8.601e+09</td>
+<td align="right">8.105e+09</td>
+<td align="right">3.1251e+10</td>
+<td align="right">1.28249e+11</td>
+<td align="right">2.2027e+10</td>
+<td align="right">1.06869e+11</td>
+<td align="right">1.1605e+10</td>
+<td align="right">1.1605e+10</td>
+<td align="right">8.08e+09</td>
+<td align="right">8.08e+09</td>
+<td align="right">7.9006e+10</td>
+<td align="right">6.34e+08</td>
+<td align="right">5.414e+09</td>
+<td align="right">8.62e+09</td>
+<td align="right">1.5807e+10</td>
+<td align="right">6.1245e+10</td>
+<td align="right">2.132e+09</td>
+<td align="right">2.15281e+11</td>
+<td align="right">1.7043e+11</td>
+<td align="right">1.7043e+11</td>
+<td align="right">1.0185e+10</td>
+<td align="right">6.517e+09</td>
+<td align="right">7.5427e+10</td>
+<td align="right">7.5427e+10</td>
+<td align="right">4.4543e+10</td>
+<td align="right">6.6548e+10</td>
+<td align="right">2.701e+10</td>
+<td align="right">1.19629e+11</td>
+<td align="right">2.8949e+10</td>
+<td align="right">2.93e+09</td>
+<td align="right">2.6019e+10</td>
+<td align="right">5.33617e+09</td>
+<td align="right">8.283e+09</td>
+<td align="right">3.5e+09</td>
+<td align="right">nan</td>
+<td align="right">3.206e+09</td>
+<td align="right">8.757e+09</td>
+<td align="right">1.0055e+10</td>
+<td align="right">1.3545e+10</td>
+<td align="right">4.6671e+10</td>
+<td align="right">3.7294e+10</td>
+<td align="right">5.9321e+10</td>
+<td align="right">0</td>
+<td align="right">2.9299e+10</td>
+<td align="right">9.6364e+10</td>
+<td align="right">5.33617e+09</td>
+<td align="right">1.28249e+11</td>
+<td align="right">1.19629e+11</td>
+<td align="right">3.21686e+11</td>
+<td align="right">2.03676e+11</td>
+<td align="right">8.7032e+10</td>
+<td align="right">1.28249e+11</td>
+<td align="right">1.93437e+11</td>
+<td align="right">2.14817e+11</td>
+<td align="right">1.14431e+11</td>
+<td align="right">nan</td>
+<td align="right">2.7863e+10</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2017-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">4.9049e+10</td>
+<td align="right">1.7874e+10</td>
+<td align="right">-4.1293e+10</td>
+<td align="right">-5.8e+07</td>
+<td align="right">1.94714e+11</td>
+<td align="right">3.5867e+10</td>
+<td align="right">2.0289e+10</td>
+<td align="right">7.4181e+10</td>
+<td align="right">1.2307e+10</td>
+<td align="right">7.982e+09</td>
+<td align="right">1.1977e+10</td>
+<td align="right">3.5867e+10</td>
+<td align="right">1.34047e+11</td>
+<td align="right">2.5744e+10</td>
+<td align="right">1.28645e+11</td>
+<td align="right">1.8473e+10</td>
+<td align="right">1.8473e+10</td>
+<td align="right">7.548e+09</td>
+<td align="right">7.548e+09</td>
+<td align="right">1.00814e+11</td>
+<td align="right">-1.5e+08</td>
+<td align="right">5.717e+09</td>
+<td align="right">8.015e+09</td>
+<td align="right">1.7932e+10</td>
+<td align="right">7.5076e+10</td>
+<td align="right">4.855e+09</td>
+<td align="right">2.49727e+11</td>
+<td align="right">1.94714e+11</td>
+<td align="right">1.94714e+11</td>
+<td align="right">1.3587e+10</td>
+<td align="right">7.279e+09</td>
+<td align="right">9.7207e+10</td>
+<td align="right">9.7207e+10</td>
+<td align="right">5.421e+10</td>
+<td align="right">9.5391e+10</td>
+<td align="right">3.3783e+10</td>
+<td align="right">1.26032e+11</td>
+<td align="right">3.434e+10</td>
+<td align="right">2.836e+09</td>
+<td align="right">3.1504e+10</td>
+<td align="right">5.1262e+09</td>
+<td align="right">1.3936e+10</td>
+<td align="right">6.496e+09</td>
+<td align="right">nan</td>
+<td align="right">2.298e+09</td>
+<td align="right">1.0162e+10</td>
+<td align="right">8.911e+09</td>
+<td align="right">1.7799e+10</td>
+<td align="right">5.3892e+10</td>
+<td align="right">4.9049e+10</td>
+<td align="right">7.4793e+10</td>
+<td align="right">0</td>
+<td align="right">3.5673e+10</td>
+<td align="right">9.833e+10</td>
+<td align="right">5.1262e+09</td>
+<td align="right">1.34047e+11</td>
+<td align="right">1.26032e+11</td>
+<td align="right">3.75319e+11</td>
+<td align="right">2.31254e+11</td>
+<td align="right">1.1568e+11</td>
+<td align="right">1.34047e+11</td>
+<td align="right">2.41272e+11</td>
+<td align="right">2.46674e+11</td>
+<td align="right">1.40458e+11</td>
+<td align="right">nan</td>
+<td align="right">2.7831e+10</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2018-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">5.5888e+10</td>
+<td align="right">2.3186e+10</td>
+<td align="right">-4.9099e+10</td>
+<td align="right">nan</td>
+<td align="right">1.70799e+11</td>
+<td align="right">4.0201e+10</td>
+<td align="right">2.5913e+10</td>
+<td align="right">6.6301e+10</td>
+<td align="right">1.4338e+10</td>
+<td align="right">1.1575e+10</td>
+<td align="right">1.1964e+10</td>
+<td align="right">4.0201e+10</td>
+<td align="right">1.07147e+11</td>
+<td align="right">nan</td>
+<td align="right">1.31339e+11</td>
+<td align="right">2.0748e+10</td>
+<td align="right">2.0748e+10</td>
+<td align="right">7.543e+09</td>
+<td align="right">7.543e+09</td>
+<td align="right">1.16866e+11</td>
+<td align="right">-3.454e+09</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">9.0403e+10</td>
+<td align="right">3.956e+09</td>
+<td align="right">2.2163e+11</td>
+<td align="right">1.70799e+11</td>
+<td align="right">1.70799e+11</td>
+<td align="right">1.6216e+10</td>
+<td align="right">8.205e+09</td>
+<td align="right">9.3735e+10</td>
+<td align="right">9.3735e+10</td>
+<td align="right">6.5982e+10</td>
+<td align="right">8.857e+10</td>
+<td align="right">4.1304e+10</td>
+<td align="right">1.07147e+11</td>
+<td align="right">3.223e+09</td>
+<td align="right">2.797e+09</td>
+<td align="right">4.26e+08</td>
+<td align="right">4.75499e+09</td>
+<td align="right">1.2087e+10</td>
+<td align="right">8.784e+09</td>
+<td align="right">3.2687e+10</td>
+<td align="right">nan</td>
+<td align="right">2.2283e+10</td>
+<td align="right">1.1165e+10</td>
+<td align="right">2.5809e+10</td>
+<td align="right">4.0388e+10</td>
+<td align="right">5.5888e+10</td>
+<td align="right">5.5888e+10</td>
+<td align="right">0</td>
+<td align="right">4.8995e+10</td>
+<td align="right">7.04e+10</td>
+<td align="right">4.75499e+09</td>
+<td align="right">1.07147e+11</td>
+<td align="right">1.07147e+11</td>
+<td align="right">3.65725e+11</td>
+<td align="right">2.00882e+11</td>
+<td align="right">1.14483e+11</td>
+<td align="right">1.07147e+11</td>
+<td align="right">2.58578e+11</td>
+<td align="right">2.34386e+11</td>
+<td align="right">1.41712e+11</td>
+<td align="right">3.3589e+10</td>
+<td align="right">1.4473e+10</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2019-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">4.6236e+10</td>
+<td align="right">2.2926e+10</td>
+<td align="right">-5.8579e+10</td>
+<td align="right">nan</td>
+<td align="right">1.05341e+11</td>
+<td align="right">4.5174e+10</td>
+<td align="right">4.8844e+10</td>
+<td align="right">1.00557e+11</td>
+<td align="right">3.664e+10</td>
+<td align="right">1.2204e+10</td>
+<td align="right">5.98e+09</td>
+<td align="right">4.5174e+10</td>
+<td align="right">9.0488e+10</td>
+<td align="right">nan</td>
+<td align="right">1.62819e+11</td>
+<td align="right">1.624e+10</td>
+<td align="right">1.624e+10</td>
+<td align="right">5.522e+09</td>
+<td align="right">5.522e+09</td>
+<td align="right">1.05718e+11</td>
+<td align="right">-5.84e+08</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">9.5957e+10</td>
+<td align="right">4.106e+09</td>
+<td align="right">1.98535e+11</td>
+<td align="right">1.05341e+11</td>
+<td align="right">1.05341e+11</td>
+<td align="right">1.7085e+10</td>
+<td align="right">9.075e+09</td>
+<td align="right">9.1807e+10</td>
+<td align="right">9.1807e+10</td>
+<td align="right">6.9797e+10</td>
+<td align="right">5.9203e+10</td>
+<td align="right">3.7378e+10</td>
+<td align="right">9.0488e+10</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">4.44324e+09</td>
+<td align="right">1.2352e+10</td>
+<td align="right">1.026e+10</td>
+<td align="right">3.772e+10</td>
+<td align="right">nan</td>
+<td align="right">3.2978e+10</td>
+<td align="right">2.0958e+10</td>
+<td align="right">2.2878e+10</td>
+<td align="right">5.1713e+10</td>
+<td align="right">4.6236e+10</td>
+<td align="right">4.6236e+10</td>
+<td align="right">0</td>
+<td align="right">4.5804e+10</td>
+<td align="right">4.5898e+10</td>
+<td align="right">4.44324e+09</td>
+<td align="right">9.0488e+10</td>
+<td align="right">9.0488e+10</td>
+<td align="right">3.38516e+11</td>
+<td align="right">1.82295e+11</td>
+<td align="right">1.08047e+11</td>
+<td align="right">9.0488e+10</td>
+<td align="right">2.48028e+11</td>
+<td align="right">1.75697e+11</td>
+<td align="right">1.4231e+11</td>
+<td align="right">2.9545e+10</td>
+<td align="right">5.7101e+10</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<h3 id="cash_flow"><strong>cash_flow</strong><a class="headerlink" href="#cash_flow" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="2:3"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em>:  Retrieves cash flow data for most recent four quarters or most recent four years as well as the trailing 12 months</li>
+<li><em>Return</em>:  <code>pandas.DataFrame</code></li>
+<li><em>Arguments</em></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">Argument</th>
+<th align="left">Type</th>
+<th align="left">Default</th>
+<th align="left">Required</th>
+<th align="left">Options</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">frequency</td>
+<td align="left"><code>str</code></td>
+<td align="left"><code>a</code></td>
+<td align="left">optional</td>
+<td align="left">Annual - <code>a</code><br>Quarter - <code>q</code></td>
+</tr>
+<tr>
+<td align="left">trailing</td>
+<td align="left"><code>bool</code></td>
+<td align="left"><code>True</code></td>
+<td align="left">optional</td>
+<td align="left"><code>True</code><br><code>False</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
+<span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">cash_flow</span><span class="p">(</span><span class="n">trailing</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></code></pre></div>
+
+</div>
+<input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><label for="__tabbed_2_3">Data</label><div class="tabbed-content">
+<table>
+<thead>
+<tr>
+<th align="left">symbol</th>
+<th align="left">asOfDate</th>
+<th align="left">periodType</th>
+<th align="right">BeginningCashPosition</th>
+<th align="right">CapitalExpenditure</th>
+<th align="right">CashDividendsPaid</th>
+<th align="right">CashFlowFromContinuingFinancingActivities</th>
+<th align="right">ChangeInAccountPayable</th>
+<th align="right">ChangeInCashSupplementalAsReported</th>
+<th align="right">ChangeInInventory</th>
+<th align="right">ChangeInWorkingCapital</th>
+<th align="right">ChangesInAccountReceivables</th>
+<th align="right">CommonStockIssuance</th>
+<th align="right">DeferredIncomeTax</th>
+<th align="right">DepreciationAndAmortization</th>
+<th align="right">EndCashPosition</th>
+<th align="right">FreeCashFlow</th>
+<th align="right">InvestingCashFlow</th>
+<th align="right">NetIncome</th>
+<th align="right">NetOtherFinancingCharges</th>
+<th align="right">NetOtherInvestingChanges</th>
+<th align="right">OperatingCashFlow</th>
+<th align="right">OtherNonCashItems</th>
+<th align="right">PurchaseOfBusiness</th>
+<th align="right">PurchaseOfInvestment</th>
+<th align="right">RepaymentOfDebt</th>
+<th align="right">RepurchaseOfCapitalStock</th>
+<th align="right">SaleOfInvestment</th>
+<th align="right">StockBasedCompensation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2016-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">2.112e+10</td>
+<td align="right">-1.3548e+10</td>
+<td align="right">-1.215e+10</td>
+<td align="right">-2.0483e+10</td>
+<td align="right">1.791e+09</td>
+<td align="right">-6.36e+08</td>
+<td align="right">2.17e+08</td>
+<td align="right">4.84e+08</td>
+<td align="right">1.095e+09</td>
+<td align="right">4.95e+08</td>
+<td align="right">4.938e+09</td>
+<td align="right">1.0505e+10</td>
+<td align="right">2.0484e+10</td>
+<td align="right">5.2276e+10</td>
+<td align="right">-4.5977e+10</td>
+<td align="right">4.5687e+10</td>
+<td align="right">-1.163e+09</td>
+<td align="right">-1.1e+08</td>
+<td align="right">6.5824e+10</td>
+<td align="right">nan</td>
+<td align="right">-2.97e+08</td>
+<td align="right">-1.43816e+11</td>
+<td align="right">-2.5e+09</td>
+<td align="right">-2.9722e+10</td>
+<td align="right">1.11794e+11</td>
+<td align="right">4.21e+09</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2017-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">2.0484e+10</td>
+<td align="right">-1.2795e+10</td>
+<td align="right">-1.2769e+10</td>
+<td align="right">-1.7347e+10</td>
+<td align="right">9.618e+09</td>
+<td align="right">-1.95e+08</td>
+<td align="right">-2.723e+09</td>
+<td align="right">-5.55e+09</td>
+<td align="right">-2.093e+09</td>
+<td align="right">5.55e+08</td>
+<td align="right">5.966e+09</td>
+<td align="right">1.0157e+10</td>
+<td align="right">2.0289e+10</td>
+<td align="right">5.0803e+10</td>
+<td align="right">-4.6446e+10</td>
+<td align="right">4.8351e+10</td>
+<td align="right">-1.247e+09</td>
+<td align="right">2.2e+08</td>
+<td align="right">6.3598e+10</td>
+<td align="right">-1.66e+08</td>
+<td align="right">-3.29e+08</td>
+<td align="right">-1.59881e+11</td>
+<td align="right">-3.5e+09</td>
+<td align="right">-3.29e+10</td>
+<td align="right">1.26339e+11</td>
+<td align="right">4.84e+09</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2018-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">2.0289e+10</td>
+<td align="right">-1.3313e+10</td>
+<td align="right">-1.3712e+10</td>
+<td align="right">-8.7876e+10</td>
+<td align="right">9.175e+09</td>
+<td align="right">5.624e+09</td>
+<td align="right">8.28e+08</td>
+<td align="right">3.4694e+10</td>
+<td align="right">-5.322e+09</td>
+<td align="right">6.69e+08</td>
+<td align="right">-3.259e+10</td>
+<td align="right">1.0903e+10</td>
+<td align="right">2.5913e+10</td>
+<td align="right">6.4121e+10</td>
+<td align="right">1.6066e+10</td>
+<td align="right">5.9531e+10</td>
+<td align="right">-2.527e+09</td>
+<td align="right">-7.45e+08</td>
+<td align="right">7.7434e+10</td>
+<td align="right">-4.44e+08</td>
+<td align="right">-7.21e+08</td>
+<td align="right">-7.3227e+10</td>
+<td align="right">-6.5e+09</td>
+<td align="right">-7.2738e+10</td>
+<td align="right">1.04072e+11</td>
+<td align="right">5.34e+09</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2019-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">2.5913e+10</td>
+<td align="right">-1.0495e+10</td>
+<td align="right">-1.4119e+10</td>
+<td align="right">-9.0976e+10</td>
+<td align="right">-1.923e+09</td>
+<td align="right">2.4311e+10</td>
+<td align="right">-2.89e+08</td>
+<td align="right">-3.488e+09</td>
+<td align="right">2.45e+08</td>
+<td align="right">7.81e+08</td>
+<td align="right">-3.4e+08</td>
+<td align="right">1.2547e+10</td>
+<td align="right">5.0224e+10</td>
+<td align="right">5.8896e+10</td>
+<td align="right">4.5896e+10</td>
+<td align="right">5.5256e+10</td>
+<td align="right">-2.922e+09</td>
+<td align="right">-1.078e+09</td>
+<td align="right">6.9391e+10</td>
+<td align="right">-6.52e+08</td>
+<td align="right">-6.24e+08</td>
+<td align="right">-4.0631e+10</td>
+<td align="right">-8.805e+09</td>
+<td align="right">-6.6897e+10</td>
+<td align="right">9.8724e+10</td>
+<td align="right">6.068e+09</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<h3 id="income_statement"><strong>income_statement</strong><a class="headerlink" href="#income_statement" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="3:3"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em>:  Retrieves income statement data for most recent four quarters or most recent four years as well as trailing 12 months.</li>
+<li><em>Return</em>:  <code>pandas.DataFrame</code></li>
+<li><em>Arguments</em></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">Argument</th>
+<th align="left">Type</th>
+<th align="left">Default</th>
+<th align="left">Required</th>
+<th align="left">Options</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">frequency</td>
+<td align="left"><code>str</code></td>
+<td align="left"><code>a</code></td>
+<td align="left">optional</td>
+<td align="left">Annual - <code>a</code><br>Quarter - <code>q</code></td>
+</tr>
+<tr>
+<td align="left">trailing</td>
+<td align="left"><code>bool</code></td>
+<td align="left"><code>True</code></td>
+<td align="left">optional</td>
+<td align="left"><code>True</code><br><code>False</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
+<span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">income_statement</span><span class="p">()</span>
+</span></code></pre></div>
+
+</div>
+<input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><label for="__tabbed_3_3">Data</label><div class="tabbed-content">
+<table>
+<thead>
+<tr>
+<th align="left">symbol</th>
+<th align="left">asOfDate</th>
+<th align="left">periodType</th>
+<th align="right">BasicAverageShares</th>
+<th align="right">BasicEPS</th>
+<th align="right">CostOfRevenue</th>
+<th align="right">DilutedAverageShares</th>
+<th align="right">DilutedEPS</th>
+<th align="right">DilutedNIAvailtoComStockholders</th>
+<th align="right">EBIT</th>
+<th align="right">EBITDA</th>
+<th align="right">GrossProfit</th>
+<th align="right">InterestExpense</th>
+<th align="right">InterestExpenseNonOperating</th>
+<th align="right">InterestIncome</th>
+<th align="right">InterestIncomeNonOperating</th>
+<th align="right">NetIncome</th>
+<th align="right">NetIncomeCommonStockholders</th>
+<th align="right">NetIncomeContinuousOperations</th>
+<th align="right">NetIncomeFromContinuingAndDiscontinuedOperation</th>
+<th align="right">NetIncomeFromContinuingOperationNetMinorityInterest</th>
+<th align="right">NetIncomeIncludingNoncontrollingInterests</th>
+<th align="right">NetInterestIncome</th>
+<th align="right">NetNonOperatingInterestIncomeExpense</th>
+<th align="right">NormalizedEBITDA</th>
+<th align="right">NormalizedIncome</th>
+<th align="right">OperatingExpense</th>
+<th align="right">OperatingIncome</th>
+<th align="right">OperatingRevenue</th>
+<th align="right">OtherIncomeExpense</th>
+<th align="right">OtherNonOperatingIncomeExpenses</th>
+<th align="right">PretaxIncome</th>
+<th align="right">ReconciledCostOfRevenue</th>
+<th align="right">ReconciledDepreciation</th>
+<th align="right">ResearchAndDevelopment</th>
+<th align="right">SellingGeneralAndAdministration</th>
+<th align="right">TaxEffectOfUnusualItems</th>
+<th align="right">TaxProvision</th>
+<th align="right">TaxRateForCalcs</th>
+<th align="right">TotalExpenses</th>
+<th align="right">TotalOperatingIncomeAsReported</th>
+<th align="right">TotalRevenue</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2016-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">5.47082e+09</td>
+<td align="right">8.35</td>
+<td align="right">1.31376e+11</td>
+<td align="right">5.50028e+09</td>
+<td align="right">8.31</td>
+<td align="right">4.5687e+10</td>
+<td align="right">6.2828e+10</td>
+<td align="right">nan</td>
+<td align="right">8.4263e+10</td>
+<td align="right">1.456e+09</td>
+<td align="right">1.456e+09</td>
+<td align="right">3.999e+09</td>
+<td align="right">3.999e+09</td>
+<td align="right">4.5687e+10</td>
+<td align="right">4.5687e+10</td>
+<td align="right">4.5687e+10</td>
+<td align="right">4.5687e+10</td>
+<td align="right">4.5687e+10</td>
+<td align="right">4.5687e+10</td>
+<td align="right">2.543e+09</td>
+<td align="right">2.543e+09</td>
+<td align="right">7.3333e+10</td>
+<td align="right">4.5687e+10</td>
+<td align="right">2.4239e+10</td>
+<td align="right">6.0024e+10</td>
+<td align="right">2.15639e+11</td>
+<td align="right">-1.195e+09</td>
+<td align="right">-1.195e+09</td>
+<td align="right">6.1372e+10</td>
+<td align="right">1.31376e+11</td>
+<td align="right">1.0505e+10</td>
+<td align="right">1.0045e+10</td>
+<td align="right">1.4194e+10</td>
+<td align="right">0</td>
+<td align="right">1.5685e+10</td>
+<td align="right">0.256</td>
+<td align="right">1.55615e+11</td>
+<td align="right">6.0024e+10</td>
+<td align="right">2.15639e+11</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2017-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">5.21724e+09</td>
+<td align="right">9.27</td>
+<td align="right">1.41048e+11</td>
+<td align="right">5.25169e+09</td>
+<td align="right">9.21</td>
+<td align="right">4.8351e+10</td>
+<td align="right">6.6412e+10</td>
+<td align="right">nan</td>
+<td align="right">8.8186e+10</td>
+<td align="right">2.323e+09</td>
+<td align="right">2.323e+09</td>
+<td align="right">5.201e+09</td>
+<td align="right">5.201e+09</td>
+<td align="right">4.8351e+10</td>
+<td align="right">4.8351e+10</td>
+<td align="right">4.8351e+10</td>
+<td align="right">4.8351e+10</td>
+<td align="right">4.8351e+10</td>
+<td align="right">4.8351e+10</td>
+<td align="right">2.878e+09</td>
+<td align="right">2.878e+09</td>
+<td align="right">7.6569e+10</td>
+<td align="right">4.8351e+10</td>
+<td align="right">2.6842e+10</td>
+<td align="right">6.1344e+10</td>
+<td align="right">2.29234e+11</td>
+<td align="right">-1.33e+08</td>
+<td align="right">-1.33e+08</td>
+<td align="right">6.4089e+10</td>
+<td align="right">1.41048e+11</td>
+<td align="right">1.0157e+10</td>
+<td align="right">1.1581e+10</td>
+<td align="right">1.5261e+10</td>
+<td align="right">0</td>
+<td align="right">1.5738e+10</td>
+<td align="right">0.246</td>
+<td align="right">1.6789e+11</td>
+<td align="right">6.1344e+10</td>
+<td align="right">2.29234e+11</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2018-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">4.95538e+09</td>
+<td align="right">12.01</td>
+<td align="right">1.63756e+11</td>
+<td align="right">5.00011e+09</td>
+<td align="right">11.91</td>
+<td align="right">5.9531e+10</td>
+<td align="right">7.6143e+10</td>
+<td align="right">nan</td>
+<td align="right">1.01839e+11</td>
+<td align="right">3.24e+09</td>
+<td align="right">3.24e+09</td>
+<td align="right">5.686e+09</td>
+<td align="right">5.686e+09</td>
+<td align="right">5.9531e+10</td>
+<td align="right">5.9531e+10</td>
+<td align="right">5.9531e+10</td>
+<td align="right">5.9531e+10</td>
+<td align="right">5.9531e+10</td>
+<td align="right">5.9531e+10</td>
+<td align="right">2.446e+09</td>
+<td align="right">2.446e+09</td>
+<td align="right">8.7046e+10</td>
+<td align="right">5.9531e+10</td>
+<td align="right">3.0941e+10</td>
+<td align="right">7.0898e+10</td>
+<td align="right">2.65595e+11</td>
+<td align="right">-4.41e+08</td>
+<td align="right">-4.41e+08</td>
+<td align="right">7.2903e+10</td>
+<td align="right">1.63756e+11</td>
+<td align="right">1.0903e+10</td>
+<td align="right">1.4236e+10</td>
+<td align="right">1.6705e+10</td>
+<td align="right">0</td>
+<td align="right">1.3372e+10</td>
+<td align="right">0.183</td>
+<td align="right">1.94697e+11</td>
+<td align="right">7.0898e+10</td>
+<td align="right">2.65595e+11</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2019-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">4.61783e+09</td>
+<td align="right">11.97</td>
+<td align="right">1.61782e+11</td>
+<td align="right">4.64891e+09</td>
+<td align="right">11.89</td>
+<td align="right">5.5256e+10</td>
+<td align="right">6.9313e+10</td>
+<td align="right">nan</td>
+<td align="right">9.8392e+10</td>
+<td align="right">3.576e+09</td>
+<td align="right">3.576e+09</td>
+<td align="right">4.961e+09</td>
+<td align="right">4.961e+09</td>
+<td align="right">5.5256e+10</td>
+<td align="right">5.5256e+10</td>
+<td align="right">5.5256e+10</td>
+<td align="right">5.5256e+10</td>
+<td align="right">5.5256e+10</td>
+<td align="right">5.5256e+10</td>
+<td align="right">1.385e+09</td>
+<td align="right">1.385e+09</td>
+<td align="right">8.186e+10</td>
+<td align="right">5.5256e+10</td>
+<td align="right">3.4462e+10</td>
+<td align="right">6.393e+10</td>
+<td align="right">2.60174e+11</td>
+<td align="right">4.22e+08</td>
+<td align="right">4.22e+08</td>
+<td align="right">6.5737e+10</td>
+<td align="right">1.61782e+11</td>
+<td align="right">1.2547e+10</td>
+<td align="right">1.6217e+10</td>
+<td align="right">1.8245e+10</td>
+<td align="right">0</td>
+<td align="right">1.0481e+10</td>
+<td align="right">0.159</td>
+<td align="right">1.96244e+11</td>
+<td align="right">6.393e+10</td>
+<td align="right">2.60174e+11</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2020-03-31 00:00:00</td>
+<td align="left">TTM</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">1.65854e+11</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">5.7215e+10</td>
+<td align="right">7.0309e+10</td>
+<td align="right">8.2023e+10</td>
+<td align="right">1.02127e+11</td>
+<td align="right">3.218e+09</td>
+<td align="right">3.218e+09</td>
+<td align="right">4.39e+09</td>
+<td align="right">4.39e+09</td>
+<td align="right">5.7215e+10</td>
+<td align="right">5.7215e+10</td>
+<td align="right">5.7215e+10</td>
+<td align="right">5.7215e+10</td>
+<td align="right">5.7215e+10</td>
+<td align="right">5.7215e+10</td>
+<td align="right">1.172e+09</td>
+<td align="right">1.172e+09</td>
+<td align="right">8.2023e+10</td>
+<td align="right">5.7215e+10</td>
+<td align="right">3.6536e+10</td>
+<td align="right">6.5591e+10</td>
+<td align="right">2.67981e+11</td>
+<td align="right">3.28e+08</td>
+<td align="right">3.28e+08</td>
+<td align="right">6.7091e+10</td>
+<td align="right">1.65854e+11</td>
+<td align="right">1.1714e+10</td>
+<td align="right">1.7383e+10</td>
+<td align="right">1.9153e+10</td>
+<td align="right">0</td>
+<td align="right">9.876e+09</td>
+<td align="right">0.147203</td>
+<td align="right">2.0239e+11</td>
+<td align="right">6.5591e+10</td>
+<td align="right">2.67981e+11</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<h3 id="valuation_measures"><strong>valuation_measures</strong><a class="headerlink" href="#valuation_measures" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="4:3"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em>:  Retrieves valuation measures for most recent four quarters as well as the most recent date</li>
+<li><em>Return</em>:  <code>pandas.DataFrame</code></li>
+</ul>
+</div>
+<input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><label for="__tabbed_4_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
+<span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">valuation_measures</span>
+</span></code></pre></div>
+
+</div>
+<input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><label for="__tabbed_4_3">Data</label><div class="tabbed-content">
+<table>
+<thead>
+<tr>
+<th align="left">symbol</th>
+<th align="left">asOfDate</th>
+<th align="left">periodType</th>
+<th align="right">EnterpriseValue</th>
+<th align="right">EnterprisesValueEBITDARatio</th>
+<th align="right">EnterprisesValueRevenueRatio</th>
+<th align="right">ForwardPeRatio</th>
+<th align="right">MarketCap</th>
+<th align="right">PbRatio</th>
+<th align="right">PeRatio</th>
+<th align="right">PegRatio</th>
+<th align="right">PsRatio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2019-06-30 00:00:00</td>
+<td align="left">3M</td>
+<td align="right">9.43183e+11</td>
+<td align="right">60.0371</td>
+<td align="right">17.5283</td>
+<td align="right">15.9744</td>
+<td align="right">9.10645e+11</td>
+<td align="right">8.47207</td>
+<td align="right">16.5762</td>
+<td align="right">1.4501</td>
+<td align="right">3.68445</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2019-09-30 00:00:00</td>
+<td align="left">3M</td>
+<td align="right">1.00896e+12</td>
+<td align="right">50.1569</td>
+<td align="right">15.7551</td>
+<td align="right">17.2712</td>
+<td align="right">9.95152e+11</td>
+<td align="right">10.3172</td>
+<td align="right">19.0127</td>
+<td align="right">2.0355</td>
+<td align="right">4.09034</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2019-12-31 00:00:00</td>
+<td align="left">3M</td>
+<td align="right">1.29513e+12</td>
+<td align="right">43.8746</td>
+<td align="right">14.1053</td>
+<td align="right">22.1729</td>
+<td align="right">1.28764e+12</td>
+<td align="right">14.23</td>
+<td align="right">24.6972</td>
+<td align="right">2.0292</td>
+<td align="right">5.24708</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2020-03-05 00:00:00</td>
+<td align="left">TTM</td>
+<td align="right">1.2828e+12</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">22.1239</td>
+<td align="right">1.28167e+12</td>
+<td align="right">14.3153</td>
+<td align="right">23.0646</td>
+<td align="right">1.7784</td>
+<td align="right">5.00004</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2020-03-08 00:00:00</td>
+<td align="left">TTM</td>
+<td align="right">nan</td>
+<td align="right">15.4204</td>
+<td align="right">4.79222</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2020-03-31 00:00:00</td>
+<td align="left">3M</td>
+<td align="right">1.10068e+12</td>
+<td align="right">65.9957</td>
+<td align="right">18.8753</td>
+<td align="right">19.6464</td>
+<td align="right">1.09955e+12</td>
+<td align="right">12.2812</td>
+<td align="right">20.0228</td>
+<td align="right">1.5803</td>
+<td align="right">4.34064</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2020-05-08 00:00:00</td>
+<td align="left">TTM</td>
+<td align="right">1.35966e+12</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">26.178</td>
+<td align="right">1.34421e+12</td>
+<td align="right">17.14</td>
+<td align="right">24.2478</td>
+<td align="right">2.171</td>
+<td align="right">5.20229</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2020-05-11 00:00:00</td>
+<td align="left">TTM</td>
+<td align="right">nan</td>
+<td align="right">16.5766</td>
+<td align="right">5.07373</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2020-05-28 00:00:00</td>
+<td align="left">TTM</td>
+<td align="right">1.39486e+12</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">26.8097</td>
+<td align="right">1.3794e+12</td>
+<td align="right">17.5888</td>
+<td align="right">24.8827</td>
+<td align="right">2.2278</td>
+<td align="right">5.3385</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2020-05-29 00:00:00</td>
+<td align="left">TTM</td>
+<td align="right">nan</td>
+<td align="right">17.0057</td>
+<td align="right">5.20506</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2020-06-12 00:00:00</td>
+<td align="left">TTM</td>
+<td align="right">1.48393e+12</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">22.5734</td>
+<td align="right">1.46847e+12</td>
+<td align="right">18.7245</td>
+<td align="right">26.4894</td>
+<td align="right">1.8786</td>
+<td align="right">5.68322</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2020-06-15 00:00:00</td>
+<td align="left">TTM</td>
+<td align="right">nan</td>
+<td align="right">18.0916</td>
+<td align="right">5.53744</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2020-07-14 00:00:00</td>
+<td align="left">TTM</td>
+<td align="right">1.69817e+12</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">25.8398</td>
+<td align="right">1.68272e+12</td>
+<td align="right">21.4564</td>
+<td align="right">30.3542</td>
+<td align="right">2.1527</td>
+<td align="right">6.51239</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2020-07-15 00:00:00</td>
+<td align="left">TTM</td>
+<td align="right">nan</td>
+<td align="right">20.7036</td>
+<td align="right">6.33692</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2020-07-16 00:00:00</td>
+<td align="left">TTM</td>
+<td align="right">1.6889e+12</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">26.3158</td>
+<td align="right">1.67344e+12</td>
+<td align="right">21.3381</td>
+<td align="right">30.1869</td>
+<td align="right">2.1897</td>
+<td align="right">6.47649</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2020-07-18 00:00:00</td>
+<td align="left">TTM</td>
+<td align="right">nan</td>
+<td align="right">20.5906</td>
+<td align="right">6.30231</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2020-07-29 00:00:00</td>
+<td align="left">TTM</td>
+<td align="right">1.6632e+12</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">25.1256</td>
+<td align="right">1.64774e+12</td>
+<td align="right">21.0104</td>
+<td align="right">29.7232</td>
+<td align="right">2.0905</td>
+<td align="right">6.37702</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2020-07-30 00:00:00</td>
+<td align="left">TTM</td>
+<td align="right">nan</td>
+<td align="right">20.2772</td>
+<td align="right">6.2064</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<h2 id="multiple">Multiple<a class="headerlink" href="#multiple" title="Permanent link">&para;</a></h2>
+<h3 id="all_financial_data">all_financial_data<a class="headerlink" href="#all_financial_data" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="5:3"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em>:  Retrieve all financial data, including income statement, balance sheet, cash flow, and valuation measures.</li>
+<li><em>Return</em>:  <code>pandas.DataFrame</code></li>
+<li><em>Arguments</em></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">Argument</th>
+<th align="left">Type</th>
+<th align="left">Default</th>
+<th align="left">Required</th>
+<th align="left">Options</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">frequency</td>
+<td align="left"><code>str</code></td>
+<td align="left"><code>a</code></td>
+<td align="left">optional</td>
+<td align="left">Annual - <code>a</code><br>Quarter - <code>q</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>No trailing twelve month (TTM) data will be returned with this method</p>
+</div>
+</div>
+<input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><label for="__tabbed_5_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
+<span class="n">aapl</span><span class="o">.</span><span class="n">all_financial_data</span><span class="p">()</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><label for="__tabbed_5_3">Data</label><div class="tabbed-content"></div>
+</div>
+<table>
+<thead>
+<tr>
+<th align="left">symbol</th>
+<th align="left">asOfDate</th>
+<th align="left">periodType</th>
+<th align="right">AccountsPayable</th>
+<th align="right">AccountsReceivable</th>
+<th align="right">AccumulatedDepreciation</th>
+<th align="right">AllowanceForDoubtfulAccountsReceivable</th>
+<th align="right">AvailableForSaleSecurities</th>
+<th align="right">BasicAverageShares</th>
+<th align="right">BasicEPS</th>
+<th align="right">BeginningCashPosition</th>
+<th align="right">CapitalExpenditure</th>
+<th align="right">CapitalStock</th>
+<th align="right">CashAndCashEquivalents</th>
+<th align="right">CashCashEquivalentsAndShortTermInvestments</th>
+<th align="right">CashDividendsPaid</th>
+<th align="right">CashEquivalents</th>
+<th align="right">CashFinancial</th>
+<th align="right">CashFlowFromContinuingFinancingActivities</th>
+<th align="right">ChangeInAccountPayable</th>
+<th align="right">ChangeInCashSupplementalAsReported</th>
+<th align="right">ChangeInInventory</th>
+<th align="right">ChangeInWorkingCapital</th>
+<th align="right">ChangesInAccountReceivables</th>
+<th align="right">CommercialPaper</th>
+<th align="right">CommonStock</th>
+<th align="right">CommonStockEquity</th>
+<th align="right">CommonStockIssuance</th>
+<th align="right">CostOfRevenue</th>
+<th align="right">CurrentAccruedExpenses</th>
+<th align="right">CurrentAssets</th>
+<th align="right">CurrentDebt</th>
+<th align="right">CurrentDebtAndCapitalLeaseObligation</th>
+<th align="right">CurrentDeferredLiabilities</th>
+<th align="right">CurrentDeferredRevenue</th>
+<th align="right">CurrentLiabilities</th>
+<th align="right">DeferredIncomeTax</th>
+<th align="right">DepreciationAndAmortization</th>
+<th align="right">DilutedAverageShares</th>
+<th align="right">DilutedEPS</th>
+<th align="right">DilutedNIAvailtoComStockholders</th>
+<th align="right">EBIT</th>
+<th align="right">EndCashPosition</th>
+<th align="right">EnterpriseValue</th>
+<th align="right">EnterprisesValueEBITDARatio</th>
+<th align="right">EnterprisesValueRevenueRatio</th>
+<th align="right">ForwardPeRatio</th>
+<th align="right">FreeCashFlow</th>
+<th align="right">GainsLossesNotAffectingRetainedEarnings</th>
+<th align="right">Goodwill</th>
+<th align="right">GoodwillAndOtherIntangibleAssets</th>
+<th align="right">GrossAccountsReceivable</th>
+<th align="right">GrossPPE</th>
+<th align="right">GrossProfit</th>
+<th align="right">InterestExpense</th>
+<th align="right">InterestExpenseNonOperating</th>
+<th align="right">InterestIncome</th>
+<th align="right">InterestIncomeNonOperating</th>
+<th align="right">Inventory</th>
+<th align="right">InvestedCapital</th>
+<th align="right">InvestingCashFlow</th>
+<th align="right">InvestmentinFinancialAssets</th>
+<th align="right">InvestmentsAndAdvances</th>
+<th align="right">LandAndImprovements</th>
+<th align="right">Leases</th>
+<th align="right">LongTermDebt</th>
+<th align="right">LongTermDebtAndCapitalLeaseObligation</th>
+<th align="right">MachineryFurnitureEquipment</th>
+<th align="right">MarketCap</th>
+<th align="right">NetDebt</th>
+<th align="right">NetIncome</th>
+<th align="right">NetIncomeCommonStockholders</th>
+<th align="right">NetIncomeContinuousOperations</th>
+<th align="right">NetIncomeFromContinuingAndDiscontinuedOperation</th>
+<th align="right">NetIncomeFromContinuingOperationNetMinorityInterest</th>
+<th align="right">NetIncomeIncludingNoncontrollingInterests</th>
+<th align="right">NetInterestIncome</th>
+<th align="right">NetNonOperatingInterestIncomeExpense</th>
+<th align="right">NetOtherFinancingCharges</th>
+<th align="right">NetOtherInvestingChanges</th>
+<th align="right">NetPPE</th>
+<th align="right">NetTangibleAssets</th>
+<th align="right">NonCurrentDeferredLiabilities</th>
+<th align="right">NonCurrentDeferredRevenue</th>
+<th align="right">NonCurrentDeferredTaxesLiabilities</th>
+<th align="right">NormalizedEBITDA</th>
+<th align="right">NormalizedIncome</th>
+<th align="right">OperatingCashFlow</th>
+<th align="right">OperatingExpense</th>
+<th align="right">OperatingIncome</th>
+<th align="right">OperatingRevenue</th>
+<th align="right">OrdinarySharesNumber</th>
+<th align="right">OtherCurrentAssets</th>
+<th align="right">OtherCurrentBorrowings</th>
+<th align="right">OtherCurrentLiabilities</th>
+<th align="right">OtherIncomeExpense</th>
+<th align="right">OtherIntangibleAssets</th>
+<th align="right">OtherNonCashItems</th>
+<th align="right">OtherNonCurrentAssets</th>
+<th align="right">OtherNonCurrentLiabilities</th>
+<th align="right">OtherNonOperatingIncomeExpenses</th>
+<th align="right">OtherReceivables</th>
+<th align="right">OtherShortTermInvestments</th>
+<th align="right">Payables</th>
+<th align="right">PayablesAndAccruedExpenses</th>
+<th align="right">PbRatio</th>
+<th align="right">PeRatio</th>
+<th align="right">PegRatio</th>
+<th align="right">PretaxIncome</th>
+<th align="right">Properties</th>
+<th align="right">PsRatio</th>
+<th align="right">PurchaseOfBusiness</th>
+<th align="right">PurchaseOfInvestment</th>
+<th align="right">Receivables</th>
+<th align="right">ReconciledCostOfRevenue</th>
+<th align="right">ReconciledDepreciation</th>
+<th align="right">RepaymentOfDebt</th>
+<th align="right">RepurchaseOfCapitalStock</th>
+<th align="right">ResearchAndDevelopment</th>
+<th align="right">RetainedEarnings</th>
+<th align="right">SaleOfInvestment</th>
+<th align="right">SellingGeneralAndAdministration</th>
+<th align="right">ShareIssued</th>
+<th align="right">StockBasedCompensation</th>
+<th align="right">StockholdersEquity</th>
+<th align="right">TangibleBookValue</th>
+<th align="right">TaxEffectOfUnusualItems</th>
+<th align="right">TaxProvision</th>
+<th align="right">TaxRateForCalcs</th>
+<th align="right">TotalAssets</th>
+<th align="right">TotalCapitalization</th>
+<th align="right">TotalDebt</th>
+<th align="right">TotalEquityGrossMinorityInterest</th>
+<th align="right">TotalExpenses</th>
+<th align="right">TotalLiabilitiesNetMinorityInterest</th>
+<th align="right">TotalNonCurrentAssets</th>
+<th align="right">TotalNonCurrentLiabilitiesNetMinorityInterest</th>
+<th align="right">TotalOperatingIncomeAsReported</th>
+<th align="right">TotalRevenue</th>
+<th align="right">TradeandOtherPayablesNonCurrent</th>
+<th align="right">WorkingCapital</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2016-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">3.7294e+10</td>
+<td align="right">1.5754e+10</td>
+<td align="right">-3.4235e+10</td>
+<td align="right">-5.3e+07</td>
+<td align="right">1.7043e+11</td>
+<td align="right">5.47082e+09</td>
+<td align="right">8.35</td>
+<td align="right">2.112e+10</td>
+<td align="right">-1.3548e+10</td>
+<td align="right">3.1251e+10</td>
+<td align="right">2.0484e+10</td>
+<td align="right">6.7155e+10</td>
+<td align="right">-1.215e+10</td>
+<td align="right">1.1883e+10</td>
+<td align="right">8.601e+09</td>
+<td align="right">-2.0483e+10</td>
+<td align="right">1.791e+09</td>
+<td align="right">-6.36e+08</td>
+<td align="right">2.17e+08</td>
+<td align="right">4.84e+08</td>
+<td align="right">1.095e+09</td>
+<td align="right">8.105e+09</td>
+<td align="right">3.1251e+10</td>
+<td align="right">1.28249e+11</td>
+<td align="right">4.95e+08</td>
+<td align="right">1.31376e+11</td>
+<td align="right">2.2027e+10</td>
+<td align="right">1.06869e+11</td>
+<td align="right">1.1605e+10</td>
+<td align="right">1.1605e+10</td>
+<td align="right">8.08e+09</td>
+<td align="right">8.08e+09</td>
+<td align="right">7.9006e+10</td>
+<td align="right">4.938e+09</td>
+<td align="right">1.0505e+10</td>
+<td align="right">5.50028e+09</td>
+<td align="right">8.31</td>
+<td align="right">4.5687e+10</td>
+<td align="right">6.2828e+10</td>
+<td align="right">2.0484e+10</td>
+<td align="right">6.26433e+11</td>
+<td align="right">8.5423</td>
+<td align="right">2.90501</td>
+<td align="right">12.6582</td>
+<td align="right">5.2276e+10</td>
+<td align="right">6.34e+08</td>
+<td align="right">5.414e+09</td>
+<td align="right">8.62e+09</td>
+<td align="right">1.5807e+10</td>
+<td align="right">6.1245e+10</td>
+<td align="right">8.4263e+10</td>
+<td align="right">1.456e+09</td>
+<td align="right">1.456e+09</td>
+<td align="right">3.999e+09</td>
+<td align="right">3.999e+09</td>
+<td align="right">2.132e+09</td>
+<td align="right">2.15281e+11</td>
+<td align="right">-4.5977e+10</td>
+<td align="right">1.7043e+11</td>
+<td align="right">1.7043e+11</td>
+<td align="right">1.0185e+10</td>
+<td align="right">6.517e+09</td>
+<td align="right">7.5427e+10</td>
+<td align="right">7.5427e+10</td>
+<td align="right">4.4543e+10</td>
+<td align="right">6.03254e+11</td>
+<td align="right">6.6548e+10</td>
+<td align="right">4.5687e+10</td>
+<td align="right">4.5687e+10</td>
+<td align="right">4.5687e+10</td>
+<td align="right">4.5687e+10</td>
+<td align="right">4.5687e+10</td>
+<td align="right">4.5687e+10</td>
+<td align="right">2.543e+09</td>
+<td align="right">2.543e+09</td>
+<td align="right">-1.163e+09</td>
+<td align="right">-1.1e+08</td>
+<td align="right">2.701e+10</td>
+<td align="right">1.19629e+11</td>
+<td align="right">2.8949e+10</td>
+<td align="right">2.93e+09</td>
+<td align="right">2.6019e+10</td>
+<td align="right">7.3333e+10</td>
+<td align="right">4.5687e+10</td>
+<td align="right">6.5824e+10</td>
+<td align="right">2.4239e+10</td>
+<td align="right">6.0024e+10</td>
+<td align="right">2.15639e+11</td>
+<td align="right">5.33617e+09</td>
+<td align="right">8.283e+09</td>
+<td align="right">3.5e+09</td>
+<td align="right">nan</td>
+<td align="right">-1.195e+09</td>
+<td align="right">3.206e+09</td>
+<td align="right">nan</td>
+<td align="right">8.757e+09</td>
+<td align="right">1.0055e+10</td>
+<td align="right">-1.195e+09</td>
+<td align="right">1.3545e+10</td>
+<td align="right">4.6671e+10</td>
+<td align="right">3.7294e+10</td>
+<td align="right">5.9321e+10</td>
+<td align="right">4.76726</td>
+<td align="right">13.1607</td>
+<td align="right">2.4275</td>
+<td align="right">6.1372e+10</td>
+<td align="right">0</td>
+<td align="right">2.8598</td>
+<td align="right">-2.97e+08</td>
+<td align="right">-1.43816e+11</td>
+<td align="right">2.9299e+10</td>
+<td align="right">1.31376e+11</td>
+<td align="right">1.0505e+10</td>
+<td align="right">-2.5e+09</td>
+<td align="right">-2.9722e+10</td>
+<td align="right">1.0045e+10</td>
+<td align="right">9.6364e+10</td>
+<td align="right">1.11794e+11</td>
+<td align="right">1.4194e+10</td>
+<td align="right">5.33617e+09</td>
+<td align="right">4.21e+09</td>
+<td align="right">1.28249e+11</td>
+<td align="right">1.19629e+11</td>
+<td align="right">0</td>
+<td align="right">1.5685e+10</td>
+<td align="right">0.256</td>
+<td align="right">3.21686e+11</td>
+<td align="right">2.03676e+11</td>
+<td align="right">8.7032e+10</td>
+<td align="right">1.28249e+11</td>
+<td align="right">1.55615e+11</td>
+<td align="right">1.93437e+11</td>
+<td align="right">2.14817e+11</td>
+<td align="right">1.14431e+11</td>
+<td align="right">6.0024e+10</td>
+<td align="right">2.15639e+11</td>
+<td align="right">nan</td>
+<td align="right">2.7863e+10</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2017-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">4.9049e+10</td>
+<td align="right">1.7874e+10</td>
+<td align="right">-4.1293e+10</td>
+<td align="right">-5.8e+07</td>
+<td align="right">1.94714e+11</td>
+<td align="right">5.21724e+09</td>
+<td align="right">9.27</td>
+<td align="right">2.0484e+10</td>
+<td align="right">-1.2795e+10</td>
+<td align="right">3.5867e+10</td>
+<td align="right">2.0289e+10</td>
+<td align="right">7.4181e+10</td>
+<td align="right">-1.2769e+10</td>
+<td align="right">1.2307e+10</td>
+<td align="right">7.982e+09</td>
+<td align="right">-1.7347e+10</td>
+<td align="right">9.618e+09</td>
+<td align="right">-1.95e+08</td>
+<td align="right">-2.723e+09</td>
+<td align="right">-5.55e+09</td>
+<td align="right">-2.093e+09</td>
+<td align="right">1.1977e+10</td>
+<td align="right">3.5867e+10</td>
+<td align="right">1.34047e+11</td>
+<td align="right">5.55e+08</td>
+<td align="right">1.41048e+11</td>
+<td align="right">2.5744e+10</td>
+<td align="right">1.28645e+11</td>
+<td align="right">1.8473e+10</td>
+<td align="right">1.8473e+10</td>
+<td align="right">7.548e+09</td>
+<td align="right">7.548e+09</td>
+<td align="right">1.00814e+11</td>
+<td align="right">5.966e+09</td>
+<td align="right">1.0157e+10</td>
+<td align="right">5.25169e+09</td>
+<td align="right">9.21</td>
+<td align="right">4.8351e+10</td>
+<td align="right">6.6412e+10</td>
+<td align="right">2.0289e+10</td>
+<td align="right">8.27645e+11</td>
+<td align="right">10.8091</td>
+<td align="right">3.61048</td>
+<td align="right">14.245</td>
+<td align="right">5.0803e+10</td>
+<td align="right">-1.5e+08</td>
+<td align="right">5.717e+09</td>
+<td align="right">8.015e+09</td>
+<td align="right">1.7932e+10</td>
+<td align="right">7.5076e+10</td>
+<td align="right">8.8186e+10</td>
+<td align="right">2.323e+09</td>
+<td align="right">2.323e+09</td>
+<td align="right">5.201e+09</td>
+<td align="right">5.201e+09</td>
+<td align="right">4.855e+09</td>
+<td align="right">2.49727e+11</td>
+<td align="right">-4.6446e+10</td>
+<td align="right">1.94714e+11</td>
+<td align="right">1.94714e+11</td>
+<td align="right">1.3587e+10</td>
+<td align="right">7.279e+09</td>
+<td align="right">9.7207e+10</td>
+<td align="right">9.7207e+10</td>
+<td align="right">5.421e+10</td>
+<td align="right">7.96065e+11</td>
+<td align="right">9.5391e+10</td>
+<td align="right">4.8351e+10</td>
+<td align="right">4.8351e+10</td>
+<td align="right">4.8351e+10</td>
+<td align="right">4.8351e+10</td>
+<td align="right">4.8351e+10</td>
+<td align="right">4.8351e+10</td>
+<td align="right">2.878e+09</td>
+<td align="right">2.878e+09</td>
+<td align="right">-1.247e+09</td>
+<td align="right">2.2e+08</td>
+<td align="right">3.3783e+10</td>
+<td align="right">1.26032e+11</td>
+<td align="right">3.434e+10</td>
+<td align="right">2.836e+09</td>
+<td align="right">3.1504e+10</td>
+<td align="right">7.6569e+10</td>
+<td align="right">4.8351e+10</td>
+<td align="right">6.3598e+10</td>
+<td align="right">2.6842e+10</td>
+<td align="right">6.1344e+10</td>
+<td align="right">2.29234e+11</td>
+<td align="right">5.1262e+09</td>
+<td align="right">1.3936e+10</td>
+<td align="right">6.496e+09</td>
+<td align="right">nan</td>
+<td align="right">-1.33e+08</td>
+<td align="right">2.298e+09</td>
+<td align="right">-1.66e+08</td>
+<td align="right">1.0162e+10</td>
+<td align="right">8.911e+09</td>
+<td align="right">-1.33e+08</td>
+<td align="right">1.7799e+10</td>
+<td align="right">5.3892e+10</td>
+<td align="right">4.9049e+10</td>
+<td align="right">7.4793e+10</td>
+<td align="right">5.96602</td>
+<td align="right">17.4541</td>
+<td align="right">2.087</td>
+<td align="right">6.4089e+10</td>
+<td align="right">0</td>
+<td align="right">3.65748</td>
+<td align="right">-3.29e+08</td>
+<td align="right">-1.59881e+11</td>
+<td align="right">3.5673e+10</td>
+<td align="right">1.41048e+11</td>
+<td align="right">1.0157e+10</td>
+<td align="right">-3.5e+09</td>
+<td align="right">-3.29e+10</td>
+<td align="right">1.1581e+10</td>
+<td align="right">9.833e+10</td>
+<td align="right">1.26339e+11</td>
+<td align="right">1.5261e+10</td>
+<td align="right">5.1262e+09</td>
+<td align="right">4.84e+09</td>
+<td align="right">1.34047e+11</td>
+<td align="right">1.26032e+11</td>
+<td align="right">0</td>
+<td align="right">1.5738e+10</td>
+<td align="right">0.246</td>
+<td align="right">3.75319e+11</td>
+<td align="right">2.31254e+11</td>
+<td align="right">1.1568e+11</td>
+<td align="right">1.34047e+11</td>
+<td align="right">1.6789e+11</td>
+<td align="right">2.41272e+11</td>
+<td align="right">2.46674e+11</td>
+<td align="right">1.40458e+11</td>
+<td align="right">6.1344e+10</td>
+<td align="right">2.29234e+11</td>
+<td align="right">nan</td>
+<td align="right">2.7831e+10</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2018-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">5.5888e+10</td>
+<td align="right">2.3186e+10</td>
+<td align="right">-4.9099e+10</td>
+<td align="right">nan</td>
+<td align="right">1.70799e+11</td>
+<td align="right">4.95538e+09</td>
+<td align="right">12.01</td>
+<td align="right">2.0289e+10</td>
+<td align="right">-1.3313e+10</td>
+<td align="right">4.0201e+10</td>
+<td align="right">2.5913e+10</td>
+<td align="right">6.6301e+10</td>
+<td align="right">-1.3712e+10</td>
+<td align="right">1.4338e+10</td>
+<td align="right">1.1575e+10</td>
+<td align="right">-8.7876e+10</td>
+<td align="right">9.175e+09</td>
+<td align="right">5.624e+09</td>
+<td align="right">8.28e+08</td>
+<td align="right">3.4694e+10</td>
+<td align="right">-5.322e+09</td>
+<td align="right">1.1964e+10</td>
+<td align="right">4.0201e+10</td>
+<td align="right">1.07147e+11</td>
+<td align="right">6.69e+08</td>
+<td align="right">1.63756e+11</td>
+<td align="right">nan</td>
+<td align="right">1.31339e+11</td>
+<td align="right">2.0748e+10</td>
+<td align="right">2.0748e+10</td>
+<td align="right">7.543e+09</td>
+<td align="right">7.543e+09</td>
+<td align="right">1.16866e+11</td>
+<td align="right">-3.259e+10</td>
+<td align="right">1.0903e+10</td>
+<td align="right">5.00011e+09</td>
+<td align="right">11.91</td>
+<td align="right">5.9531e+10</td>
+<td align="right">7.6143e+10</td>
+<td align="right">2.5913e+10</td>
+<td align="right">1.13394e+12</td>
+<td align="right">13.0269</td>
+<td align="right">4.26942</td>
+<td align="right">16.6945</td>
+<td align="right">6.4121e+10</td>
+<td align="right">-3.454e+09</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">9.0403e+10</td>
+<td align="right">1.01839e+11</td>
+<td align="right">3.24e+09</td>
+<td align="right">3.24e+09</td>
+<td align="right">5.686e+09</td>
+<td align="right">5.686e+09</td>
+<td align="right">3.956e+09</td>
+<td align="right">2.2163e+11</td>
+<td align="right">1.6066e+10</td>
+<td align="right">1.70799e+11</td>
+<td align="right">1.70799e+11</td>
+<td align="right">1.6216e+10</td>
+<td align="right">8.205e+09</td>
+<td align="right">9.3735e+10</td>
+<td align="right">9.3735e+10</td>
+<td align="right">6.5982e+10</td>
+<td align="right">1.09031e+12</td>
+<td align="right">8.857e+10</td>
+<td align="right">5.9531e+10</td>
+<td align="right">5.9531e+10</td>
+<td align="right">5.9531e+10</td>
+<td align="right">5.9531e+10</td>
+<td align="right">5.9531e+10</td>
+<td align="right">5.9531e+10</td>
+<td align="right">2.446e+09</td>
+<td align="right">2.446e+09</td>
+<td align="right">-2.527e+09</td>
+<td align="right">-7.45e+08</td>
+<td align="right">4.1304e+10</td>
+<td align="right">1.07147e+11</td>
+<td align="right">3.223e+09</td>
+<td align="right">2.797e+09</td>
+<td align="right">4.26e+08</td>
+<td align="right">8.7046e+10</td>
+<td align="right">5.9531e+10</td>
+<td align="right">7.7434e+10</td>
+<td align="right">3.0941e+10</td>
+<td align="right">7.0898e+10</td>
+<td align="right">2.65595e+11</td>
+<td align="right">4.75499e+09</td>
+<td align="right">1.2087e+10</td>
+<td align="right">8.784e+09</td>
+<td align="right">3.2687e+10</td>
+<td align="right">-4.41e+08</td>
+<td align="right">nan</td>
+<td align="right">-4.44e+08</td>
+<td align="right">2.2283e+10</td>
+<td align="right">1.1165e+10</td>
+<td align="right">-4.41e+08</td>
+<td align="right">2.5809e+10</td>
+<td align="right">4.0388e+10</td>
+<td align="right">5.5888e+10</td>
+<td align="right">5.5888e+10</td>
+<td align="right">9.33797</td>
+<td align="right">20.4105</td>
+<td align="right">1.2848</td>
+<td align="right">7.2903e+10</td>
+<td align="right">0</td>
+<td align="right">4.49591</td>
+<td align="right">-7.21e+08</td>
+<td align="right">-7.3227e+10</td>
+<td align="right">4.8995e+10</td>
+<td align="right">1.63756e+11</td>
+<td align="right">1.0903e+10</td>
+<td align="right">-6.5e+09</td>
+<td align="right">-7.2738e+10</td>
+<td align="right">1.4236e+10</td>
+<td align="right">7.04e+10</td>
+<td align="right">1.04072e+11</td>
+<td align="right">1.6705e+10</td>
+<td align="right">4.75499e+09</td>
+<td align="right">5.34e+09</td>
+<td align="right">1.07147e+11</td>
+<td align="right">1.07147e+11</td>
+<td align="right">0</td>
+<td align="right">1.3372e+10</td>
+<td align="right">0.183</td>
+<td align="right">3.65725e+11</td>
+<td align="right">2.00882e+11</td>
+<td align="right">1.14483e+11</td>
+<td align="right">1.07147e+11</td>
+<td align="right">1.94697e+11</td>
+<td align="right">2.58578e+11</td>
+<td align="right">2.34386e+11</td>
+<td align="right">1.41712e+11</td>
+<td align="right">7.0898e+10</td>
+<td align="right">2.65595e+11</td>
+<td align="right">3.3589e+10</td>
+<td align="right">1.4473e+10</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2019-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">4.6236e+10</td>
+<td align="right">2.2926e+10</td>
+<td align="right">-5.8579e+10</td>
+<td align="right">nan</td>
+<td align="right">1.05341e+11</td>
+<td align="right">4.61783e+09</td>
+<td align="right">11.97</td>
+<td align="right">2.5913e+10</td>
+<td align="right">-1.0495e+10</td>
+<td align="right">4.5174e+10</td>
+<td align="right">4.8844e+10</td>
+<td align="right">1.00557e+11</td>
+<td align="right">-1.4119e+10</td>
+<td align="right">3.664e+10</td>
+<td align="right">1.2204e+10</td>
+<td align="right">-9.0976e+10</td>
+<td align="right">-1.923e+09</td>
+<td align="right">2.4311e+10</td>
+<td align="right">-2.89e+08</td>
+<td align="right">-3.488e+09</td>
+<td align="right">2.45e+08</td>
+<td align="right">5.98e+09</td>
+<td align="right">4.5174e+10</td>
+<td align="right">9.0488e+10</td>
+<td align="right">7.81e+08</td>
+<td align="right">1.61782e+11</td>
+<td align="right">nan</td>
+<td align="right">1.62819e+11</td>
+<td align="right">1.624e+10</td>
+<td align="right">1.624e+10</td>
+<td align="right">5.522e+09</td>
+<td align="right">5.522e+09</td>
+<td align="right">1.05718e+11</td>
+<td align="right">-3.4e+08</td>
+<td align="right">1.2547e+10</td>
+<td align="right">4.64891e+09</td>
+<td align="right">11.89</td>
+<td align="right">5.5256e+10</td>
+<td align="right">6.9313e+10</td>
+<td align="right">5.0224e+10</td>
+<td align="right">1.00896e+12</td>
+<td align="right">12.3254</td>
+<td align="right">3.878</td>
+<td align="right">17.2712</td>
+<td align="right">5.8896e+10</td>
+<td align="right">-5.84e+08</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">9.5957e+10</td>
+<td align="right">9.8392e+10</td>
+<td align="right">3.576e+09</td>
+<td align="right">3.576e+09</td>
+<td align="right">4.961e+09</td>
+<td align="right">4.961e+09</td>
+<td align="right">4.106e+09</td>
+<td align="right">1.98535e+11</td>
+<td align="right">4.5896e+10</td>
+<td align="right">1.05341e+11</td>
+<td align="right">1.05341e+11</td>
+<td align="right">1.7085e+10</td>
+<td align="right">9.075e+09</td>
+<td align="right">9.1807e+10</td>
+<td align="right">9.1807e+10</td>
+<td align="right">6.9797e+10</td>
+<td align="right">9.95152e+11</td>
+<td align="right">5.9203e+10</td>
+<td align="right">5.5256e+10</td>
+<td align="right">5.5256e+10</td>
+<td align="right">5.5256e+10</td>
+<td align="right">5.5256e+10</td>
+<td align="right">5.5256e+10</td>
+<td align="right">5.5256e+10</td>
+<td align="right">1.385e+09</td>
+<td align="right">1.385e+09</td>
+<td align="right">-2.922e+09</td>
+<td align="right">-1.078e+09</td>
+<td align="right">3.7378e+10</td>
+<td align="right">9.0488e+10</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">nan</td>
+<td align="right">8.186e+10</td>
+<td align="right">5.5256e+10</td>
+<td align="right">6.9391e+10</td>
+<td align="right">3.4462e+10</td>
+<td align="right">6.393e+10</td>
+<td align="right">2.60174e+11</td>
+<td align="right">4.44324e+09</td>
+<td align="right">1.2352e+10</td>
+<td align="right">1.026e+10</td>
+<td align="right">3.772e+10</td>
+<td align="right">4.22e+08</td>
+<td align="right">nan</td>
+<td align="right">-6.52e+08</td>
+<td align="right">3.2978e+10</td>
+<td align="right">2.0958e+10</td>
+<td align="right">4.22e+08</td>
+<td align="right">2.2878e+10</td>
+<td align="right">5.1713e+10</td>
+<td align="right">4.6236e+10</td>
+<td align="right">4.6236e+10</td>
+<td align="right">10.3172</td>
+<td align="right">19.0127</td>
+<td align="right">2.0355</td>
+<td align="right">6.5737e+10</td>
+<td align="right">0</td>
+<td align="right">4.09034</td>
+<td align="right">-6.24e+08</td>
+<td align="right">-4.0631e+10</td>
+<td align="right">4.5804e+10</td>
+<td align="right">1.61782e+11</td>
+<td align="right">1.2547e+10</td>
+<td align="right">-8.805e+09</td>
+<td align="right">-6.6897e+10</td>
+<td align="right">1.6217e+10</td>
+<td align="right">4.5898e+10</td>
+<td align="right">9.8724e+10</td>
+<td align="right">1.8245e+10</td>
+<td align="right">4.44324e+09</td>
+<td align="right">6.068e+09</td>
+<td align="right">9.0488e+10</td>
+<td align="right">9.0488e+10</td>
+<td align="right">0</td>
+<td align="right">1.0481e+10</td>
+<td align="right">0.159</td>
+<td align="right">3.38516e+11</td>
+<td align="right">1.82295e+11</td>
+<td align="right">1.08047e+11</td>
+<td align="right">9.0488e+10</td>
+<td align="right">1.96244e+11</td>
+<td align="right">2.48028e+11</td>
+<td align="right">1.75697e+11</td>
+<td align="right">1.4231e+11</td>
+<td align="right">6.393e+10</td>
+<td align="right">2.60174e+11</td>
+<td align="right">2.9545e+10</td>
+<td align="right">5.7101e+10</td>
+</tr>
+</tbody>
+</table>
+<h3 id="get_financial_data">get_financial_data<a class="headerlink" href="#get_financial_data" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="6:3"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><label for="__tabbed_6_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em>:  Obtain specific data from either cash flow, income statement, balance sheet, or valuation measures.</li>
+<li><em>Return</em>:  <code>pandas.DataFrame</code></li>
+<li><em>Arguments</em></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">Argument</th>
+<th align="left">Type</th>
+<th align="left">Default</th>
+<th align="left">Required</th>
+<th align="left">Options</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">types</td>
+<td align="left"><code>list</code> or <code>str</code></td>
+<td align="left"><code>None</code></td>
+<td align="left"><strong>Required</strong></td>
+<td align="left">See options below</td>
+</tr>
+<tr>
+<td align="left">frequency</td>
+<td align="left"><code>str</code></td>
+<td align="left"><code>a</code></td>
+<td align="left">optional</td>
+<td align="left">Annual - <code>a</code><br>Quarter - <code>q</code></td>
+</tr>
+<tr>
+<td align="left">trailing</td>
+<td align="left"><code>bool</code></td>
+<td align="left"><code>True</code></td>
+<td align="left">optional</td>
+<td align="left"><code>True</code><br><code>False</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you try and use all of the options below <strong>AND</strong> <code>trailing=True</code>, you will
+receive an error because the requested URL will be too long</p>
+</div>
+<div class="tabbed-set" data-tabs="7:4"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><label for="__tabbed_7_1">Balance Sheet</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+    <span class="s1">&#39;AccountsPayable&#39;</span><span class="p">,</span> <span class="s1">&#39;AccountsReceivable&#39;</span><span class="p">,</span> <span class="s1">&#39;AccruedInterestReceivable&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;AccumulatedDepreciation&#39;</span><span class="p">,</span> <span class="s1">&#39;AdditionalPaidInCapital&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;AllowanceForDoubtfulAccountsReceivable&#39;</span><span class="p">,</span> <span class="s1">&#39;AssetsHeldForSaleCurrent&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;AvailableForSaleSecurities&#39;</span><span class="p">,</span> <span class="s1">&#39;BuildingsAndImprovements&#39;</span><span class="p">,</span> <span class="s1">&#39;CapitalLeaseObligations&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;CapitalStock&#39;</span><span class="p">,</span> <span class="s1">&#39;CashAndCashEquivalents&#39;</span><span class="p">,</span> <span class="s1">&#39;CashCashEquivalentsAndShortTermInvestments&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;CashEquivalents&#39;</span><span class="p">,</span> <span class="s1">&#39;CashFinancial&#39;</span><span class="p">,</span> <span class="s1">&#39;CommercialPaper&#39;</span><span class="p">,</span> <span class="s1">&#39;CommonStock&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;CommonStockEquity&#39;</span><span class="p">,</span> <span class="s1">&#39;ConstructionInProgress&#39;</span><span class="p">,</span> <span class="s1">&#39;CurrentAccruedExpenses&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;CurrentAssets&#39;</span><span class="p">,</span> <span class="s1">&#39;CurrentCapitalLeaseObligation&#39;</span><span class="p">,</span> <span class="s1">&#39;CurrentDebt&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;CurrentDebtAndCapitalLeaseObligation&#39;</span><span class="p">,</span> <span class="s1">&#39;CurrentDeferredAssets&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;CurrentDeferredLiabilities&#39;</span><span class="p">,</span> <span class="s1">&#39;CurrentDeferredRevenue&#39;</span><span class="p">,</span> <span class="s1">&#39;CurrentDeferredTaxesAssets&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;CurrentDeferredTaxesLiabilities&#39;</span><span class="p">,</span> <span class="s1">&#39;CurrentLiabilities&#39;</span><span class="p">,</span> <span class="s1">&#39;CurrentNotesPayable&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;CurrentProvisions&#39;</span><span class="p">,</span> <span class="s1">&#39;DefinedPensionBenefit&#39;</span><span class="p">,</span> <span class="s1">&#39;DerivativeProductLiabilities&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;DividendsPayable&#39;</span><span class="p">,</span> <span class="s1">&#39;DuefromRelatedPartiesCurrent&#39;</span><span class="p">,</span> <span class="s1">&#39;DuefromRelatedPartiesNonCurrent&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;DuetoRelatedPartiesCurrent&#39;</span><span class="p">,</span> <span class="s1">&#39;DuetoRelatedPartiesNonCurrent&#39;</span><span class="p">,</span> <span class="s1">&#39;EmployeeBenefits&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;FinancialAssets&#39;</span><span class="p">,</span> <span class="s1">&#39;FinancialAssetsDesignatedasFairValueThroughProfitorLossTotal&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;FinishedGoods&#39;</span><span class="p">,</span> <span class="s1">&#39;FixedAssetsRevaluationReserve&#39;</span><span class="p">,</span> <span class="s1">&#39;ForeignCurrencyTranslationAdjustments&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;GainsLossesNotAffectingRetainedEarnings&#39;</span><span class="p">,</span> <span class="s1">&#39;GeneralPartnershipCapital&#39;</span><span class="p">,</span> <span class="s1">&#39;Goodwill&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;GoodwillAndOtherIntangibleAssets&#39;</span><span class="p">,</span> <span class="s1">&#39;GrossAccountsReceivable&#39;</span><span class="p">,</span> <span class="s1">&#39;GrossPPE&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;HedgingAssetsCurrent&#39;</span><span class="p">,</span> <span class="s1">&#39;HeldToMaturitySecurities&#39;</span><span class="p">,</span> <span class="s1">&#39;IncomeTaxPayable&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;InterestPayable&#39;</span><span class="p">,</span> <span class="s1">&#39;InventoriesAdjustmentsAllowances&#39;</span><span class="p">,</span> <span class="s1">&#39;Inventory&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;InvestedCapital&#39;</span><span class="p">,</span> <span class="s1">&#39;InvestmentProperties&#39;</span><span class="p">,</span> <span class="s1">&#39;InvestmentinFinancialAssets&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;InvestmentsAndAdvances&#39;</span><span class="p">,</span> <span class="s1">&#39;InvestmentsInOtherVenturesUnderEquityMethod&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;InvestmentsinAssociatesatCost&#39;</span><span class="p">,</span> <span class="s1">&#39;InvestmentsinJointVenturesatCost&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;InvestmentsinSubsidiariesatCost&#39;</span><span class="p">,</span> <span class="s1">&#39;LandAndImprovements&#39;</span><span class="p">,</span> <span class="s1">&#39;Leases&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;LiabilitiesHeldforSaleNonCurrent&#39;</span><span class="p">,</span> <span class="s1">&#39;LimitedPartnershipCapital&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;LineOfCredit&#39;</span><span class="p">,</span> <span class="s1">&#39;LoansReceivable&#39;</span><span class="p">,</span> <span class="s1">&#39;LongTermCapitalLeaseObligation&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;LongTermDebt&#39;</span><span class="p">,</span> <span class="s1">&#39;LongTermDebtAndCapitalLeaseObligation&#39;</span><span class="p">,</span> <span class="s1">&#39;LongTermEquityInvestment&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;LongTermProvisions&#39;</span><span class="p">,</span> <span class="s1">&#39;MachineryFurnitureEquipment&#39;</span><span class="p">,</span> <span class="s1">&#39;MinimumPensionLiabilities&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;MinorityInterest&#39;</span><span class="p">,</span> <span class="s1">&#39;NetDebt&#39;</span><span class="p">,</span> <span class="s1">&#39;NetPPE&#39;</span><span class="p">,</span> <span class="s1">&#39;NetTangibleAssets&#39;</span><span class="p">,</span> <span class="s1">&#39;NonCurrentAccountsReceivable&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;NonCurrentAccruedExpenses&#39;</span><span class="p">,</span> <span class="s1">&#39;NonCurrentDeferredAssets&#39;</span><span class="p">,</span> <span class="s1">&#39;NonCurrentDeferredLiabilities&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;NonCurrentDeferredRevenue&#39;</span><span class="p">,</span> <span class="s1">&#39;NonCurrentDeferredTaxesAssets&#39;</span><span class="p">,</span> <span class="s1">&#39;NonCurrentDeferredTaxesLiabilities&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;NonCurrentNoteReceivables&#39;</span><span class="p">,</span> <span class="s1">&#39;NonCurrentPensionAndOtherPostretirementBenefitPlans&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;NonCurrentPrepaidAssets&#39;</span><span class="p">,</span> <span class="s1">&#39;NotesReceivable&#39;</span><span class="p">,</span> <span class="s1">&#39;OrdinarySharesNumber&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;OtherCapitalStock&#39;</span><span class="p">,</span> <span class="s1">&#39;OtherCurrentAssets&#39;</span><span class="p">,</span> <span class="s1">&#39;OtherCurrentBorrowings&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;OtherCurrentLiabilities&#39;</span><span class="p">,</span> <span class="s1">&#39;OtherEquityAdjustments&#39;</span><span class="p">,</span> <span class="s1">&#39;OtherEquityInterest&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;OtherIntangibleAssets&#39;</span><span class="p">,</span> <span class="s1">&#39;OtherInventories&#39;</span><span class="p">,</span> <span class="s1">&#39;OtherInvestments&#39;</span><span class="p">,</span> <span class="s1">&#39;OtherNonCurrentAssets&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;OtherNonCurrentLiabilities&#39;</span><span class="p">,</span> <span class="s1">&#39;OtherPayable&#39;</span><span class="p">,</span> <span class="s1">&#39;OtherProperties&#39;</span><span class="p">,</span> <span class="s1">&#39;OtherReceivables&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;OtherShortTermInvestments&#39;</span><span class="p">,</span> <span class="s1">&#39;Payables&#39;</span><span class="p">,</span> <span class="s1">&#39;PayablesAndAccruedExpenses&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;PensionandOtherPostRetirementBenefitPlansCurrent&#39;</span><span class="p">,</span> <span class="s1">&#39;PreferredSecuritiesOutsideStockEquity&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;PreferredSharesNumber&#39;</span><span class="p">,</span> <span class="s1">&#39;PreferredStock&#39;</span><span class="p">,</span> <span class="s1">&#39;PreferredStockEquity&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;PrepaidAssets&#39;</span><span class="p">,</span> <span class="s1">&#39;Properties&#39;</span><span class="p">,</span> <span class="s1">&#39;RawMaterials&#39;</span><span class="p">,</span> <span class="s1">&#39;Receivables&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ReceivablesAdjustmentsAllowances&#39;</span><span class="p">,</span> <span class="s1">&#39;RestrictedCash&#39;</span><span class="p">,</span> <span class="s1">&#39;RestrictedCommonStock&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;RetainedEarnings&#39;</span><span class="p">,</span> <span class="s1">&#39;ShareIssued&#39;</span><span class="p">,</span> <span class="s1">&#39;StockholdersEquity&#39;</span><span class="p">,</span> <span class="s1">&#39;TangibleBookValue&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;TaxesReceivable&#39;</span><span class="p">,</span> <span class="s1">&#39;TotalAssets&#39;</span><span class="p">,</span> <span class="s1">&#39;TotalCapitalization&#39;</span><span class="p">,</span> <span class="s1">&#39;TotalDebt&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;TotalEquityGrossMinorityInterest&#39;</span><span class="p">,</span> <span class="s1">&#39;TotalLiabilitiesNetMinorityInterest&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;TotalNonCurrentAssets&#39;</span><span class="p">,</span> <span class="s1">&#39;TotalNonCurrentLiabilitiesNetMinorityInterest&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;TotalPartnershipCapital&#39;</span><span class="p">,</span> <span class="s1">&#39;TotalTaxPayable&#39;</span><span class="p">,</span> <span class="s1">&#39;TradeandOtherPayablesNonCurrent&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;TradingSecurities&#39;</span><span class="p">,</span> <span class="s1">&#39;TreasurySharesNumber&#39;</span><span class="p">,</span> <span class="s1">&#39;TreasuryStock&#39;</span><span class="p">,</span> <span class="s1">&#39;UnrealizedGainLoss&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;WorkInProcess&#39;</span><span class="p">,</span> <span class="s1">&#39;WorkingCapital&#39;</span>
+<span class="p">]</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><label for="__tabbed_7_2">Cash Flow</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+    <span class="s1">&#39;RepaymentOfDebt&#39;</span><span class="p">,</span> <span class="s1">&#39;RepurchaseOfCapitalStock&#39;</span><span class="p">,</span> <span class="s1">&#39;CashDividendsPaid&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;CommonStockIssuance&#39;</span><span class="p">,</span> <span class="s1">&#39;ChangeInWorkingCapital&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;CapitalExpenditure&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;CashFlowFromContinuingFinancingActivities&#39;</span><span class="p">,</span> <span class="s1">&#39;NetIncome&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;FreeCashFlow&#39;</span><span class="p">,</span> <span class="s1">&#39;ChangeInCashSupplementalAsReported&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;SaleOfInvestment&#39;</span><span class="p">,</span> <span class="s1">&#39;EndCashPosition&#39;</span><span class="p">,</span> <span class="s1">&#39;OperatingCashFlow&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;DeferredIncomeTax&#39;</span><span class="p">,</span> <span class="s1">&#39;NetOtherInvestingChanges&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ChangeInAccountPayable&#39;</span><span class="p">,</span> <span class="s1">&#39;NetOtherFinancingCharges&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;PurchaseOfInvestment&#39;</span><span class="p">,</span> <span class="s1">&#39;ChangeInInventory&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;DepreciationAndAmortization&#39;</span><span class="p">,</span> <span class="s1">&#39;PurchaseOfBusiness&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;InvestingCashFlow&#39;</span><span class="p">,</span> <span class="s1">&#39;ChangesInAccountReceivables&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;StockBasedCompensation&#39;</span><span class="p">,</span> <span class="s1">&#39;OtherNonCashItems&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;BeginningCashPosition&#39;</span>
+<span class="p">]</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_7_3" name="__tabbed_7" type="radio" /><label for="__tabbed_7_3">Income Statement</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+    <span class="s1">&#39;Amortization&#39;</span><span class="p">,</span> <span class="s1">&#39;AmortizationOfIntangiblesIncomeStatement&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;AverageDilutionEarnings&#39;</span><span class="p">,</span> <span class="s1">&#39;BasicAccountingChange&#39;</span><span class="p">,</span> <span class="s1">&#39;BasicAverageShares&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;BasicContinuousOperations&#39;</span><span class="p">,</span> <span class="s1">&#39;BasicDiscontinuousOperations&#39;</span><span class="p">,</span> <span class="s1">&#39;BasicEPS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;BasicEPSOtherGainsLosses&#39;</span><span class="p">,</span> <span class="s1">&#39;BasicExtraordinary&#39;</span><span class="p">,</span> <span class="s1">&#39;ContinuingAndDiscontinuedBasicEPS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ContinuingAndDiscontinuedDilutedEPS&#39;</span><span class="p">,</span> <span class="s1">&#39;CostOfRevenue&#39;</span><span class="p">,</span> <span class="s1">&#39;DepletionIncomeStatement&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;DepreciationAmortizationDepletionIncomeStatement&#39;</span><span class="p">,</span> <span class="s1">&#39;DepreciationAndAmortizationInIncomeStatement&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;DepreciationIncomeStatement&#39;</span><span class="p">,</span> <span class="s1">&#39;DilutedAccountingChange&#39;</span><span class="p">,</span> <span class="s1">&#39;DilutedAverageShares&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;DilutedContinuousOperations&#39;</span><span class="p">,</span> <span class="s1">&#39;DilutedDiscontinuousOperations&#39;</span><span class="p">,</span> <span class="s1">&#39;DilutedEPS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;DilutedEPSOtherGainsLosses&#39;</span><span class="p">,</span> <span class="s1">&#39;DilutedExtraordinary&#39;</span><span class="p">,</span> <span class="s1">&#39;DilutedNIAvailtoComStockholders&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;DividendPerShare&#39;</span><span class="p">,</span> <span class="s1">&#39;EBIT&#39;</span><span class="p">,</span> <span class="s1">&#39;EBITDA&#39;</span><span class="p">,</span> <span class="s1">&#39;EarningsFromEquityInterest&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;EarningsFromEquityInterestNetOfTax&#39;</span><span class="p">,</span> <span class="s1">&#39;ExciseTaxes&#39;</span><span class="p">,</span> <span class="s1">&#39;GainOnSaleOfBusiness&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;GainOnSaleOfPPE&#39;</span><span class="p">,</span> <span class="s1">&#39;GainOnSaleOfSecurity&#39;</span><span class="p">,</span> <span class="s1">&#39;GeneralAndAdministrativeExpense&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;GrossProfit&#39;</span><span class="p">,</span> <span class="s1">&#39;ImpairmentOfCapitalAssets&#39;</span><span class="p">,</span> <span class="s1">&#39;InsuranceAndClaims&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;InterestExpense&#39;</span><span class="p">,</span> <span class="s1">&#39;InterestExpenseNonOperating&#39;</span><span class="p">,</span> <span class="s1">&#39;InterestIncome&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;InterestIncomeNonOperating&#39;</span><span class="p">,</span> <span class="s1">&#39;MinorityInterests&#39;</span><span class="p">,</span> <span class="s1">&#39;NetIncome&#39;</span><span class="p">,</span> <span class="s1">&#39;NetIncomeCommonStockholders&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;NetIncomeContinuousOperations&#39;</span><span class="p">,</span> <span class="s1">&#39;NetIncomeDiscontinuousOperations&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;NetIncomeExtraordinary&#39;</span><span class="p">,</span> <span class="s1">&#39;NetIncomeFromContinuingAndDiscontinuedOperation&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;NetIncomeFromContinuingOperationNetMinorityInterest&#39;</span><span class="p">,</span> <span class="s1">&#39;NetIncomeFromTaxLossCarryforward&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;NetIncomeIncludingNoncontrollingInterests&#39;</span><span class="p">,</span> <span class="s1">&#39;NetInterestIncome&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;NetNonOperatingInterestIncomeExpense&#39;</span><span class="p">,</span> <span class="s1">&#39;NormalizedBasicEPS&#39;</span><span class="p">,</span> <span class="s1">&#39;NormalizedDilutedEPS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;NormalizedEBITDA&#39;</span><span class="p">,</span> <span class="s1">&#39;NormalizedIncome&#39;</span><span class="p">,</span> <span class="s1">&#39;OperatingExpense&#39;</span><span class="p">,</span> <span class="s1">&#39;OperatingIncome&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;OperatingRevenue&#39;</span><span class="p">,</span> <span class="s1">&#39;OtherGandA&#39;</span><span class="p">,</span> <span class="s1">&#39;OtherIncomeExpense&#39;</span><span class="p">,</span> <span class="s1">&#39;OtherNonOperatingIncomeExpenses&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;OtherOperatingExpenses&#39;</span><span class="p">,</span> <span class="s1">&#39;OtherSpecialCharges&#39;</span><span class="p">,</span> <span class="s1">&#39;OtherTaxes&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;OtherunderPreferredStockDividend&#39;</span><span class="p">,</span> <span class="s1">&#39;PreferredStockDividends&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;PretaxIncome&#39;</span><span class="p">,</span> <span class="s1">&#39;ProvisionForDoubtfulAccounts&#39;</span><span class="p">,</span> <span class="s1">&#39;ReconciledCostOfRevenue&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ReconciledDepreciation&#39;</span><span class="p">,</span> <span class="s1">&#39;RentAndLandingFees&#39;</span><span class="p">,</span> <span class="s1">&#39;RentExpenseSupplemental&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ReportedNormalizedBasicEPS&#39;</span><span class="p">,</span> <span class="s1">&#39;ReportedNormalizedDilutedEPS&#39;</span><span class="p">,</span> <span class="s1">&#39;ResearchAndDevelopment&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;RestructuringAndMergernAcquisition&#39;</span><span class="p">,</span> <span class="s1">&#39;SalariesAndWages&#39;</span><span class="p">,</span> <span class="s1">&#39;SecuritiesAmortization&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;SellingAndMarketingExpense&#39;</span><span class="p">,</span> <span class="s1">&#39;SellingGeneralAndAdministration&#39;</span><span class="p">,</span> <span class="s1">&#39;SpecialIncomeCharges&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;TaxEffectOfUnusualItems&#39;</span><span class="p">,</span> <span class="s1">&#39;TaxLossCarryforwardBasicEPS&#39;</span><span class="p">,</span> <span class="s1">&#39;TaxLossCarryforwardDilutedEPS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;TaxProvision&#39;</span><span class="p">,</span> <span class="s1">&#39;TaxRateForCalcs&#39;</span><span class="p">,</span> <span class="s1">&#39;TotalExpenses&#39;</span><span class="p">,</span> <span class="s1">&#39;TotalOperatingIncomeAsReported&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;TotalOtherFinanceCost&#39;</span><span class="p">,</span> <span class="s1">&#39;TotalRevenue&#39;</span><span class="p">,</span> <span class="s1">&#39;TotalUnusualItems&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;TotalUnusualItemsExcludingGoodwill&#39;</span><span class="p">,</span> <span class="s1">&#39;WriteOff&#39;</span>
+<span class="p">]</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_7_4" name="__tabbed_7" type="radio" /><label for="__tabbed_7_4">Valuation Measures</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+    <span class="s1">&#39;ForwardPeRatio&#39;</span><span class="p">,</span> <span class="s1">&#39;PsRatio&#39;</span><span class="p">,</span> <span class="s1">&#39;PbRatio&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;EnterprisesValueEBITDARatio&#39;</span><span class="p">,</span> <span class="s1">&#39;EnterprisesValueRevenueRatio&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;PeRatio&#39;</span><span class="p">,</span> <span class="s1">&#39;MarketCap&#39;</span><span class="p">,</span> <span class="s1">&#39;EnterpriseValue&#39;</span><span class="p">,</span> <span class="s1">&#39;PegRatio&#39;</span>
+<span class="p">]</span>
+</code></pre></div>
+
+</div>
+</div>
+</div>
+<input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><label for="__tabbed_6_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
+<span class="hll"><span class="n">types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TotalDebt&#39;</span><span class="p">,</span> <span class="s1">&#39;TotalAssets&#39;</span><span class="p">,</span> <span class="s1">&#39;EBIT&#39;</span><span class="p">,</span> <span class="s1">&#39;EBITDA&#39;</span><span class="p">,</span> <span class="s1">&#39;PeRatio&#39;</span><span class="p">]</span>
+</span><span class="n">aapl</span><span class="o">.</span><span class="n">get_financial_data</span><span class="p">(</span><span class="n">types</span><span class="p">,</span> <span class="n">trailing</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_6_3" name="__tabbed_6" type="radio" /><label for="__tabbed_6_3">Data</label><div class="tabbed-content">
+<table>
+<thead>
+<tr>
+<th align="left">symbol</th>
+<th align="left">asOfDate</th>
+<th align="left">periodType</th>
+<th align="right">EBIT</th>
+<th align="right">PeRatio</th>
+<th align="right">TotalAssets</th>
+<th align="right">TotalDebt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2016-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">6.2828e+10</td>
+<td align="right">13.1607</td>
+<td align="right">3.21686e+11</td>
+<td align="right">8.7032e+10</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2017-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">6.6412e+10</td>
+<td align="right">17.4541</td>
+<td align="right">3.75319e+11</td>
+<td align="right">1.1568e+11</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2018-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">7.6143e+10</td>
+<td align="right">20.4105</td>
+<td align="right">3.65725e+11</td>
+<td align="right">1.14483e+11</td>
+</tr>
+<tr>
+<td align="left">aapl</td>
+<td align="left">2019-09-30 00:00:00</td>
+<td align="left">12M</td>
+<td align="right">6.9313e+10</td>
+<td align="right">19.0127</td>
+<td align="right">3.38516e+11</td>
+<td align="right">1.08047e+11</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../modules/" title="Modules" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Modules
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../options/" title="Options" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Options
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/dpguthrie" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://www.linkedin.com/in/douglas-guthrie-07994a48/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://medium.com/@douglas.p.guthrie" target="_blank" rel="noopener" title="medium.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0 32v448h448V32H0zm372.2 106.1l-24 23c-2.1 1.6-3.1 4.2-2.7 6.7v169.3c-.4 2.6.6 5.2 2.7 6.7l23.5 23v5.1h-118V367l24.3-23.6c2.4-2.4 2.4-3.1 2.4-6.7V199.8l-67.6 171.6h-9.1L125 199.8v115c-.7 4.8 1 9.7 4.4 13.2l31.6 38.3v5.1H71.2v-5.1l31.6-38.3c3.4-3.5 4.9-8.4 4.1-13.2v-133c.4-3.7-1-7.3-3.8-9.8L75 138.1V133h87.3l67.4 148L289 133.1h83.2v5z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://dpguthrie.github.io" target="_blank" rel="noopener" title="dpguthrie.github.io" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M336.5 160C322 70.7 287.8 8 248 8s-74 62.7-88.5 152h177zM152 256c0 22.2 1.2 43.5 3.3 64h185.3c2.1-20.5 3.3-41.8 3.3-64s-1.2-43.5-3.3-64H155.3c-2.1 20.5-3.3 41.8-3.3 64zm324.7-96c-28.6-67.9-86.5-120.4-158-141.6 24.4 33.8 41.2 84.7 50 141.6h108zM177.2 18.4C105.8 39.6 47.8 92.1 19.3 160h108c8.7-56.9 25.5-107.8 49.9-141.6zM487.4 192H372.7c2.1 21 3.3 42.5 3.3 64s-1.2 43-3.3 64h114.6c5.5-20.5 8.6-41.8 8.6-64s-3.1-43.5-8.5-64zM120 256c0-21.5 1.2-43 3.3-64H8.6C3.2 212.5 0 233.8 0 256s3.2 43.5 8.6 64h114.6c-2-21-3.2-42.5-3.2-64zm39.5 96c14.5 89.3 48.7 152 88.5 152s74-62.7 88.5-152h-177zm159.3 141.6c71.4-21.2 129.4-73.7 158-141.6h-108c-8.8 56.9-25.6 107.8-50 141.6zM19.3 352c28.6 67.9 86.5 120.4 158 141.6-24.4-33.8-41.2-84.7-50-141.6h-108z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../../assets/javascripts/vendor.d710d30a.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.b39636ac.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../../..",
+          features: ["instant"],
+          search: Object.assign({
+            worker: "../../../assets/javascripts/worker/search.a68abb33.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="../../../js/termynal.js"></script>
+      
+        <script src="../../../js/custom.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1265 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Python wrapper for unofficial Yahoo Finance API">
+      
+      
+      
+        <meta name="author" content="Doug Guthrie">
+      
+      <link rel="shortcut icon" href="../../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.4.0">
+    
+    
+      
+        <title>Keyword Arguments - yahooquery</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.fe0cca5b.min.css">
+      
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.a46bcfb3.min.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#7e57c2">
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../../css/termynal.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="deep-purple" data-md-color-accent="">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#keyword-arguments" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="../../.." title="yahooquery" class="md-header-nav__button md-logo" aria-label="yahooquery">
+      
+  <img src="../../../img/logo_transparent_2.png" alt="logo">
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            yahooquery
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Keyword Arguments
+            
+          </span>
+        </div>
+      
+    </div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/dpguthrie/yahooquery/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    yahooquery
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="yahooquery" class="md-nav__button md-logo" aria-label="yahooquery">
+      
+  <img src="../../../img/logo_transparent_2.png" alt="logo">
+
+    </a>
+    yahooquery
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/dpguthrie/yahooquery/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    yahooquery
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      User Guide
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="User Guide" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        User Guide
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../" title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-2" type="checkbox" id="nav-2-2" checked>
+    
+    <label class="md-nav__link" for="nav-2-2">
+      Ticker
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Ticker" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-2">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Ticker
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../intro/" title="Ticker - Intro" class="md-nav__link">
+      Ticker - Intro
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Keyword Arguments
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="Keyword Arguments" class="md-nav__link md-nav__link--active">
+      Keyword Arguments
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#regular" class="md-nav__link">
+    Regular
+  </a>
+  
+    <nav class="md-nav" aria-label="Regular">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#asynchronous" class="md-nav__link">
+    asynchronous
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backoff_factor" class="md-nav__link">
+    backoff_factor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#country" class="md-nav__link">
+    country
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatted" class="md-nav__link">
+    formatted
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#max_workers" class="md-nav__link">
+    max_workers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxies" class="md-nav__link">
+    proxies
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retry" class="md-nav__link">
+    retry
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status_forcelist" class="md-nav__link">
+    status_forcelist
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timeout" class="md-nav__link">
+    timeout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user_agent" class="md-nav__link">
+    user_agent
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validate" class="md-nav__link">
+    validate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    verify
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#premium" class="md-nav__link">
+    Premium
+  </a>
+  
+    <nav class="md-nav" aria-label="Premium">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#username-and-password" class="md-nav__link">
+    username and password
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced" class="md-nav__link">
+    Advanced
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#crumb-and-session" class="md-nav__link">
+    crumb and session
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../modules/" title="Modules" class="md-nav__link">
+      Modules
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../financials/" title="Financials" class="md-nav__link">
+      Financials
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../options/" title="Options" class="md-nav__link">
+      Options
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../historical/" title="Historical Prices" class="md-nav__link">
+      Historical Prices
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../miscellaenous/" title="Miscellaenous" class="md-nav__link">
+      Miscellaenous
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../premium/" title="Premium" class="md-nav__link">
+      Premium
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../screener/" title="Screener" class="md-nav__link">
+      Screener
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../research/" title="Research" class="md-nav__link">
+      Research
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../advanced/" title="Advanced" class="md-nav__link">
+      Advanced
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../misc/" title="Miscellaneous Functions" class="md-nav__link">
+      Miscellaneous Functions
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../alternative/" title="Alternatives" class="md-nav__link">
+      Alternatives
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../release_notes/" title="Release Notes" class="md-nav__link">
+      Release Notes
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#regular" class="md-nav__link">
+    Regular
+  </a>
+  
+    <nav class="md-nav" aria-label="Regular">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#asynchronous" class="md-nav__link">
+    asynchronous
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backoff_factor" class="md-nav__link">
+    backoff_factor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#country" class="md-nav__link">
+    country
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatted" class="md-nav__link">
+    formatted
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#max_workers" class="md-nav__link">
+    max_workers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxies" class="md-nav__link">
+    proxies
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retry" class="md-nav__link">
+    retry
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status_forcelist" class="md-nav__link">
+    status_forcelist
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timeout" class="md-nav__link">
+    timeout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user_agent" class="md-nav__link">
+    user_agent
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validate" class="md-nav__link">
+    validate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    verify
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#premium" class="md-nav__link">
+    Premium
+  </a>
+  
+    <nav class="md-nav" aria-label="Premium">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#username-and-password" class="md-nav__link">
+    username and password
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced" class="md-nav__link">
+    Advanced
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#crumb-and-session" class="md-nav__link">
+    crumb and session
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/dpguthrie/yahooquery/edit/master/docs/guide/ticker/keyword_arguments.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  
+                
+                
+                <h1 id="keyword-arguments">Keyword Arguments<a class="headerlink" href="#keyword-arguments" title="Permanent link">&para;</a></h1>
+<p>The <code>Ticker</code> class also takes in additional keyword arguments that modify certain behavior.  The majority of the keyword arguments will affect how requests are made.</p>
+<h2 id="regular">Regular<a class="headerlink" href="#regular" title="Permanent link">&para;</a></h2>
+<h3 id="asynchronous"><strong>asynchronous</strong><a class="headerlink" href="#asynchronous" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em>: When set to <code>True</code>, requests made to Yahoo Finance will be made asynchronously</li>
+<li><em>Default</em>:  <code>False</code></li>
+<li><em>Type</em>: <code>bool</code></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Only necessary when you have more than one symbol</p>
+</div>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">symbols</span> <span class="o">=</span> <span class="s1">&#39;fb aapl amzn nflx goog&#39;</span>
+<span class="n">Ticker</span><span class="p">(</span>
+    <span class="n">symbols</span><span class="p">,</span>
+<span class="hll">    <span class="n">asynchronous</span><span class="o">=</span><span class="kc">True</span>
+</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="backoff_factor"><strong>backoff_factor</strong><a class="headerlink" href="#backoff_factor" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em>: A factor, in seconds, to apply between attempts after the second try</li>
+<li><em>Default</em>: <code>0.3</code></li>
+<li><em>Implementation</em>: <code>{backoff_factor} * (2 ** ({number of total retries} - 1))</code></li>
+<li><em>Example</em>:  If the backoff factor is 0.1, then <code>sleep()</code> will sleep for [0.0s, 0.2s, 0.4s, ...] between retries</li>
+</ul>
+</div>
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">Ticker</span><span class="p">(</span>
+    <span class="s1">&#39;aapl&#39;</span><span class="p">,</span>
+<span class="hll">    <span class="n">backoff_factor</span><span class="o">=</span><span class="mi">1</span>
+</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="country"><strong>country</strong><a class="headerlink" href="#country" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em>: Alter the language, region, and corsDomain that each request utilizes as a query parameter.</li>
+<li><em>Default</em>: <code>United States</code></li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>This functionality has not been thoroughly tested as far as comparing data returned for each country.  You will see a difference, though, in the data returned from the <code>news</code> method:</p>
+</div>
+<details class="example"><summary>View Countries</summary><div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="s1">&#39;france&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;lang&#39;</span><span class="p">:</span> <span class="s1">&#39;fr-FR&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="s1">&#39;FR&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;corsDomain&#39;</span><span class="p">:</span> <span class="s1">&#39;fr.finance.yahoo.com&#39;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;india&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;lang&#39;</span><span class="p">:</span> <span class="s1">&#39;en-IN&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="s1">&#39;IN&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;corsDomain&#39;</span><span class="p">:</span> <span class="s1">&#39;in.finance.yahoo.com&#39;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;hong kong&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;lang&#39;</span><span class="p">:</span> <span class="s1">&#39;zh-Hant-HK&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="s1">&#39;HK&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;corsDomain&#39;</span><span class="p">:</span> <span class="s1">&#39;hk.finance.yahoo.com&#39;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;germany&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;lang&#39;</span><span class="p">:</span> <span class="s1">&#39;de-DE&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="s1">&#39;DE&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;corsDomain&#39;</span><span class="p">:</span> <span class="s1">&#39;de.finance.yahoo.com&#39;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;canada&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;lang&#39;</span><span class="p">:</span> <span class="s1">&#39;en-CA&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="s1">&#39;CA&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;corsDomain&#39;</span><span class="p">:</span> <span class="s1">&#39;ca.finance.yahoo.com&#39;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;spain&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;lang&#39;</span><span class="p">:</span> <span class="s1">&#39;es-ES&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="s1">&#39;ES&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;corsDomain&#39;</span><span class="p">:</span> <span class="s1">&#39;es.finance.yahoo.com&#39;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;italy&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;lang&#39;</span><span class="p">:</span> <span class="s1">&#39;it-IT&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="s1">&#39;IT&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;corsDomain&#39;</span><span class="p">:</span> <span class="s1">&#39;it.finance.yahoo.com&#39;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;united states&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;lang&#39;</span><span class="p">:</span> <span class="s1">&#39;en-US&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="s1">&#39;US&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;corsDomain&#39;</span><span class="p">:</span> <span class="s1">&#39;finance.yahoo.com&#39;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;australia&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;lang&#39;</span><span class="p">:</span> <span class="s1">&#39;en-AU&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="s1">&#39;AU&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;corsDomain&#39;</span><span class="p">:</span> <span class="s1">&#39;au.finance.yahoo.com&#39;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;united kingdom&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;lang&#39;</span><span class="p">:</span> <span class="s1">&#39;en-GB&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="s1">&#39;GB&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;corsDomain&#39;</span><span class="p">:</span> <span class="s1">&#39;uk.finance.yahoo.com&#39;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;brazil&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;lang&#39;</span><span class="p">:</span> <span class="s1">&#39;pt-BR&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="s1">&#39;BR&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;corsDomain&#39;</span><span class="p">:</span> <span class="s1">&#39;br.financas.yahoo.com&#39;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;new zealand&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;lang&#39;</span><span class="p">:</span> <span class="s1">&#39;en-NZ&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="s1">&#39;NZ&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;corsDomain&#39;</span><span class="p">:</span> <span class="s1">&#39;nz.finance.yahoo.com&#39;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;singapore&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;lang&#39;</span><span class="p">:</span> <span class="s1">&#39;en-SG&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="s1">&#39;SG&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;corsDomain&#39;</span><span class="p">:</span> <span class="s1">&#39;sg.finance.yahoo.com&#39;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+</details>
+</div>
+<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">Ticker</span><span class="p">(</span>
+    <span class="s1">&#39;aapl&#39;</span><span class="p">,</span>
+<span class="hll">    <span class="n">country</span><span class="o">=</span><span class="s1">&#39;France&#39;</span>
+</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="formatted"><strong>formatted</strong><a class="headerlink" href="#formatted" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em> - When <code>formatted=True</code>, most numerical data from the API will be returned as a dictionary:
+<div class="highlight"><pre><span></span><code><span class="s2">&quot;totalCash&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;raw&quot;</span><span class="p">:</span> <span class="mi">94051000320</span>
+    <span class="s2">&quot;fmt&quot;</span><span class="p">:</span> <span class="s2">&quot;94.05B&quot;</span>
+    <span class="s2">&quot;longFmt&quot;</span><span class="p">:</span> <span class="s2">&quot;94,051,000,320&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+When formatted is set to False, an internal method will return the value in the "raw" key.</li>
+<li><em>Default</em> - <code>False</code></li>
+<li><em>Type</em> - <code>bool</code></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When <code>formatted=True</code>, all data will be returned as a <code>dict</code></p>
+</div>
+</div>
+<input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><label for="__tabbed_4_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">Ticker</span><span class="p">(</span>
+    <span class="s1">&#39;aapl&#39;</span><span class="p">,</span>
+<span class="hll">    <span class="n">formatted</span><span class="o">=</span><span class="kc">True</span>
+</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="max_workers"><strong>max_workers</strong><a class="headerlink" href="#max_workers" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em> - Defines the number of workers used to make asynchronous requests.</li>
+<li><em>Default</em> - <code>8</code></li>
+<li><em>Type</em> - <code>int</code></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>This is only relevant when <code>asynchronous=True</code></p>
+</div>
+</div>
+<input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><label for="__tabbed_5_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">Ticker</span><span class="p">(</span>
+    <span class="s1">&#39;aapl&#39;</span><span class="p">,</span>
+<span class="hll">    <span class="n">asynchronous</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span class="hll">    <span class="n">max_workers</span><span class="o">=</span><span class="mi">4</span>
+</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="proxies"><strong>proxies</strong><a class="headerlink" href="#proxies" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><label for="__tabbed_6_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em> - Make each request with a proxy.  Simply pass a dictionary, mapping URL schemes to the URL to the proxy.</li>
+<li><em>Default</em> - <code>None</code></li>
+<li><em>Type</em> - <code>dict</code></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can also configure proxies by setting the environment variables <code>HTTP_PROXY</code> and <code>HTTPS_PROXY</code>.</p>
+</div>
+</div>
+<input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><label for="__tabbed_6_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="hll"><span class="n">proxies</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="hll"><span class="s1">&#39;http&#39;</span><span class="p">:</span> <span class="s1">&#39;http://10.10.1.10:3128&#39;</span><span class="p">,</span>
+</span><span class="hll"><span class="s1">&#39;https&#39;</span><span class="p">:</span> <span class="s1">&#39;http://10.10.1.10:1080&#39;</span><span class="p">,</span>
+</span><span class="hll"><span class="p">}</span>
+</span>
+<span class="n">Ticker</span><span class="p">(</span>
+    <span class="s1">&#39;aapl&#39;</span><span class="p">,</span>
+<span class="hll">    <span class="n">proxies</span><span class="o">=</span><span class="n">proxies</span>
+</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="retry"><strong>retry</strong><a class="headerlink" href="#retry" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><label for="__tabbed_7_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em> - Number of times to retry a failed request</li>
+<li><em>Default</em> - <code>5</code></li>
+<li><em>Type</em> - <code>int</code></li>
+</ul>
+</div>
+<input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><label for="__tabbed_7_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">Ticker</span><span class="p">(</span>
+    <span class="s1">&#39;aapl&#39;</span><span class="p">,</span>
+<span class="hll">    <span class="n">retry</span><span class="o">=</span><span class="mi">10</span>
+</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="status_forcelist"><strong>status_forcelist</strong><a class="headerlink" href="#status_forcelist" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="8:2"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><label for="__tabbed_8_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em> - A set of integer HTTP status codes that we should force a retry on.</li>
+<li><em>Default</em> - <code>[429, 500, 502, 503, 504]</code></li>
+<li><em>Type</em> - <code>list</code></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>This is especially useful when retrieving historical pricing data for a large amount of symbols.  Currently, Yahoo Finance has been displaying 404 errors for mass download requests.</p>
+</div>
+</div>
+<input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><label for="__tabbed_8_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">Ticker</span><span class="p">(</span>
+    <span class="s1">&#39;aapl&#39;</span><span class="p">,</span>
+<span class="hll">    <span class="n">status_forcelist</span><span class="o">=</span><span class="p">[</span><span class="mi">404</span><span class="p">,</span> <span class="mi">429</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">502</span><span class="p">,</span> <span class="mi">503</span><span class="p">,</span> <span class="mi">504</span><span class="p">]</span>
+</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="timeout"><strong>timeout</strong><a class="headerlink" href="#timeout" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><label for="__tabbed_9_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em> - Stop waiting for a response after a given number of seconds</li>
+<li><em>Default</em> - <code>5</code></li>
+<li><em>Type</em> - <code>int</code></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is not a time limit on the entire response download; rather, an exception is raised if the server has not issued a response for timeout seconds (more precisely, if no bytes have been received on the underlying socket for timeout seconds). If no timeout is specified explicitly, requests do not time out.</p>
+</div>
+</div>
+<input id="__tabbed_9_2" name="__tabbed_9" type="radio" /><label for="__tabbed_9_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">Ticker</span><span class="p">(</span>
+    <span class="s1">&#39;aapl&#39;</span><span class="p">,</span>
+<span class="hll">    <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span>
+</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="user_agent"><strong>user_agent</strong><a class="headerlink" href="#user_agent" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="10:2"><input checked="checked" id="__tabbed_10_1" name="__tabbed_10" type="radio" /><label for="__tabbed_10_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em> - A browser's user-agent string that is sent with the headers with each request.</li>
+<li><em>Default</em> - Random selection from the list below:
+<div class="highlight"><pre><span></span><code><span class="n">USER_AGENT_LIST</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+</code></pre></div></li>
+<li><em>Type</em> - <code>str</code></li>
+</ul>
+</div>
+<input id="__tabbed_10_2" name="__tabbed_10" type="radio" /><label for="__tabbed_10_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">Ticker</span><span class="p">(</span>
+    <span class="s1">&#39;aapl&#39;</span><span class="p">,</span>
+<span class="hll">    <span class="n">user_agent</span><span class="o">=</span><span class="s2">&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36&quot;</span>
+</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="validate"><strong>validate</strong><a class="headerlink" href="#validate" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="11:2"><input checked="checked" id="__tabbed_11_1" name="__tabbed_11" type="radio" /><label for="__tabbed_11_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em> - Validate existence of symbols during instantiation.  Invalid symbols will be dropped but you can view them through the <code>invalid_symbols</code> property.</li>
+<li><em>Default</em> - <code>False</code></li>
+<li><em>Type</em> - <code>bool</code></li>
+</ul>
+</div>
+<input id="__tabbed_11_2" name="__tabbed_11" type="radio" /><label for="__tabbed_11_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">yahooquery</span> <span class="kn">import</span> <span class="n">Ticker</span>
+
+<span class="n">symbols</span> <span class="o">=</span> <span class="s1">&#39;fb facebook aapl apple amazon amzn netflix nflx goog alphabet&#39;</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span>
+    <span class="n">symbols</span><span class="p">,</span>
+<span class="hll">    <span class="n">validate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">symbols</span><span class="p">)</span>
+<span class="p">[</span><span class="s1">&#39;NFLX&#39;</span><span class="p">,</span> <span class="s1">&#39;GOOG&#39;</span><span class="p">,</span> <span class="s1">&#39;AAPL&#39;</span><span class="p">,</span> <span class="s1">&#39;FB&#39;</span><span class="p">,</span> <span class="s1">&#39;AMZN&#39;</span><span class="p">]</span>
+<span class="hll"><span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">invalid_symbols</span><span class="p">)</span>
+</span><span class="p">[</span><span class="s1">&#39;FACEBOOK&#39;</span><span class="p">,</span> <span class="s1">&#39;AMAZON&#39;</span><span class="p">,</span> <span class="s1">&#39;APPLE&#39;</span><span class="p">,</span> <span class="s1">&#39;NETFLIX&#39;</span><span class="p">,</span> <span class="s1">&#39;ALPHABET&#39;</span><span class="p">]</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="verify"><strong>verify</strong><a class="headerlink" href="#verify" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="12:2"><input checked="checked" id="__tabbed_12_1" name="__tabbed_12" type="radio" /><label for="__tabbed_12_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em> - Either a boolean, in which case it controls whether we verify the server’s TLS certificate, or a string, in which case it must be a path to a CA bundle to use.</li>
+<li><em>Default</em> - <code>True</code></li>
+<li><em>Type</em> - <code>bool</code> or <code>str</code></li>
+</ul>
+</div>
+<input id="__tabbed_12_2" name="__tabbed_12" type="radio" /><label for="__tabbed_12_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">Ticker</span><span class="p">(</span>
+    <span class="s1">&#39;aapl&#39;</span><span class="p">,</span>
+<span class="hll">    <span class="n">verify</span><span class="o">=</span><span class="kc">False</span>
+</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h2 id="premium">Premium<a class="headerlink" href="#premium" title="Permanent link">&para;</a></h2>
+<h3 id="username-and-password"><strong>username and password</strong><a class="headerlink" href="#username-and-password" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="13:2"><input checked="checked" id="__tabbed_13_1" name="__tabbed_13" type="radio" /><label for="__tabbed_13_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em>: If you're a subscriber to Yahoo Finance Premium, you'll be able to retrieve data available through that subscription.  Simply pass your <code>username</code> and <code>password</code> to the <code>Ticker</code> class</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Selenium is utilized to login to Yahoo.  It should take around 15-20 seconds to login.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Set environment variables for your username and password as <code>YF_USERNAME</code> and <code>YF_PASSWORD</code>, respectively.</p>
+</div>
+</div>
+<input id="__tabbed_13_2" name="__tabbed_13" type="radio" /><label for="__tabbed_13_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">Ticker</span><span class="p">(</span>
+    <span class="s1">&#39;aapl&#39;</span><span class="p">,</span>
+<span class="hll">    <span class="n">username</span><span class="o">=</span><span class="s1">&#39;fake_username&#39;</span><span class="p">,</span>
+</span><span class="hll">    <span class="n">password</span><span class="o">=</span><span class="s1">&#39;fake_password&#39;</span>
+</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h2 id="advanced">Advanced<a class="headerlink" href="#advanced" title="Permanent link">&para;</a></h2>
+<h3 id="crumb-and-session"><strong>crumb and session</strong><a class="headerlink" href="#crumb-and-session" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="14:2"><input checked="checked" id="__tabbed_14_1" name="__tabbed_14" type="radio" /><label for="__tabbed_14_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em>: Some requests to Yahoo Finance require a crumb to make the request.  <strong>This is only utilized for <a href="../../advanced/">advanced configuration</a></strong></li>
+<li><em>Default</em>:  <code>None</code></li>
+<li><em>Type</em>: <code>str</code></li>
+</ul>
+</div>
+<input id="__tabbed_14_2" name="__tabbed_14" type="radio" /><label for="__tabbed_14_2">Example</label><div class="tabbed-content">
+<p>See the <a href="../../advanced/">Advanced Section</a></p>
+</div>
+</div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../intro/" title="Ticker - Intro" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Ticker - Intro
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../modules/" title="Modules" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Modules
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/dpguthrie" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://www.linkedin.com/in/douglas-guthrie-07994a48/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://medium.com/@douglas.p.guthrie" target="_blank" rel="noopener" title="medium.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0 32v448h448V32H0zm372.2 106.1l-24 23c-2.1 1.6-3.1 4.2-2.7 6.7v169.3c-.4 2.6.6 5.2 2.7 6.7l23.5 23v5.1h-118V367l24.3-23.6c2.4-2.4 2.4-3.1 2.4-6.7V199.8l-67.6 171.6h-9.1L125 199.8v115c-.7 4.8 1 9.7 4.4 13.2l31.6 38.3v5.1H71.2v-5.1l31.6-38.3c3.4-3.5 4.9-8.4 4.1-13.2v-133c.4-3.7-1-7.3-3.8-9.8L75 138.1V133h87.3l67.4 148L289 133.1h83.2v5z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://dpguthrie.github.io" target="_blank" rel="noopener" title="dpguthrie.github.io" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M336.5 160C322 70.7 287.8 8 248 8s-74 62.7-88.5 152h177zM152 256c0 22.2 1.2 43.5 3.3 64h185.3c2.1-20.5 3.3-41.8 3.3-64s-1.2-43.5-3.3-64H155.3c-2.1 20.5-3.3 41.8-3.3 64zm324.7-96c-28.6-67.9-86.5-120.4-158-141.6 24.4 33.8 41.2 84.7 50 141.6h108zM177.2 18.4C105.8 39.6 47.8 92.1 19.3 160h108c8.7-56.9 25.5-107.8 49.9-141.6zM487.4 192H372.7c2.1 21 3.3 42.5 3.3 64s-1.2 43-3.3 64h114.6c5.5-20.5 8.6-41.8 8.6-64s-3.1-43.5-8.5-64zM120 256c0-21.5 1.2-43 3.3-64H8.6C3.2 212.5 0 233.8 0 256s3.2 43.5 8.6 64h114.6c-2-21-3.2-42.5-3.2-64zm39.5 96c14.5 89.3 48.7 152 88.5 152s74-62.7 88.5-152h-177zm159.3 141.6c71.4-21.2 129.4-73.7 158-141.6h-108c-8.8 56.9-25.6 107.8-50 141.6zM19.3 352c28.6 67.9 86.5 120.4 158 141.6-24.4-33.8-41.2-84.7-50-141.6h-108z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../../assets/javascripts/vendor.d710d30a.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.b39636ac.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../../..",
+          features: ["instant"],
+          search: Object.assign({
+            worker: "../../../assets/javascripts/worker/search.a68abb33.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="../../../js/termynal.js"></script>
+      
+        <script src="../../../js/custom.js"></script>
+      
+    
+  </body>
+</html>

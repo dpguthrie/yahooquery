@@ -1,0 +1,1576 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Python wrapper for unofficial Yahoo Finance API">
+      
+      
+      
+        <meta name="author" content="Doug Guthrie">
+      
+      <link rel="shortcut icon" href="../../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.4.0">
+    
+    
+      
+        <title>Miscellaenous - yahooquery</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.fe0cca5b.min.css">
+      
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.a46bcfb3.min.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#7e57c2">
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../../css/termynal.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="deep-purple" data-md-color-accent="">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#corporate_events" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="../../.." title="yahooquery" class="md-header-nav__button md-logo" aria-label="yahooquery">
+      
+  <img src="../../../img/logo_transparent_2.png" alt="logo">
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            yahooquery
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Miscellaenous
+            
+          </span>
+        </div>
+      
+    </div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/dpguthrie/yahooquery/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    yahooquery
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="yahooquery" class="md-nav__button md-logo" aria-label="yahooquery">
+      
+  <img src="../../../img/logo_transparent_2.png" alt="logo">
+
+    </a>
+    yahooquery
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/dpguthrie/yahooquery/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    yahooquery
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      User Guide
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="User Guide" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        User Guide
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../" title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-2" type="checkbox" id="nav-2-2" checked>
+    
+    <label class="md-nav__link" for="nav-2-2">
+      Ticker
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Ticker" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-2">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Ticker
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../intro/" title="Ticker - Intro" class="md-nav__link">
+      Ticker - Intro
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../keyword_arguments/" title="Keyword Arguments" class="md-nav__link">
+      Keyword Arguments
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../modules/" title="Modules" class="md-nav__link">
+      Modules
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../financials/" title="Financials" class="md-nav__link">
+      Financials
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../options/" title="Options" class="md-nav__link">
+      Options
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../historical/" title="Historical Prices" class="md-nav__link">
+      Historical Prices
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Miscellaenous
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="Miscellaenous" class="md-nav__link md-nav__link--active">
+      Miscellaenous
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#corporate_events" class="md-nav__link">
+    corporate_events
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#earnings_calendar" class="md-nav__link">
+    earnings_calendar
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#news" class="md-nav__link">
+    news
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quotes" class="md-nav__link">
+    quotes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommendations" class="md-nav__link">
+    recommendations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical_insights" class="md-nav__link">
+    technical_insights
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../premium/" title="Premium" class="md-nav__link">
+      Premium
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../screener/" title="Screener" class="md-nav__link">
+      Screener
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../research/" title="Research" class="md-nav__link">
+      Research
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../advanced/" title="Advanced" class="md-nav__link">
+      Advanced
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../misc/" title="Miscellaneous Functions" class="md-nav__link">
+      Miscellaneous Functions
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../alternative/" title="Alternatives" class="md-nav__link">
+      Alternatives
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../release_notes/" title="Release Notes" class="md-nav__link">
+      Release Notes
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#corporate_events" class="md-nav__link">
+    corporate_events
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#earnings_calendar" class="md-nav__link">
+    earnings_calendar
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#news" class="md-nav__link">
+    news
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quotes" class="md-nav__link">
+    quotes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommendations" class="md-nav__link">
+    recommendations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical_insights" class="md-nav__link">
+    technical_insights
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/dpguthrie/yahooquery/edit/master/docs/guide/ticker/miscellaenous.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  
+                
+                
+                  <h1>Miscellaenous</h1>
+                
+                <h3 id="corporate_events"><strong>corporate_events</strong><a class="headerlink" href="#corporate_events" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em>:  Significant events related to a given symbol(s)</li>
+<li><em>Return</em>:  <code>pandas.DataFrame</code></li>
+</ul>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
+<span class="hll"><span class="n">df</span> <span class="o">=</span> <span class="n">aapl</span><span class="o">.</span><span class="n">corporate_events</span>
+</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><label for="__tabbed_1_3">Data</label><div class="tabbed-content">
+<table>
+<thead>
+<tr>
+<th align="right"></th>
+<th align="left">date</th>
+<th align="right">significance</th>
+<th align="left">headline</th>
+<th align="left">parentTopics</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">0</td>
+<td align="left">2012-03-19 00:00:00</td>
+<td align="right">1</td>
+<td align="left">Apple Inc. Announces Plans To Initiate Dividend And Share Repurchase Program</td>
+<td align="left">Performance</td>
+</tr>
+<tr>
+<td align="right">1</td>
+<td align="left">2012-10-25 00:00:00</td>
+<td align="right">3</td>
+<td align="left">Apple Inc Declares Cash Dividend</td>
+<td align="left">Performance</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td align="left">2013-01-23 00:00:00</td>
+<td align="right">1</td>
+<td align="left">Apple Inc Issues Q2 2013 Revenue Guidance Below Analysts' Estimates; Declares Cash Dividend</td>
+<td align="left">Corporate Guidance</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td align="left">2013-04-23 00:00:00</td>
+<td align="right">1</td>
+<td align="left">Apple Inc Increases Repurchase Authorization To $60 Billion From The $10 Billion; Approves Quarterly Dividend</td>
+<td align="left">Ownership/Control</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td align="left">2013-07-23 00:00:00</td>
+<td align="right">3</td>
+<td align="left">Apple Inc Declares Cash Dividend</td>
+<td align="left">Performance</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<h3 id="earnings_calendar"><strong>earnings_calendar</strong><a class="headerlink" href="#earnings_calendar" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="2:3"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em>:  Upcoming and historical earnings information for given symbol(s)</li>
+<li><em>Return</em>:  <code>pandas.DataFrame</code></li>
+</ul>
+</div>
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
+<span class="hll"><span class="n">df</span> <span class="o">=</span> <span class="n">aapl</span><span class="o">.</span><span class="n">earnings_calendar</span>
+</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><label for="__tabbed_2_3">Data</label><div class="tabbed-content">
+<table>
+<thead>
+<tr>
+<th align="right"></th>
+<th align="left">Symbol</th>
+<th align="left">Company</th>
+<th align="left">Earnings Date</th>
+<th align="left">EPS Estimate</th>
+<th align="left">Reported EPS</th>
+<th align="left">Surprise(%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">0</td>
+<td align="left">AAPL</td>
+<td align="left">Apple Inc</td>
+<td align="left">Apr 28, 2021, 6 AMEDT</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="right">1</td>
+<td align="left">AAPL</td>
+<td align="left">Apple Inc</td>
+<td align="left">Jan 26, 2021, 6 AMEDT</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td align="left">AAPL</td>
+<td align="left">Apple Inc</td>
+<td align="left">Oct 28, 2020, 6 AMEDT</td>
+<td align="left">2.78</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td align="left">AAPL</td>
+<td align="left">Apple Inc.</td>
+<td align="left">Jul 30, 2020, 12 AMEDT</td>
+<td align="left">2.04</td>
+<td align="left">2.58</td>
+<td align="left">+26.22</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td align="left">AAPL</td>
+<td align="left">Apple Inc.</td>
+<td align="left">Apr 30, 2020, 12 AMEDT</td>
+<td align="left">2.26</td>
+<td align="left">2.55</td>
+<td align="left">+12.78</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<h3 id="news"><strong>news</strong><a class="headerlink" href="#news" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="3:3"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em>:  Get news headline and summary information for given symbol(s)</li>
+<li><em>Return</em>:  <code>list</code></li>
+<li><em>Arguments</em>:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">Argument</th>
+<th align="left">Type</th>
+<th align="left">Default</th>
+<th align="left">Required</th>
+<th align="left">Options</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">count</td>
+<td align="left"><code>int</code></td>
+<td align="left"><code>25</code></td>
+<td align="left">optional</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">start</td>
+<td align="left"><code>str</code> or <code>datetime.datetime</code></td>
+<td align="left"><code>None</code></td>
+<td align="left">optional</td>
+<td align="left">If a <code>str</code> is used, the format should be YYYY-MM-DD</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It's recommended to use one symbol when utilizing this method as there's no discernible way to group resulting news items to the symbols they belong to.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If multiple symbols are used, only one request will be made regardless of the number of symbols</p>
+</div>
+</div>
+<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
+<span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">news</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span></code></pre></div>
+
+</div>
+<input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><label for="__tabbed_3_3">Data</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">[{</span>
+    <span class="s1">&#39;rank&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;3a3b4532-38fb-3fcb-85b3-3cdc4d5bbabe&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;news&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Big Tech’s CEOs Got the Last Word. Here’s Why Tech Earnings Were So Important.&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;summary&#39;</span><span class="p">:</span> <span class="s1">&#39;Amazon’s sales were up 40</span><span class="si">% i</span><span class="s1">n the June quarter, which one analyst referred to as shocking levels of growth. Meanwhile, Apple couldn’t keep up with demand for Macs and iPads.&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;https://www.barrons.com/articles/heres-why-amazon-apple-and-facebook-earnings-were-so-important-51596232561?siteid=yhoof2&amp;yptr=yahoo&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;author_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Eric J. Savitz&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;provider_publish_time&#39;</span><span class="p">:</span> <span class="mi">1596232560</span><span class="p">,</span>
+    <span class="s1">&#39;provider_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Barrons.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;hosted&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;tickers&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;featured&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;timeZoneShortName&#39;</span><span class="p">:</span> <span class="s1">&#39;EDT&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;timeZoneFullName&#39;</span><span class="p">:</span> <span class="s1">&#39;America/New_York&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;gmtOffSetMilliseconds&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">14400000</span><span class="p">,</span>
+    <span class="s1">&#39;imageSet&#39;</span><span class="p">:</span> <span class="p">{}</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="s1">&#39;rank&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;e0ea15cf-9cd4-33fa-b8ef-87ea7ee40c32&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;news&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Microsoft Is in Talks to Buy TikTok in U.S.&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;summary&#39;</span><span class="p">:</span> <span class="s1">&#39;(Bloomberg) -- Microsoft Corp. is exploring an acquisition of TikTok’s operations in the U.S., according to a people familiar with the matter. A deal would give the software company a popular social-media service and relieve U.S. government pressure on the Chinese owner of the video-sharing app.The Trump administration has been weighing whether to direct China-based ByteDance Ltd. to divest its stake in TikTok’s U.S. operations, according to several people familiar with the issue. The U.S. has been investigating potential national security risks due to the Chinese company’s control of the app.While the administration was prepared to announce an order as soon as Friday, according to three people familiar with the matter, another person said later that the decision was on hold, pending further review by President Donald Trump. All of the people asked not to be identified because the deliberations are private.Spokespeople for Microsoft and TikTok declined to comment on any potential talks. The software company’s interest in the app was reported earlier by Fox Business Network.“We are looking at TikTok. We may be banning TikTok,” Trump told reporters Friday at the White House. “We are looking at a lot of alternatives with respect to TikTok.”Any transaction could face regulatory hurdles. ByteDance bought Musical.ly Inc. in 2017 and merged it with TikTok, creating a social-media hit in the U.S -- the first Chinese app to make such inroads. As TikTok became more popular, U.S. officials grew concerned about the potential for the Chinese government to use the app to gain data on U.S. citizens.The Committee on Foreign Investment in the U.S. began a review in 2019 of the Musical.ly purchase. In recent years, CFIUS, which investigates overseas acquisitions of U.S. businesses, has taken a much more aggressive role in reviewing and approving deals that may threaten national security. It can recommend that the president block or unwind transactions.It’s also possible that other potential buyers could come forward, said another person familiar with the discussions. Microsoft’s industry peers -- Facebook Inc., Apple Inc., Amazon.com Inc. and Alphabet Inc. -- fit the profile of potential suitors, though all are under antitrust scrutiny from U.S. regulators, which would likely complicate a deal.A purchase of TikTok would represent a huge coup for Microsoft, which would gain a popular consumer app that has won over young people with a steady diet of dance videos, lip-syncing clips and viral memes. The company has dabbled in social-media investments in the past, but hasn’t developed a popular service of its own in the lucrative sector. Microsoft acquired the LinkedIn job-hunting and corporate networking company for $26.2 billion in 2016.Microsoft can point to one acquisition that came with a massive existing community of users that has increased under its ownership -- the 2014 deal for Minecraft, the best-selling video game ever.Other purchases of popular services have gone less well. The 2011 pickup of Skype led to several years of stagnation for the voice-calling service and Microsoft fell behind newer products in the category. Outside of Xbox, the company hasn’t focused on younger consumers. A TikTok deal could change that, though, and give Microsoft “a crown jewel on the consumer social media front,” Dan Ives, an analyst at Wedbush Securities, wrote in a note to investors Friday.TikTok has repeatedly rejected accusations that it feeds user data to China or is beholden to Beijing, even though ByteDance is based there. TikTok now has a U.S.-based chief executive officer and ByteDance has considered making other organizational changes to satisfy U.S. authorities.“Hundreds of millions of people come to TikTok for entertainment and connection, including our community of creators and artists who are building livelihoods from the platform,” a TikTok spokeswoman said Friday. “We’re motivated by their passion and creativity, and committed to protecting their privacy and safety as we continue working to bring joy to families and meaningful careers to those who create on our platform.”The mechanics of separating the TikTok app in the U.S. from the rest of its operations won’t come without complications. Unlike many tech companies in the U.S. where engineers for, say, Google, work on particular products like YouTube or Google Maps, many of ByteDance’s engineers work across its different platforms and services and continue to work on TikTok globally.On Thursday, U.S. Senators Josh Hawley, a Missouri Republican, and Richard Blumenthal, a Connecticut Democrat, wrote the Justice Department asking for an investigation of whether TikTok has violated the constitutional rights of Americans by sharing private information with the Chinese government.A deal with Microsoft could potentially help extract ByteDance from the political war between the U.S. and China.U.S. Senator Marco Rubio, a Florida Republican and member of the Senate’s Select Committee on Intelligence, applauded the idea of a TikTok sale. “In its current form, TikTok represents a potential threat to personal privacy and our national security,” Rubio said in a statement. “We must do more than simply remove ByteDance from the equation. Moving forward, we must establish a framework of standards that must be met before a high-risk, foreign-based app is allowed to operate on American telecommunications networks and devices.”(Updates with details of TikTok’s operations in the 14th paragraph.)For more articles like this, please visit us at bloomberg.comSubscribe now to stay ahead with the most trusted business news source.©2020 Bloomberg L.P.&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;https://finance.yahoo.com/news/microsoft-said-talks-buy-tiktok-185221680.html&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;author_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Kurt Wagner, Jennifer Jacobs, Saleha Mohsin and Jenny Leonard&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;provider_publish_time&#39;</span><span class="p">:</span> <span class="mi">1596232267</span><span class="p">,</span>
+    <span class="s1">&#39;provider_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Bloomberg&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;hosted&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;tickers&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;thumbnail&#39;</span><span class="p">:</span> <span class="s1">&#39;https://media.zenfs.com/en/bloomberg_technology_68/d998c0ffe5e9a652dce2e465c5d6d8a3&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;featured&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;timeZoneShortName&#39;</span><span class="p">:</span> <span class="s1">&#39;EDT&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;timeZoneFullName&#39;</span><span class="p">:</span> <span class="s1">&#39;America/New_York&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;gmtOffSetMilliseconds&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">14400000</span><span class="p">,</span>
+    <span class="s1">&#39;imageSet&#39;</span><span class="p">:</span> <span class="p">{}</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="s1">&#39;rank&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;8cc7e7d9-87ec-3aaf-8a51-24f8ae1f6eca&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;news&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Bitcoin Is Rising Again. Asking Why Takes You Down the Financial Rabbit Hole.&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;summary&#39;</span><span class="p">:</span> <span class="s1">&#39;How to explain Bitcoin’s reversal of fortune? In search of an answer our columnist explores the dollar, the euro, gold, stocks, inflation, and more.&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;https://www.barrons.com/articles/bitcoin-is-rising-again-asking-why-takes-you-down-a-financial-rabbit-hole-51596231804?siteid=yhoof2&amp;yptr=yahoo&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;author_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Jack Hough&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;provider_publish_time&#39;</span><span class="p">:</span> <span class="mi">1596231780</span><span class="p">,</span>
+    <span class="s1">&#39;provider_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Barrons.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;hosted&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;tickers&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;featured&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;timeZoneShortName&#39;</span><span class="p">:</span> <span class="s1">&#39;EDT&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;timeZoneFullName&#39;</span><span class="p">:</span> <span class="s1">&#39;America/New_York&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;gmtOffSetMilliseconds&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">14400000</span><span class="p">,</span>
+    <span class="s1">&#39;imageSet&#39;</span><span class="p">:</span> <span class="p">{}</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="s1">&#39;rank&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;14ba64e7-a900-3e30-b513-94a5efce0dd7&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;news&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Apple Stock Rallied 10</span><span class="si">% F</span><span class="s1">riday. Here’s Why.&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;summary&#39;</span><span class="p">:</span> <span class="s1">&#39;One day after reporting June quarter results, Apple (ticker: AAPL) stock surged 10.5% to $425.04, the stock’s first-ever close above $400.  The stock won’t stay there for long, though: The company Thursday declared a 4-for-1 stock split, effective August 31.  A big revenue beat: Apple had $59.7 billion in sales in the quarter, up 11</span><span class="si">% f</span><span class="s1">rom a year ago, and beating consensus by $7.6 billion.&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;https://www.barrons.com/articles/apple-stock-hits-new-highs-earnings-51596215820?siteid=yhoof2&amp;yptr=yahoo&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;author_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Eric J. Savitz&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;provider_publish_time&#39;</span><span class="p">:</span> <span class="mi">1596231300</span><span class="p">,</span>
+    <span class="s1">&#39;provider_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Barrons.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;hosted&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;tickers&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;featured&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;timeZoneShortName&#39;</span><span class="p">:</span> <span class="s1">&#39;EDT&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;timeZoneFullName&#39;</span><span class="p">:</span> <span class="s1">&#39;America/New_York&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;gmtOffSetMilliseconds&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">14400000</span><span class="p">,</span>
+    <span class="s1">&#39;imageSet&#39;</span><span class="p">:</span> <span class="p">{}</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="s1">&#39;rank&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;5894f228-5bad-3eda-8a48-d8fc0bdced0c&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;news&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Apple Tops Saudi Aramco as World’s Most Valuable Company&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;summary&#39;</span><span class="p">:</span> <span class="s1">&#39;(Bloomberg) -- Apple Inc. became the world’s most valuable company with its market value overtaking Saudi Aramco in the wake of better-than-expected earnings.Apple jumped 10</span><span class="si">% o</span><span class="s1">n Friday, ending the day with a record market capitalization of $1.817 trillion. It’s the first time the company’s valuation has surpassed that of Saudi Arabia’s national oil company, which made its market debut in Riyadh in December, and is valued at $1.76 trillion. Before that, Apple had vied with Microsoft Corp. for the title of the U.S.’s largest public company.The dethroning of Aramco comes after a tumultuous period for the Saudi company. Its initial public offering fell short of Crown Price Mohammed bin Salman’s expectations. The kingdom’s de facto ruler initially wanted a valuation of $2 trillion and to raise $100 billion. But after foreign investors balked at the pricing, the government settled on a smaller domestic offering and raised about $30 billion, still the largest IPO ever.Then came this year’s plunge in crude prices as energy demand crashed with the spread of the virus. Aramco’s second-quarter revenue probably dropped to about $37 billion from $76 billion a year earlier, according to analyst estimates compiled by Bloomberg. That’s less than the $59.7 billion in sales that Apple reported for its most recent period.Aramco’s stock is down 6.4</span><span class="si">% s</span><span class="s1">ince the end of December, though that’s far less than the fall of other oil majors. Exxon Mobil Corp. has declined 40</span><span class="si">% a</span><span class="s1">nd Royal Dutch Shell Plc has dropped 50%.Apple, meanwhile, has benefited as the pandemic has strengthened the market positions of the world’s biggest technology companies, which boast strong balance sheets and fast-growing businesses thanks to an acceleration in the shift to digital services. The iPhone maker’s shares have gained 45</span><span class="si">% s</span><span class="s1">o far this year.(Adds closing share values throughout. A previous version of this story corrected the market cap gain.)For more articles like this, please visit us at bloomberg.comSubscribe now to stay ahead with the most trusted business news source.©2020 Bloomberg L.P.&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;https://finance.yahoo.com/news/apple-briefly-tops-saudi-aramco-153503708.html&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;author_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Jeran Wittenstein and Matthew Martin&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;provider_publish_time&#39;</span><span class="p">:</span> <span class="mi">1596229879</span><span class="p">,</span>
+    <span class="s1">&#39;provider_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Bloomberg&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;hosted&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;tickers&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;thumbnail&#39;</span><span class="p">:</span> <span class="s1">&#39;https://media.zenfs.com/en/bloomberg_markets_842/8a17157f40b14e617bb6ed1b8e2774f5&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;featured&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;timeZoneShortName&#39;</span><span class="p">:</span> <span class="s1">&#39;EDT&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;timeZoneFullName&#39;</span><span class="p">:</span> <span class="s1">&#39;America/New_York&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;gmtOffSetMilliseconds&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">14400000</span><span class="p">,</span>
+    <span class="s1">&#39;imageSet&#39;</span><span class="p">:</span> <span class="p">{}</span>
+<span class="p">}]</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="quotes"><strong>quotes</strong><a class="headerlink" href="#quotes" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="4:3"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em>:  Get real-time quote information for given symbol(s)</li>
+<li><em>Return</em>:  <code>list</code></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If multiple symbols are used, only one request will be made regardless of the number of symbols</p>
+</div>
+</div>
+<input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><label for="__tabbed_4_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">tickers</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;fb aapl amzn nflx goog&#39;</span><span class="p">)</span>
+<span class="hll"><span class="n">tickers</span><span class="o">.</span><span class="n">quotes</span>
+</span></code></pre></div>
+
+</div>
+<input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><label for="__tabbed_4_3">Data</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">[{</span>
+    <span class="s1">&#39;language&#39;</span><span class="p">:</span> <span class="s1">&#39;en-US&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="s1">&#39;US&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;quoteType&#39;</span><span class="p">:</span> <span class="s1">&#39;EQUITY&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;quoteSourceName&#39;</span><span class="p">:</span> <span class="s1">&#39;Nasdaq Real Time Price&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;triggerable&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;currency&#39;</span><span class="p">:</span> <span class="s1">&#39;USD&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;tradeable&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;firstTradeDateMilliseconds&#39;</span><span class="p">:</span> <span class="mi">1337347800000</span><span class="p">,</span>
+    <span class="s1">&#39;priceHint&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketChangePercent&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.067015484</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketTime&#39;</span><span class="p">:</span> <span class="mi">1596233013</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketPrice&#39;</span><span class="p">:</span> <span class="mf">253.5</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketChange&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.16999817</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketChange&#39;</span><span class="p">:</span> <span class="mf">19.169998</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketChangePercent&#39;</span><span class="p">:</span> <span class="mf">8.17484</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketTime&#39;</span><span class="p">:</span> <span class="mi">1596225602</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketPrice&#39;</span><span class="p">:</span> <span class="mf">253.67</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketDayHigh&#39;</span><span class="p">:</span> <span class="mf">255.85</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketDayRange&#39;</span><span class="p">:</span> <span class="s1">&#39;249.0 - 255.85&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketDayLow&#39;</span><span class="p">:</span> <span class="mf">249.0</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketVolume&#39;</span><span class="p">:</span> <span class="mi">52105898</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketPreviousClose&#39;</span><span class="p">:</span> <span class="mf">234.5</span><span class="p">,</span>
+    <span class="s1">&#39;bid&#39;</span><span class="p">:</span> <span class="mf">253.31</span><span class="p">,</span>
+    <span class="s1">&#39;ask&#39;</span><span class="p">:</span> <span class="mf">253.7</span><span class="p">,</span>
+    <span class="s1">&#39;bidSize&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+    <span class="s1">&#39;askSize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="s1">&#39;fullExchangeName&#39;</span><span class="p">:</span> <span class="s1">&#39;NasdaqGS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;financialCurrency&#39;</span><span class="p">:</span> <span class="s1">&#39;USD&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketOpen&#39;</span><span class="p">:</span> <span class="mf">255.82</span><span class="p">,</span>
+    <span class="s1">&#39;averageDailyVolume3Month&#39;</span><span class="p">:</span> <span class="mi">24501318</span><span class="p">,</span>
+    <span class="s1">&#39;averageDailyVolume10Day&#39;</span><span class="p">:</span> <span class="mi">17021500</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekLowChange&#39;</span><span class="p">:</span> <span class="mf">116.56999</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekLowChangePercent&#39;</span><span class="p">:</span> <span class="mf">0.8502552</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekRange&#39;</span><span class="p">:</span> <span class="s1">&#39;137.1 - 255.85&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekHighChange&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.180008</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekHighChangePercent&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.008520649</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekLow&#39;</span><span class="p">:</span> <span class="mf">137.1</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekHigh&#39;</span><span class="p">:</span> <span class="mf">255.85</span><span class="p">,</span>
+    <span class="s1">&#39;earningsTimestamp&#39;</span><span class="p">:</span> <span class="mi">1596124800</span><span class="p">,</span>
+    <span class="s1">&#39;earningsTimestampStart&#39;</span><span class="p">:</span> <span class="mi">1603868340</span><span class="p">,</span>
+    <span class="s1">&#39;earningsTimestampEnd&#39;</span><span class="p">:</span> <span class="mi">1604304000</span><span class="p">,</span>
+    <span class="s1">&#39;trailingPE&#39;</span><span class="p">:</span> <span class="mf">34.80653</span><span class="p">,</span>
+    <span class="s1">&#39;epsTrailingTwelveMonths&#39;</span><span class="p">:</span> <span class="mf">7.288</span><span class="p">,</span>
+    <span class="s1">&#39;epsForward&#39;</span><span class="p">:</span> <span class="mf">9.74</span><span class="p">,</span>
+    <span class="s1">&#39;sharesOutstanding&#39;</span><span class="p">:</span> <span class="mi">2408470016</span><span class="p">,</span>
+    <span class="s1">&#39;bookValue&#39;</span><span class="p">:</span> <span class="mf">36.936</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyDayAverage&#39;</span><span class="p">:</span> <span class="mf">235.86743</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyDayAverageChange&#39;</span><span class="p">:</span> <span class="mf">17.802567</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyDayAverageChangePercent&#39;</span><span class="p">:</span> <span class="mf">0.075477004</span><span class="p">,</span>
+    <span class="s1">&#39;twoHundredDayAverage&#39;</span><span class="p">:</span> <span class="mf">207.2297</span><span class="p">,</span>
+    <span class="s1">&#39;twoHundredDayAverageChange&#39;</span><span class="p">:</span> <span class="mf">46.440292</span><span class="p">,</span>
+    <span class="s1">&#39;twoHundredDayAverageChangePercent&#39;</span><span class="p">:</span> <span class="mf">0.22410056</span><span class="p">,</span>
+    <span class="s1">&#39;marketCap&#39;</span><span class="p">:</span> <span class="mi">723725582336</span><span class="p">,</span>
+    <span class="s1">&#39;forwardPE&#39;</span><span class="p">:</span> <span class="mf">26.044147</span><span class="p">,</span>
+    <span class="s1">&#39;priceToBook&#39;</span><span class="p">:</span> <span class="mf">6.867825</span><span class="p">,</span>
+    <span class="s1">&#39;sourceInterval&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="s1">&#39;exchangeDataDelayedBy&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s1">&#39;marketState&#39;</span><span class="p">:</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;exchange&#39;</span><span class="p">:</span> <span class="s1">&#39;NMS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;shortName&#39;</span><span class="p">:</span> <span class="s1">&#39;Facebook, Inc.&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;longName&#39;</span><span class="p">:</span> <span class="s1">&#39;Facebook, Inc.&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;messageBoardId&#39;</span><span class="p">:</span> <span class="s1">&#39;finmb_20765463&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;exchangeTimezoneName&#39;</span><span class="p">:</span> <span class="s1">&#39;America/New_York&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;exchangeTimezoneShortName&#39;</span><span class="p">:</span> <span class="s1">&#39;EDT&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;gmtOffSetMilliseconds&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">14400000</span><span class="p">,</span>
+    <span class="s1">&#39;market&#39;</span><span class="p">:</span> <span class="s1">&#39;us_market&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;esgPopulated&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;displayName&#39;</span><span class="p">:</span> <span class="s1">&#39;Facebook&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;FB&#39;</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="s1">&#39;language&#39;</span><span class="p">:</span> <span class="s1">&#39;en-US&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="s1">&#39;US&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;quoteType&#39;</span><span class="p">:</span> <span class="s1">&#39;EQUITY&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;quoteSourceName&#39;</span><span class="p">:</span> <span class="s1">&#39;Delayed Quote&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;triggerable&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;currency&#39;</span><span class="p">:</span> <span class="s1">&#39;USD&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;tradeable&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;firstTradeDateMilliseconds&#39;</span><span class="p">:</span> <span class="mi">345479400000</span><span class="p">,</span>
+    <span class="s1">&#39;priceHint&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketChangePercent&#39;</span><span class="p">:</span> <span class="mf">0.519949</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketTime&#39;</span><span class="p">:</span> <span class="mi">1596233031</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketPrice&#39;</span><span class="p">:</span> <span class="mf">427.25</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketChange&#39;</span><span class="p">:</span> <span class="mf">2.2099915</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketChange&#39;</span><span class="p">:</span> <span class="mf">40.28</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketChangePercent&#39;</span><span class="p">:</span> <span class="mf">10.468863</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketTime&#39;</span><span class="p">:</span> <span class="mi">1596225602</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketPrice&#39;</span><span class="p">:</span> <span class="mf">425.04</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketDayHigh&#39;</span><span class="p">:</span> <span class="mf">425.66</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketDayRange&#39;</span><span class="p">:</span> <span class="s1">&#39;403.36 - 425.66&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketDayLow&#39;</span><span class="p">:</span> <span class="mf">403.36</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketVolume&#39;</span><span class="p">:</span> <span class="mi">91201476</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketPreviousClose&#39;</span><span class="p">:</span> <span class="mf">384.76</span><span class="p">,</span>
+    <span class="s1">&#39;bid&#39;</span><span class="p">:</span> <span class="mf">427.26</span><span class="p">,</span>
+    <span class="s1">&#39;ask&#39;</span><span class="p">:</span> <span class="mf">426.2</span><span class="p">,</span>
+    <span class="s1">&#39;bidSize&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="s1">&#39;askSize&#39;</span><span class="p">:</span> <span class="mi">31</span><span class="p">,</span>
+    <span class="s1">&#39;fullExchangeName&#39;</span><span class="p">:</span> <span class="s1">&#39;NasdaqGS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;financialCurrency&#39;</span><span class="p">:</span> <span class="s1">&#39;USD&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketOpen&#39;</span><span class="p">:</span> <span class="mf">411.535</span><span class="p">,</span>
+    <span class="s1">&#39;averageDailyVolume3Month&#39;</span><span class="p">:</span> <span class="mi">34664412</span><span class="p">,</span>
+    <span class="s1">&#39;averageDailyVolume10Day&#39;</span><span class="p">:</span> <span class="mi">32670312</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekLowChange&#39;</span><span class="p">:</span> <span class="mf">232.46</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekLowChangePercent&#39;</span><span class="p">:</span> <span class="mf">1.2070827</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekRange&#39;</span><span class="p">:</span> <span class="s1">&#39;192.58 - 425.66&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekHighChange&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.6199951</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekHighChangePercent&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0014565501</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekLow&#39;</span><span class="p">:</span> <span class="mf">192.58</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekHigh&#39;</span><span class="p">:</span> <span class="mf">425.66</span><span class="p">,</span>
+    <span class="s1">&#39;dividendDate&#39;</span><span class="p">:</span> <span class="mi">1589414400</span><span class="p">,</span>
+    <span class="s1">&#39;earningsTimestamp&#39;</span><span class="p">:</span> <span class="mi">1596124800</span><span class="p">,</span>
+    <span class="s1">&#39;earningsTimestampStart&#39;</span><span class="p">:</span> <span class="mi">1603868340</span><span class="p">,</span>
+    <span class="s1">&#39;earningsTimestampEnd&#39;</span><span class="p">:</span> <span class="mi">1604304000</span><span class="p">,</span>
+    <span class="s1">&#39;trailingAnnualDividendRate&#39;</span><span class="p">:</span> <span class="mf">3.08</span><span class="p">,</span>
+    <span class="s1">&#39;trailingPE&#39;</span><span class="p">:</span> <span class="mf">32.236633</span><span class="p">,</span>
+    <span class="s1">&#39;trailingAnnualDividendYield&#39;</span><span class="p">:</span> <span class="mf">0.0080049895</span><span class="p">,</span>
+    <span class="s1">&#39;epsTrailingTwelveMonths&#39;</span><span class="p">:</span> <span class="mf">13.185</span><span class="p">,</span>
+    <span class="s1">&#39;epsForward&#39;</span><span class="p">:</span> <span class="mf">14.97</span><span class="p">,</span>
+    <span class="s1">&#39;sharesOutstanding&#39;</span><span class="p">:</span> <span class="mi">4334329856</span><span class="p">,</span>
+    <span class="s1">&#39;bookValue&#39;</span><span class="p">:</span> <span class="mf">16.761</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyDayAverage&#39;</span><span class="p">:</span> <span class="mf">369.66028</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyDayAverageChange&#39;</span><span class="p">:</span> <span class="mf">55.37973</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyDayAverageChangePercent&#39;</span><span class="p">:</span> <span class="mf">0.1498125</span><span class="p">,</span>
+    <span class="s1">&#39;twoHundredDayAverage&#39;</span><span class="p">:</span> <span class="mf">313.8948</span><span class="p">,</span>
+    <span class="s1">&#39;twoHundredDayAverageChange&#39;</span><span class="p">:</span> <span class="mf">111.1452</span><span class="p">,</span>
+    <span class="s1">&#39;twoHundredDayAverageChangePercent&#39;</span><span class="p">:</span> <span class="mf">0.35408422</span><span class="p">,</span>
+    <span class="s1">&#39;marketCap&#39;</span><span class="p">:</span> <span class="mi">1842263621632</span><span class="p">,</span>
+    <span class="s1">&#39;forwardPE&#39;</span><span class="p">:</span> <span class="mf">28.392786</span><span class="p">,</span>
+    <span class="s1">&#39;priceToBook&#39;</span><span class="p">:</span> <span class="mf">25.35887</span><span class="p">,</span>
+    <span class="s1">&#39;sourceInterval&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="s1">&#39;exchangeDataDelayedBy&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s1">&#39;marketState&#39;</span><span class="p">:</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;exchange&#39;</span><span class="p">:</span> <span class="s1">&#39;NMS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;shortName&#39;</span><span class="p">:</span> <span class="s1">&#39;Apple Inc.&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;longName&#39;</span><span class="p">:</span> <span class="s1">&#39;Apple Inc.&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;messageBoardId&#39;</span><span class="p">:</span> <span class="s1">&#39;finmb_24937&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;exchangeTimezoneName&#39;</span><span class="p">:</span> <span class="s1">&#39;America/New_York&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;exchangeTimezoneShortName&#39;</span><span class="p">:</span> <span class="s1">&#39;EDT&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;gmtOffSetMilliseconds&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">14400000</span><span class="p">,</span>
+    <span class="s1">&#39;market&#39;</span><span class="p">:</span> <span class="s1">&#39;us_market&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;esgPopulated&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;displayName&#39;</span><span class="p">:</span> <span class="s1">&#39;Apple&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;AAPL&#39;</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="s1">&#39;language&#39;</span><span class="p">:</span> <span class="s1">&#39;en-US&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="s1">&#39;US&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;quoteType&#39;</span><span class="p">:</span> <span class="s1">&#39;EQUITY&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;quoteSourceName&#39;</span><span class="p">:</span> <span class="s1">&#39;Nasdaq Real Time Price&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;triggerable&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;currency&#39;</span><span class="p">:</span> <span class="s1">&#39;USD&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;tradeable&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;firstTradeDateMilliseconds&#39;</span><span class="p">:</span> <span class="mi">863703000000</span><span class="p">,</span>
+    <span class="s1">&#39;priceHint&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketChangePercent&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.2673244</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketTime&#39;</span><span class="p">:</span> <span class="mi">1596232724</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketPrice&#39;</span><span class="p">:</span> <span class="mf">3156.22</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketChange&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">8.459961</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketChange&#39;</span><span class="p">:</span> <span class="mf">112.80005</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketChangePercent&#39;</span><span class="p">:</span> <span class="mf">3.696084</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketTime&#39;</span><span class="p">:</span> <span class="mi">1596225602</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketPrice&#39;</span><span class="p">:</span> <span class="mf">3164.68</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketDayHigh&#39;</span><span class="p">:</span> <span class="mf">3244.5</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketDayRange&#39;</span><span class="p">:</span> <span class="s1">&#39;3151.02 - 3244.5&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketDayLow&#39;</span><span class="p">:</span> <span class="mf">3151.02</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketVolume&#39;</span><span class="p">:</span> <span class="mi">7862360</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketPreviousClose&#39;</span><span class="p">:</span> <span class="mf">3051.88</span><span class="p">,</span>
+    <span class="s1">&#39;bid&#39;</span><span class="p">:</span> <span class="mf">3160.52</span><span class="p">,</span>
+    <span class="s1">&#39;ask&#39;</span><span class="p">:</span> <span class="mf">3160.0</span><span class="p">,</span>
+    <span class="s1">&#39;bidSize&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="s1">&#39;askSize&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+    <span class="s1">&#39;fullExchangeName&#39;</span><span class="p">:</span> <span class="s1">&#39;NasdaqGS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;financialCurrency&#39;</span><span class="p">:</span> <span class="s1">&#39;USD&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketOpen&#39;</span><span class="p">:</span> <span class="mf">3244.0</span><span class="p">,</span>
+    <span class="s1">&#39;averageDailyVolume3Month&#39;</span><span class="p">:</span> <span class="mi">4675034</span><span class="p">,</span>
+    <span class="s1">&#39;averageDailyVolume10Day&#39;</span><span class="p">:</span> <span class="mi">4733650</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekLowChange&#39;</span><span class="p">:</span> <span class="mf">1538.6499</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekLowChangePercent&#39;</span><span class="p">:</span> <span class="mf">0.9462617</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekRange&#39;</span><span class="p">:</span> <span class="s1">&#39;1626.03 - 3344.29&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekHighChange&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">179.6101</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekHighChangePercent&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.053706497</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekLow&#39;</span><span class="p">:</span> <span class="mf">1626.03</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekHigh&#39;</span><span class="p">:</span> <span class="mf">3344.29</span><span class="p">,</span>
+    <span class="s1">&#39;earningsTimestamp&#39;</span><span class="p">:</span> <span class="mi">1596124800</span><span class="p">,</span>
+    <span class="s1">&#39;earningsTimestampStart&#39;</span><span class="p">:</span> <span class="mi">1603382400</span><span class="p">,</span>
+    <span class="s1">&#39;earningsTimestampEnd&#39;</span><span class="p">:</span> <span class="mi">1603728000</span><span class="p">,</span>
+    <span class="s1">&#39;trailingPE&#39;</span><span class="p">:</span> <span class="mf">151.15971</span><span class="p">,</span>
+    <span class="s1">&#39;epsTrailingTwelveMonths&#39;</span><span class="p">:</span> <span class="mf">20.936</span><span class="p">,</span>
+    <span class="s1">&#39;epsForward&#39;</span><span class="p">:</span> <span class="mf">37.79</span><span class="p">,</span>
+    <span class="s1">&#39;sharesOutstanding&#39;</span><span class="p">:</span> <span class="mi">498776000</span><span class="p">,</span>
+    <span class="s1">&#39;bookValue&#39;</span><span class="p">:</span> <span class="mf">130.806</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyDayAverage&#39;</span><span class="p">:</span> <span class="mf">2896.579</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyDayAverageChange&#39;</span><span class="p">:</span> <span class="mf">268.10083</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyDayAverageChangePercent&#39;</span><span class="p">:</span> <span class="mf">0.09255774</span><span class="p">,</span>
+    <span class="s1">&#39;twoHundredDayAverage&#39;</span><span class="p">:</span> <span class="mf">2323.4736</span><span class="p">,</span>
+    <span class="s1">&#39;twoHundredDayAverageChange&#39;</span><span class="p">:</span> <span class="mf">841.2063</span><span class="p">,</span>
+    <span class="s1">&#39;twoHundredDayAverageChangePercent&#39;</span><span class="p">:</span> <span class="mf">0.36204684</span><span class="p">,</span>
+    <span class="s1">&#39;marketCap&#39;</span><span class="p">:</span> <span class="mi">1578466410496</span><span class="p">,</span>
+    <span class="s1">&#39;forwardPE&#39;</span><span class="p">:</span> <span class="mf">83.74384</span><span class="p">,</span>
+    <span class="s1">&#39;priceToBook&#39;</span><span class="p">:</span> <span class="mf">24.193691</span><span class="p">,</span>
+    <span class="s1">&#39;sourceInterval&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="s1">&#39;exchangeDataDelayedBy&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s1">&#39;marketState&#39;</span><span class="p">:</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;exchange&#39;</span><span class="p">:</span> <span class="s1">&#39;NMS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;shortName&#39;</span><span class="p">:</span> <span class="s1">&#39;Amazon.com, Inc.&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;longName&#39;</span><span class="p">:</span> <span class="s1">&#39;Amazon.com, Inc.&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;messageBoardId&#39;</span><span class="p">:</span> <span class="s1">&#39;finmb_18749&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;exchangeTimezoneName&#39;</span><span class="p">:</span> <span class="s1">&#39;America/New_York&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;exchangeTimezoneShortName&#39;</span><span class="p">:</span> <span class="s1">&#39;EDT&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;gmtOffSetMilliseconds&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">14400000</span><span class="p">,</span>
+    <span class="s1">&#39;market&#39;</span><span class="p">:</span> <span class="s1">&#39;us_market&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;esgPopulated&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;displayName&#39;</span><span class="p">:</span> <span class="s1">&#39;Amazon.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;AMZN&#39;</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="s1">&#39;language&#39;</span><span class="p">:</span> <span class="s1">&#39;en-US&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="s1">&#39;US&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;quoteType&#39;</span><span class="p">:</span> <span class="s1">&#39;EQUITY&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;quoteSourceName&#39;</span><span class="p">:</span> <span class="s1">&#39;Nasdaq Real Time Price&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;triggerable&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;currency&#39;</span><span class="p">:</span> <span class="s1">&#39;USD&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;tradeable&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;firstTradeDateMilliseconds&#39;</span><span class="p">:</span> <span class="mi">1022160600000</span><span class="p">,</span>
+    <span class="s1">&#39;priceHint&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketChangePercent&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.5584215</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketTime&#39;</span><span class="p">:</span> <span class="mi">1596232099</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketPrice&#39;</span><span class="p">:</span> <span class="mf">486.15</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketChange&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.730011</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketChange&#39;</span><span class="p">:</span> <span class="mf">3.080017</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketChangePercent&#39;</span><span class="p">:</span> <span class="mf">0.6340093</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketTime&#39;</span><span class="p">:</span> <span class="mi">1596225602</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketPrice&#39;</span><span class="p">:</span> <span class="mf">488.88</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketDayHigh&#39;</span><span class="p">:</span> <span class="mf">494.795</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketDayRange&#39;</span><span class="p">:</span> <span class="s1">&#39;484.5 - 494.795&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketDayLow&#39;</span><span class="p">:</span> <span class="mf">484.5</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketVolume&#39;</span><span class="p">:</span> <span class="mi">5797772</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketPreviousClose&#39;</span><span class="p">:</span> <span class="mf">485.8</span><span class="p">,</span>
+    <span class="s1">&#39;bid&#39;</span><span class="p">:</span> <span class="mf">487.3</span><span class="p">,</span>
+    <span class="s1">&#39;ask&#39;</span><span class="p">:</span> <span class="mf">488.56</span><span class="p">,</span>
+    <span class="s1">&#39;bidSize&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+    <span class="s1">&#39;askSize&#39;</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span>
+    <span class="s1">&#39;fullExchangeName&#39;</span><span class="p">:</span> <span class="s1">&#39;NasdaqGS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;financialCurrency&#39;</span><span class="p">:</span> <span class="s1">&#39;USD&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketOpen&#39;</span><span class="p">:</span> <span class="mf">488.29</span><span class="p">,</span>
+    <span class="s1">&#39;averageDailyVolume3Month&#39;</span><span class="p">:</span> <span class="mi">7602690</span><span class="p">,</span>
+    <span class="s1">&#39;averageDailyVolume10Day&#39;</span><span class="p">:</span> <span class="mi">7325312</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekLowChange&#39;</span><span class="p">:</span> <span class="mf">236.6</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekLowChangePercent&#39;</span><span class="p">:</span> <span class="mf">0.93784684</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekRange&#39;</span><span class="p">:</span> <span class="s1">&#39;252.28 - 575.37&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekHighChange&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">86.48999</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekHighChangePercent&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.15032065</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekLow&#39;</span><span class="p">:</span> <span class="mf">252.28</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekHigh&#39;</span><span class="p">:</span> <span class="mf">575.37</span><span class="p">,</span>
+    <span class="s1">&#39;earningsTimestamp&#39;</span><span class="p">:</span> <span class="mi">1594900801</span><span class="p">,</span>
+    <span class="s1">&#39;earningsTimestampStart&#39;</span><span class="p">:</span> <span class="mi">1602676800</span><span class="p">,</span>
+    <span class="s1">&#39;earningsTimestampEnd&#39;</span><span class="p">:</span> <span class="mi">1603123200</span><span class="p">,</span>
+    <span class="s1">&#39;trailingPE&#39;</span><span class="p">:</span> <span class="mf">82.55319</span><span class="p">,</span>
+    <span class="s1">&#39;epsTrailingTwelveMonths&#39;</span><span class="p">:</span> <span class="mf">5.922</span><span class="p">,</span>
+    <span class="s1">&#39;epsForward&#39;</span><span class="p">:</span> <span class="mf">8.78</span><span class="p">,</span>
+    <span class="s1">&#39;sharesOutstanding&#39;</span><span class="p">:</span> <span class="mi">441015008</span><span class="p">,</span>
+    <span class="s1">&#39;bookValue&#39;</span><span class="p">:</span> <span class="mf">21.166</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyDayAverage&#39;</span><span class="p">:</span> <span class="mf">478.79858</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyDayAverageChange&#39;</span><span class="p">:</span> <span class="mf">10.081421</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyDayAverageChangePercent&#39;</span><span class="p">:</span> <span class="mf">0.021055661</span><span class="p">,</span>
+    <span class="s1">&#39;twoHundredDayAverage&#39;</span><span class="p">:</span> <span class="mf">409.49237</span><span class="p">,</span>
+    <span class="s1">&#39;twoHundredDayAverageChange&#39;</span><span class="p">:</span> <span class="mf">79.387634</span><span class="p">,</span>
+    <span class="s1">&#39;twoHundredDayAverageChangePercent&#39;</span><span class="p">:</span> <span class="mf">0.19386841</span><span class="p">,</span>
+    <span class="s1">&#39;marketCap&#39;</span><span class="p">:</span> <span class="mi">215603412992</span><span class="p">,</span>
+    <span class="s1">&#39;forwardPE&#39;</span><span class="p">:</span> <span class="mf">55.681095</span><span class="p">,</span>
+    <span class="s1">&#39;priceToBook&#39;</span><span class="p">:</span> <span class="mf">23.09742</span><span class="p">,</span>
+    <span class="s1">&#39;sourceInterval&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="s1">&#39;exchangeDataDelayedBy&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s1">&#39;marketState&#39;</span><span class="p">:</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;exchange&#39;</span><span class="p">:</span> <span class="s1">&#39;NMS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;shortName&#39;</span><span class="p">:</span> <span class="s1">&#39;Netflix, Inc.&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;longName&#39;</span><span class="p">:</span> <span class="s1">&#39;Netflix, Inc.&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;messageBoardId&#39;</span><span class="p">:</span> <span class="s1">&#39;finmb_32012&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;exchangeTimezoneName&#39;</span><span class="p">:</span> <span class="s1">&#39;America/New_York&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;exchangeTimezoneShortName&#39;</span><span class="p">:</span> <span class="s1">&#39;EDT&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;gmtOffSetMilliseconds&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">14400000</span><span class="p">,</span>
+    <span class="s1">&#39;market&#39;</span><span class="p">:</span> <span class="s1">&#39;us_market&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;esgPopulated&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;displayName&#39;</span><span class="p">:</span> <span class="s1">&#39;Netflix&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;NFLX&#39;</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="s1">&#39;language&#39;</span><span class="p">:</span> <span class="s1">&#39;en-US&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="s1">&#39;US&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;quoteType&#39;</span><span class="p">:</span> <span class="s1">&#39;EQUITY&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;quoteSourceName&#39;</span><span class="p">:</span> <span class="s1">&#39;Delayed Quote&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;triggerable&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;currency&#39;</span><span class="p">:</span> <span class="s1">&#39;USD&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;tradeable&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;firstTradeDateMilliseconds&#39;</span><span class="p">:</span> <span class="mi">1092922200000</span><span class="p">,</span>
+    <span class="s1">&#39;priceHint&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketChangePercent&#39;</span><span class="p">:</span> <span class="mf">0.0026999423</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketTime&#39;</span><span class="p">:</span> <span class="mi">1596231815</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketPrice&#39;</span><span class="p">:</span> <span class="mf">1483.0</span><span class="p">,</span>
+    <span class="s1">&#39;postMarketChange&#39;</span><span class="p">:</span> <span class="mf">0.040039062</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketChange&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">48.48999</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketChangePercent&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.16628</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketTime&#39;</span><span class="p">:</span> <span class="mi">1596225602</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketPrice&#39;</span><span class="p">:</span> <span class="mf">1482.96</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketDayHigh&#39;</span><span class="p">:</span> <span class="mf">1508.95</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketDayRange&#39;</span><span class="p">:</span> <span class="s1">&#39;1454.04 - 1508.95&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketDayLow&#39;</span><span class="p">:</span> <span class="mf">1454.04</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketVolume&#39;</span><span class="p">:</span> <span class="mi">3368287</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketPreviousClose&#39;</span><span class="p">:</span> <span class="mf">1531.45</span><span class="p">,</span>
+    <span class="s1">&#39;bid&#39;</span><span class="p">:</span> <span class="mf">1483.0</span><span class="p">,</span>
+    <span class="s1">&#39;ask&#39;</span><span class="p">:</span> <span class="mf">1484.0</span><span class="p">,</span>
+    <span class="s1">&#39;bidSize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="s1">&#39;askSize&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="s1">&#39;fullExchangeName&#39;</span><span class="p">:</span> <span class="s1">&#39;NasdaqGS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;financialCurrency&#39;</span><span class="p">:</span> <span class="s1">&#39;USD&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;regularMarketOpen&#39;</span><span class="p">:</span> <span class="mf">1505.01</span><span class="p">,</span>
+    <span class="s1">&#39;averageDailyVolume3Month&#39;</span><span class="p">:</span> <span class="mi">1643406</span><span class="p">,</span>
+    <span class="s1">&#39;averageDailyVolume10Day&#39;</span><span class="p">:</span> <span class="mi">1380212</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekLowChange&#39;</span><span class="p">:</span> <span class="mf">469.42395</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekLowChangePercent&#39;</span><span class="p">:</span> <span class="mf">0.46315467</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekRange&#39;</span><span class="p">:</span> <span class="s1">&#39;1013.536 - 1586.99&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekHighChange&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">104.03003</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekHighChangePercent&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.06555179</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekLow&#39;</span><span class="p">:</span> <span class="mf">1013.536</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyTwoWeekHigh&#39;</span><span class="p">:</span> <span class="mf">1586.99</span><span class="p">,</span>
+    <span class="s1">&#39;trailingPE&#39;</span><span class="p">:</span> <span class="mf">29.915276</span><span class="p">,</span>
+    <span class="s1">&#39;epsTrailingTwelveMonths&#39;</span><span class="p">:</span> <span class="mf">49.572</span><span class="p">,</span>
+    <span class="s1">&#39;epsForward&#39;</span><span class="p">:</span> <span class="mf">55.06</span><span class="p">,</span>
+    <span class="s1">&#39;sharesOutstanding&#39;</span><span class="p">:</span> <span class="mi">336161984</span><span class="p">,</span>
+    <span class="s1">&#39;bookValue&#39;</span><span class="p">:</span> <span class="mf">297.759</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyDayAverage&#39;</span><span class="p">:</span> <span class="mf">1479.2025</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyDayAverageChange&#39;</span><span class="p">:</span> <span class="mf">3.7574463</span><span class="p">,</span>
+    <span class="s1">&#39;fiftyDayAverageChangePercent&#39;</span><span class="p">:</span> <span class="mf">0.0025401837</span><span class="p">,</span>
+    <span class="s1">&#39;twoHundredDayAverage&#39;</span><span class="p">:</span> <span class="mf">1375.5465</span><span class="p">,</span>
+    <span class="s1">&#39;twoHundredDayAverageChange&#39;</span><span class="p">:</span> <span class="mf">107.41345</span><span class="p">,</span>
+    <span class="s1">&#39;twoHundredDayAverageChangePercent&#39;</span><span class="p">:</span> <span class="mf">0.07808784</span><span class="p">,</span>
+    <span class="s1">&#39;marketCap&#39;</span><span class="p">:</span> <span class="mi">1014620422144</span><span class="p">,</span>
+    <span class="s1">&#39;forwardPE&#39;</span><span class="p">:</span> <span class="mf">26.933525</span><span class="p">,</span>
+    <span class="s1">&#39;priceToBook&#39;</span><span class="p">:</span> <span class="mf">4.9804034</span><span class="p">,</span>
+    <span class="s1">&#39;sourceInterval&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="s1">&#39;exchangeDataDelayedBy&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s1">&#39;marketState&#39;</span><span class="p">:</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;exchange&#39;</span><span class="p">:</span> <span class="s1">&#39;NMS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;shortName&#39;</span><span class="p">:</span> <span class="s1">&#39;Alphabet Inc.&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;longName&#39;</span><span class="p">:</span> <span class="s1">&#39;Alphabet Inc.&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;messageBoardId&#39;</span><span class="p">:</span> <span class="s1">&#39;finmb_29096&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;exchangeTimezoneName&#39;</span><span class="p">:</span> <span class="s1">&#39;America/New_York&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;exchangeTimezoneShortName&#39;</span><span class="p">:</span> <span class="s1">&#39;EDT&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;gmtOffSetMilliseconds&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">14400000</span><span class="p">,</span>
+    <span class="s1">&#39;market&#39;</span><span class="p">:</span> <span class="s1">&#39;us_market&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;esgPopulated&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;displayName&#39;</span><span class="p">:</span> <span class="s1">&#39;Alphabet&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;GOOG&#39;</span>
+<span class="p">}]</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="recommendations"><strong>recommendations</strong><a class="headerlink" href="#recommendations" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="5:3"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em>:  Get real-time quote information for given symbol(s)</li>
+<li><em>Return</em>:  <code>dict</code></li>
+</ul>
+</div>
+<input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><label for="__tabbed_5_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">tickers</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl gs hasgx ^GSPC ezu&#39;</span><span class="p">)</span>
+<span class="hll"><span class="n">tickers</span><span class="o">.</span><span class="n">recommendations</span>
+</span></code></pre></div>
+
+</div>
+<input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><label for="__tabbed_5_3">Data</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="s1">&#39;aapl&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;AAPL&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;recommendedSymbols&#39;</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;GOOG&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.279041</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;AMZN&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.278376</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;FB&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.274481</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;TSLA&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.225957</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;NFLX&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.207756</span>
+        <span class="p">}]</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;gs&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;GS&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;recommendedSymbols&#39;</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;MS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.195796</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;JPM&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.160104</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;WFC&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.139129</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.137378</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;BAC&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.125276</span>
+        <span class="p">}]</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;hasgx&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;HASGX&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;recommendedSymbols&#39;</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;HAVLX&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.020499</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;HAMGX&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.016157</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;HASCX&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.014594</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;HAIGX&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.012841</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;HAMVX&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.012294</span>
+        <span class="p">}]</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;^GSPC&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;^GSPC&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;recommendedSymbols&#39;</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;^TYX&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.187618</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;^IXIC&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.157791</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;^DJI&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.134881</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;GE&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.10353</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;MCD&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.102003</span>
+        <span class="p">}]</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;ezu&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;EZU&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;recommendedSymbols&#39;</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;EWQ&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.152994</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;EWU&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.146443</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;EWN&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.145267</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;IEV&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.143627</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;EWD&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.141428</span>
+        <span class="p">}]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="technical_insights"><strong>technical_insights</strong><a class="headerlink" href="#technical_insights" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set" data-tabs="6:3"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><label for="__tabbed_6_1">Details</label><div class="tabbed-content">
+<ul>
+<li><em>Description</em>:  Technical indicators for given symbol(s)</li>
+<li><em>Return</em>:  <code>dict</code></li>
+</ul>
+</div>
+<input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><label for="__tabbed_6_2">Example</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
+<span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">technical_insights</span>
+</span></code></pre></div>
+
+</div>
+<input id="__tabbed_6_3" name="__tabbed_6" type="radio" /><label for="__tabbed_6_3">Data</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="s1">&#39;aapl&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;aapl&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;instrumentInfo&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;technicalEvents&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;provider&#39;</span><span class="p">:</span> <span class="s1">&#39;Trading Central&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;sector&#39;</span><span class="p">:</span> <span class="s1">&#39;Technology&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;shortTermOutlook&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;stateDescription&#39;</span><span class="p">:</span> <span class="s1">&#39;Recent bearish events outweigh bullish events.&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;direction&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearish&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                    <span class="s1">&#39;scoreDescription&#39;</span><span class="p">:</span> <span class="s1">&#39;Strong Bearish Evidence&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;sectorDirection&#39;</span><span class="p">:</span> <span class="s1">&#39;Bullish&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;sectorScore&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="s1">&#39;sectorScoreDescription&#39;</span><span class="p">:</span> <span class="s1">&#39;Bullish Evidence&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;indexDirection&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearish&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;indexScore&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="s1">&#39;indexScoreDescription&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearish Evidence&#39;</span>
+                <span class="p">},</span>
+                <span class="s1">&#39;intermediateTermOutlook&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;stateDescription&#39;</span><span class="p">:</span> <span class="s1">&#39;Bullish events outweigh bearish events.&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;direction&#39;</span><span class="p">:</span> <span class="s1">&#39;Bullish&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="s1">&#39;scoreDescription&#39;</span><span class="p">:</span> <span class="s1">&#39;Weak Bullish Evidence&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;sectorDirection&#39;</span><span class="p">:</span> <span class="s1">&#39;Bullish&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;sectorScore&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="s1">&#39;sectorScoreDescription&#39;</span><span class="p">:</span> <span class="s1">&#39;Bullish Evidence&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;indexDirection&#39;</span><span class="p">:</span> <span class="s1">&#39;Bullish&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;indexScore&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="s1">&#39;indexScoreDescription&#39;</span><span class="p">:</span> <span class="s1">&#39;Bullish Evidence&#39;</span>
+                <span class="p">},</span>
+                <span class="s1">&#39;longTermOutlook&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;stateDescription&#39;</span><span class="p">:</span> <span class="s1">&#39;All events are bullish.&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;direction&#39;</span><span class="p">:</span> <span class="s1">&#39;Bullish&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="s1">&#39;scoreDescription&#39;</span><span class="p">:</span> <span class="s1">&#39;Bullish Evidence&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;sectorDirection&#39;</span><span class="p">:</span> <span class="s1">&#39;Bullish&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;sectorScore&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="s1">&#39;sectorScoreDescription&#39;</span><span class="p">:</span> <span class="s1">&#39;Bullish Evidence&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;indexDirection&#39;</span><span class="p">:</span> <span class="s1">&#39;Bullish&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;indexScore&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                    <span class="s1">&#39;indexScoreDescription&#39;</span><span class="p">:</span> <span class="s1">&#39;Strong Bullish Evidence&#39;</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;keyTechnicals&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;provider&#39;</span><span class="p">:</span> <span class="s1">&#39;Trading Central&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;support&#39;</span><span class="p">:</span> <span class="mf">203.77</span><span class="p">,</span>
+                <span class="s1">&#39;resistance&#39;</span><span class="p">:</span> <span class="mf">388.23</span><span class="p">,</span>
+                <span class="s1">&#39;stopLoss&#39;</span><span class="p">:</span> <span class="mf">355.460616</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;valuation&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Overvalued&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;discount&#39;</span><span class="p">:</span> <span class="s1">&#39;-8%&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;relativeValue&#39;</span><span class="p">:</span> <span class="s1">&#39;Premium&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;provider&#39;</span><span class="p">:</span> <span class="s1">&#39;Trading Central&#39;</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;companySnapshot&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;sectorInfo&#39;</span><span class="p">:</span> <span class="s1">&#39;Technology&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;company&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;innovativeness&#39;</span><span class="p">:</span> <span class="mf">0.9983</span><span class="p">,</span>
+                <span class="s1">&#39;hiring&#39;</span><span class="p">:</span> <span class="mf">0.9795</span><span class="p">,</span>
+                <span class="s1">&#39;sustainability&#39;</span><span class="p">:</span> <span class="mf">0.8240000000000001</span><span class="p">,</span>
+                <span class="s1">&#39;insiderSentiments&#39;</span><span class="p">:</span> <span class="mf">0.2217</span><span class="p">,</span>
+                <span class="s1">&#39;earningsReports&#39;</span><span class="p">:</span> <span class="mf">0.8340000000000001</span><span class="p">,</span>
+                <span class="s1">&#39;dividends&#39;</span><span class="p">:</span> <span class="mf">0.25</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;sector&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;innovativeness&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s1">&#39;hiring&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s1">&#39;sustainability&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s1">&#39;insiderSentiments&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s1">&#39;earningsReports&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s1">&#39;dividends&#39;</span><span class="p">:</span> <span class="mf">0.5</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;recommendation&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;targetPrice&#39;</span><span class="p">:</span> <span class="mf">450.0</span><span class="p">,</span>
+            <span class="s1">&#39;provider&#39;</span><span class="p">:</span> <span class="s1">&#39;Argus Research&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;rating&#39;</span><span class="p">:</span> <span class="s1">&#39;BUY&#39;</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;sigDevs&#39;</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="s1">&#39;headline&#39;</span><span class="p">:</span> <span class="s1">&#39;Apple Reports Q3 Earnings Of $2.58 Per Share&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-07-30&#39;</span>
+        <span class="p">}]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+</div>
+</div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../historical/" title="Historical Prices" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Historical Prices
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../premium/" title="Premium" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Premium
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/dpguthrie" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://www.linkedin.com/in/douglas-guthrie-07994a48/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://medium.com/@douglas.p.guthrie" target="_blank" rel="noopener" title="medium.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0 32v448h448V32H0zm372.2 106.1l-24 23c-2.1 1.6-3.1 4.2-2.7 6.7v169.3c-.4 2.6.6 5.2 2.7 6.7l23.5 23v5.1h-118V367l24.3-23.6c2.4-2.4 2.4-3.1 2.4-6.7V199.8l-67.6 171.6h-9.1L125 199.8v115c-.7 4.8 1 9.7 4.4 13.2l31.6 38.3v5.1H71.2v-5.1l31.6-38.3c3.4-3.5 4.9-8.4 4.1-13.2v-133c.4-3.7-1-7.3-3.8-9.8L75 138.1V133h87.3l67.4 148L289 133.1h83.2v5z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://dpguthrie.github.io" target="_blank" rel="noopener" title="dpguthrie.github.io" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M336.5 160C322 70.7 287.8 8 248 8s-74 62.7-88.5 152h177zM152 256c0 22.2 1.2 43.5 3.3 64h185.3c2.1-20.5 3.3-41.8 3.3-64s-1.2-43.5-3.3-64H155.3c-2.1 20.5-3.3 41.8-3.3 64zm324.7-96c-28.6-67.9-86.5-120.4-158-141.6 24.4 33.8 41.2 84.7 50 141.6h108zM177.2 18.4C105.8 39.6 47.8 92.1 19.3 160h108c8.7-56.9 25.5-107.8 49.9-141.6zM487.4 192H372.7c2.1 21 3.3 42.5 3.3 64s-1.2 43-3.3 64h114.6c5.5-20.5 8.6-41.8 8.6-64s-3.1-43.5-8.5-64zM120 256c0-21.5 1.2-43 3.3-64H8.6C3.2 212.5 0 233.8 0 256s3.2 43.5 8.6 64h114.6c-2-21-3.2-42.5-3.2-64zm39.5 96c14.5 89.3 48.7 152 88.5 152s74-62.7 88.5-152h-177zm159.3 141.6c71.4-21.2 129.4-73.7 158-141.6h-108c-8.8 56.9-25.6 107.8-50 141.6zM19.3 352c28.6 67.9 86.5 120.4 158 141.6-24.4-33.8-41.2-84.7-50-141.6h-108z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../../assets/javascripts/vendor.d710d30a.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.b39636ac.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../../..",
+          features: ["instant"],
+          search: Object.assign({
+            worker: "../../../assets/javascripts/worker/search.a68abb33.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="../../../js/termynal.js"></script>
+      
+        <script src="../../../js/custom.js"></script>
+      
+    
+  </body>
+</html>
