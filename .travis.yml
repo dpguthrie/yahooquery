@@ -30,3 +30,4 @@ deploy:
         secure: Fbf2V6YVrjQaD3jNMP6Iu7gkGhPQjLhEWWVATaB4hAD/SXVdjKwOmdGgw7fhEgDT0SRrWiamo/2C6qTUtD/g17gNYlsvsjp5dmWuh27hLF0j9Ng0Xti5P1vw5NsGGOqvb3Bvd+YegTUWOw6QQ695OXox9UAOFjvwbshk+YhaJ/CuerPBZKEm7lbsoPfKwsg+u7s9eh6LTPyFZpyNlEyeOew8/YP30Rk8JD6wEy9FSgyyawIUpeJjczwSMKhLXdtHiXhhEEAr9Ce+Epi1JPVnO8QcdWQK8PfjDBc7reBkeO1k+1bNMtPlDBYHYnOR9aci5nsKFTd3XAxAV1n8tCohnnPBHMlh8F/UbtjVtXoxxfVzBMeWyV65nymHbgk5sk0WWd6Ae+IEvRb6PKHxU49DQfoxku39tQMyfA9gWdtpOu8d5TNLrcRsAwrNOhB7qT7bp4dmcx3FoctZzJ6d0Y3B7jcneo8229G+3HL8XLyHb5CLiGJ7S9IOWwa3ctshW36vXydGZmb4+BqUv/DRfUlNsgndTpImRSG7HqTPqgCc7OMsyYWOKiZyKJqYGHBSiMaLWoTJUoAR86CnOm+0aqevk/K2vC0ek69E6wDxakuLAd4cqXeyhv2RYUGOW/aKtvfqEJllfu/pHkhq98rnd567Ki7KX29q1zM/frP5r76mPLY=
     on:
         tags: true
+        python: 3.8
