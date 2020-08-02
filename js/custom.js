@@ -21,7 +21,6 @@ async function getData() {
 }
 
 function setupTermynal() {
-    console.log("setting up termynal");
     document.querySelectorAll(".termynal").forEach(node => {
         node.style.display = "block";
         new Termynal(node, {
