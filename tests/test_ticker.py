@@ -99,10 +99,6 @@ def test_bad_financials_arg():
         assert Ticker('aapl').income_statement('r')
 
 
-def test_no_financials_data(ticker):
-    assert 'data unavailable' in Ticker('BC94.L').income_statement()
-
-
 def test_get_financial_data(ticker):
     assert ticker.get_financial_data([
         'GrossProfit',
