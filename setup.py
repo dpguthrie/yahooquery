@@ -5,7 +5,6 @@ INSTALL_REQUIRES = [
     'pandas>=0.24',
     'requests-futures==1.0.0',
     'selenium==3.141.0',
-    'webdriver-manager==3.2.1',
 ]
 
 TEST_REQUIRES = [
