@@ -1,0 +1,79 @@
+# Project Information
+site_name: yahooquery
+site_description: Python wrapper for unofficial Yahoo Finance API
+site_author: Doug Guthrie
+
+# Repository
+repo_name: yahooquery
+repo_url: https://github.com/dpguthrie/yahooquery
+
+# Configuration
+theme:
+    name: material
+    palette:
+        primary: deep-purple
+    icon:
+        repo: fontawesome/brands/github-alt
+    logo: img/logo_transparent_2.png
+    favicon: img/favicon.png
+    language: en
+    features:
+        - instant
+
+# Extras
+extra:
+    social:
+        - icon: fontawesome/brands/github-alt
+          link: https://github.com/dpguthrie
+        - icon: fontawesome/brands/linkedin
+          link: https://www.linkedin.com/in/douglas-guthrie-07994a48/
+        - icon: fontawesome/brands/medium
+          link: https://medium.com/@douglas.p.guthrie
+        - icon: fontawesome/solid/globe
+          link: https://dpguthrie.github.io
+
+extra_css:
+    - css/termynal.css
+
+extra_javascript:
+    - js/termynal.js
+    - js/custom.js
+
+# Extensions
+markdown_extensions:
+    - admonition
+    - codehilite:
+        guess_lang: false
+    - toc:
+        permalink: true
+    - pymdownx.superfences
+    - pymdownx.tabbed
+    - pymdownx.details
+    - pymdownx.emoji:
+        emoji_index: !!python/name:materialx.emoji.twemoji
+        emoji_generator: !!python/name:materialx.emoji.to_svg
+
+# Plugins
+plugins:
+    - mkdocs-jupyter
+
+# Navigation
+nav:
+    - index.md
+    - User Guide:
+        - guide/index.md
+        - Ticker:
+            - guide/ticker/intro.md
+            - guide/ticker/keyword_arguments.md
+            - guide/ticker/modules.md
+            - guide/ticker/financials.md
+            - guide/ticker/options.md
+            - guide/ticker/historical.md
+            - guide/ticker/miscellaenous.md
+            - guide/ticker/premium.md
+        - guide/screener.md
+        - guide/research.md
+        - guide/advanced.md
+        - guide/misc.md
+    - Alternatives: alternative.ipynb
+    - release_notes.md
