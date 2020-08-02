@@ -230,7 +230,7 @@ class Ticker(_YahooFinance):
             r = self.session.get(url, params=params)
             text = r.text
             try:
-                dataframes.append(pd.read_html(text)[0])
+                dataframes.append(pd.read_html(text, flavor='lxml')[0])
             except IndexError:
                 pass
             if classes in text:
