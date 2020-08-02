@@ -2,3 +2,4 @@ lxml==4.5.0
 pandas>=0.24
 requests-futures==1.0.0
 selenium==3.141.0
+webdriver-manager==3.2.1
