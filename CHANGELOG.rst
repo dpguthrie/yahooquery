@@ -3,7 +3,6 @@ Change Log
 
 2.2.6
 -----
-- Utilize webdriver_manager to download correct version of Chrome when selenium is utilized
 - Allow premium subscribers to set environment variables for their Yahoo login credentials,
   specifically YF_USERNAME and YF_PASSWORD
 - Fix bug when validating symbols.  If too many symbols are passed, the URL that's constructed

@@ -26,7 +26,7 @@ def get_currencies():
     """Get a list of currencies
     """
     url = '{}/v1/finance/currencies'.format(BASE_URL)
-    return _make_request(url, 'currencies')
+    return _make_request(url, 'currencies', 'United States')
 
 
 def get_exchanges():
