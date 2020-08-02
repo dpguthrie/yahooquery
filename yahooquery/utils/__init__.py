@@ -8,6 +8,8 @@ from requests import Session
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from requests_futures.sessions import FuturesSession
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 
 DEFAULT_TIMEOUT = 5
 
@@ -19,6 +21,17 @@ USER_AGENT_LIST = [
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36',
     'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36',
 ]
+
+headers = {
+    'accept': '*/*',
+    'accept-encoding': 'gzip, deflate, br',
+    'accept-language': 'en-US,en;q=0.9',
+    'origin': 'https://finance.yahoo.com',
+    'referer': 'https://finance.yahoo.com',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'same-site',
+}
 
 
 class TimeoutHTTPAdapter(HTTPAdapter):
@@ -37,6 +50,7 @@ class TimeoutHTTPAdapter(HTTPAdapter):
 
 
 def _init_session(session, **kwargs):
+    session_headers = headers
     if session is None:
         if kwargs.get('asynchronous'):
             session = FuturesSession(max_workers=kwargs.get('max_workers', 8))
@@ -60,11 +74,30 @@ def _init_session(session, **kwargs):
         # TODO: what I'm currently doing.
         # session.hooks['response'] = \
         #     [lambda response, *args, **kwargs: response.raise_for_status()]
-        session.headers.update({
-            "User-Agent": kwargs.get(
-                'user_agent', random.choice(USER_AGENT_LIST))
-        })
+        user_agent = kwargs.get('user_agent', random.choice(USER_AGENT_LIST))
+        if kwargs.get('cookies'):
+            cookies = get_cookies(user_agent)
+            [session.cookies.set(c['name'], c['value']) for c in cookies]
+            session_headers.update({
+                'cookie': '; '.join([
+                    item['name'] + "=" + item['value'] for item in cookies
+                ])
+            })
+        session_headers['User-Agent'] = user_agent
+        session.headers.update(**session_headers)
     return session
+
+
+def get_cookies(user_agent):
+    options = webdriver.ChromeOptions()
+    options.add_argument('--user-agent=' + user_agent)
+    options.add_argument('headless')
+    driver = webdriver.Chrome(
+        ChromeDriverManager().install(), chrome_options=options)
+    driver.get("https://finance.yahoo.com/screener/new")
+    cookies = driver.get_cookies()
+    driver.quit()
+    return cookies
 
 
 def _flatten_list(ls):

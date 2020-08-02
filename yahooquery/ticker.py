@@ -12,7 +12,7 @@ class Ticker(_YahooFinance):
     """
     Base class for interacting with Yahoo Finance API
 
-    Attributes
+    Arguments
     ----------
     symbols: str or list
         Symbol or list collection of symbols
@@ -86,11 +86,11 @@ class Ticker(_YahooFinance):
         date expressed in the format YYYY-MM-DD by either converting from the
         timestamp or retrieving the "fmt" key.
     """
-    def __init__(self, symbols, validate=False, **kwargs):
+    def __init__(self, symbols, **kwargs):
         super(Ticker, self).__init__(**kwargs)
         self.symbols = symbols
         self.invalid_symbols = None
-        if validate:
+        if kwargs.get('validate'):
             self.validation
 
     def _quote_summary(self, modules):
@@ -607,6 +607,9 @@ class Ticker(_YahooFinance):
             Desired types of data for retrieval
         frequency: str, default 'a', optional
             Specify either annual or quarterly.  Value should be 'a' or 'q'.
+        trailing: bool, default True, optional
+            Specify whether or not you'd like trailing twelve month (TTM)
+            data returned
 
         Raises
         ------
@@ -1197,7 +1200,8 @@ class Ticker(_YahooFinance):
             interval='1d',
             start=None,
             end=None,
-            adj_timezone=True):
+            adj_timezone=True,
+            adj_ohlc=False):
         """
         Historical pricing data
 
@@ -1219,6 +1223,9 @@ class Ticker(_YahooFinance):
             Specify whether or not to apply the GMT offset to the timestamp
             received from the API.  If True, the datetimeindex will be adjusted
             to the specified ticker's timezone.
+        adj_ohlc: bool, default False, optional
+            Calculates an adjusted open, high, low and close prices according
+            to split and dividend information
 
         Returns
         -------
@@ -1244,6 +1251,12 @@ class Ticker(_YahooFinance):
         params['interval'] = interval.lower()
         data = self._get_data('chart', params)
         df = self._historical_data_to_dataframe(data, params, adj_timezone)
+        if adj_ohlc and 'adjclose' in df:
+            adjust = df['close'] / df['adjclose']
+            for col in ['open', 'high', 'low']:
+                df[col] = df[col] / adjust
+            del df['close']
+            df.rename(columns={'adjclose': 'close'}, inplace=True)
         return df
 
     def _historical_data_to_dataframe(self, data, params, adj_timezone):

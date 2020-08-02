@@ -1,9 +1,8 @@
-import re
+import os
 import time
 from concurrent.futures import as_completed
 from datetime import datetime
 
-import requests
 from requests_futures.sessions import FuturesSession
 
 from yahooquery.login import YahooSelenium
@@ -471,8 +470,10 @@ class _YahooFinance(object):
         self.formatted = kwargs.pop('formatted', False)
         self.session = _init_session(kwargs.pop('session', None), **kwargs)
         self.crumb = kwargs.pop('crumb', None)
-        if kwargs.get('username') and kwargs.get('password'):
-            self.login(kwargs.get('username'), kwargs.get('password'))
+        username = os.getenv("YF_USERNAME") or kwargs.get('username')
+        password = os.getenv("YF_PASSWORD") or kwargs.get('password')
+        if username and password:
+            self.login(username, password)
 
     @property
     def symbols(self):
@@ -533,14 +534,24 @@ class _YahooFinance(object):
         """Symbol Validation
 
         Validate existence of given symbol(s) and modify the symbols property
-        to include only the valid symbols.  If invalid symbols were passed
-        an additional property, `invalid_symbols`, will be created.
+        to include only the valid symbols.  If invalid symbols were passed,
+        they will be stored in the `invalid_symbols` property.
         """
-        data = self._get_data('validation')
-        if None in data:
-            data = data[None]
-        self._symbols = [k for k, v in data.items() if v]
-        self.invalid_symbols = [k for k, v in data.items() if not v]
+        current_symbols = self.symbols
+        valid_symbols = []
+        invalid_symbols = []
+        for i in range(0, len(current_symbols), 1500):
+            self._symbols = current_symbols[i:i+1500]
+            data = self._get_data('validation')
+            if 'error' in data:
+                self._symbols = current_symbols
+                return data
+            if None in data:
+                data = data[None]
+            valid_symbols.extend([k for k, v in data.items() if v])
+            invalid_symbols.extend([k for k, v in data.items() if not v])
+        self.symbols = valid_symbols
+        self.invalid_symbols = invalid_symbols or None
 
     # @property
     # def _get_crumb(self):

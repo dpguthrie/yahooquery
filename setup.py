@@ -5,6 +5,7 @@ INSTALL_REQUIRES = [
     'pandas>=0.24',
     'requests-futures==1.0.0',
     'selenium==3.141.0',
+    'webdriver-manager==3.2.1',
 ]
 
 TEST_REQUIRES = [
@@ -17,7 +18,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="yahooquery",
-    version="2.2.5",
+    version="2.2.6",
     author="Doug Guthrie",
     author_email="douglas.p.guthrie@gmail.com",
     description="Retrieve nearly all data from Yahoo Finance for one or more ticker symbols",

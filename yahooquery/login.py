@@ -2,10 +2,11 @@ import random
 import re
 
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
 
 from yahooquery.utils import USER_AGENT_LIST
 
@@ -26,8 +27,8 @@ class YahooSelenium(object):
         self.chrome_options.add_argument('--ignore-certificate-errors')
         self.chrome_options.add_argument('--ignore-ssl-errors')
         self.driver = webdriver.Chrome(
+            ChromeDriverManager().install(),
             chrome_options=self.chrome_options,
-            desired_capabilities=self.chrome_options.to_capabilities()
         )
 
     def get_user_data(self, driver):
@@ -56,10 +57,6 @@ class YahooSelenium(object):
             password_element.send_keys(self.password)
             self.driver.find_element_by_xpath(
                 "//button[@id='login-signin']").click()
-            try:
-                self.driver.find_element_by_xpath('//a[@href="https://finance.yahoo.com/"]').click()
-            except NoSuchElementException:
-                self.driver.find_element_by_link_text('Finance').click()
             d = self.get_user_data(self.driver)
             self.driver.quit()
             return d

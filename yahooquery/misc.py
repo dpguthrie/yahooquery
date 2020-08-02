@@ -1,15 +1,22 @@
 import pandas as pd
 import requests
 
+from .utils.countries import COUNTRIES
+
+
 BASE_URL = 'https://query2.finance.yahoo.com'
 
 
-def _make_request(url, response_field, **kwargs):
-    params = {
-        'lang': kwargs.get('lang', 'en-US'),
-        'region': kwargs.get('region', 'US'),
-        'corsDomain': kwargs.get('corsDomain', 'finance.yahoo.com')
-    }
+def _make_request(url, response_field, country):
+    country = country.lower()
+    try:
+        params = COUNTRIES[country]
+    except KeyError:
+        raise KeyError(
+            "{} is not a valid option.  Valid options include {}".format(
+                country,
+                ', '.join(COUNTRIES.keys())
+            ))
     r = requests.get(url, params=params)
     json = r.json()
     return json[response_field]['result']
@@ -30,15 +37,24 @@ def get_exchanges():
     return dataframes[0]
 
 
-def get_market_summary(**kwargs):
+def get_market_summary(country='United States'):
     """Get a market summary
     """
     url = '{}/v6/finance/quote/marketSummary'.format(BASE_URL)
-    return _make_request(url, 'marketSummaryResponse', **kwargs)
+    return _make_request(url, 'marketSummaryResponse', country)
 
 
-def get_trending(region='US', **kwargs):
+def get_trending(country='United States'):
     """Get trending stocks for a specific region
     """
+    try:
+        region = COUNTRIES[country.lower()]['region']
+    except KeyError:
+        raise KeyError(
+            "{} is not a valid option.  Valid options include {}".format(
+                country,
+                ', '.join(COUNTRIES.keys())
+            ))
     url = '{}/v1/finance/trending/{}'.format(BASE_URL, region)
-    return _make_request(url, 'finance')[0]
+    print(url)
+    return _make_request(url, 'finance', country)[0]
