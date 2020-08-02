@@ -352,13 +352,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#earnings_calendar" class="md-nav__link">
-    earnings_calendar
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#news" class="md-nav__link">
     news
   </a>
@@ -518,13 +511,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#earnings_calendar" class="md-nav__link">
-    earnings_calendar
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#news" class="md-nav__link">
     news
   </a>
@@ -639,85 +625,8 @@
 </table>
 </div>
 </div>
-<h3 id="earnings_calendar"><strong>earnings_calendar</strong><a class="headerlink" href="#earnings_calendar" title="Permanent link">&para;</a></h3>
-<div class="tabbed-set" data-tabs="2:3"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Details</label><div class="tabbed-content">
-<ul>
-<li><em>Description</em>:  Upcoming and historical earnings information for given symbol(s)</li>
-<li><em>Return</em>:  <code>pandas.DataFrame</code></li>
-</ul>
-</div>
-<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Example</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
-<span class="hll"><span class="n">df</span> <span class="o">=</span> <span class="n">aapl</span><span class="o">.</span><span class="n">earnings_calendar</span>
-</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</code></pre></div>
-
-</div>
-<input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><label for="__tabbed_2_3">Data</label><div class="tabbed-content">
-<table>
-<thead>
-<tr>
-<th align="right"></th>
-<th align="left">Symbol</th>
-<th align="left">Company</th>
-<th align="left">Earnings Date</th>
-<th align="left">EPS Estimate</th>
-<th align="left">Reported EPS</th>
-<th align="left">Surprise(%)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="right">0</td>
-<td align="left">AAPL</td>
-<td align="left">Apple Inc</td>
-<td align="left">Apr 28, 2021, 6 AMEDT</td>
-<td align="left">-</td>
-<td align="left">-</td>
-<td align="left">-</td>
-</tr>
-<tr>
-<td align="right">1</td>
-<td align="left">AAPL</td>
-<td align="left">Apple Inc</td>
-<td align="left">Jan 26, 2021, 6 AMEDT</td>
-<td align="left">-</td>
-<td align="left">-</td>
-<td align="left">-</td>
-</tr>
-<tr>
-<td align="right">2</td>
-<td align="left">AAPL</td>
-<td align="left">Apple Inc</td>
-<td align="left">Oct 28, 2020, 6 AMEDT</td>
-<td align="left">2.78</td>
-<td align="left">-</td>
-<td align="left">-</td>
-</tr>
-<tr>
-<td align="right">3</td>
-<td align="left">AAPL</td>
-<td align="left">Apple Inc.</td>
-<td align="left">Jul 30, 2020, 12 AMEDT</td>
-<td align="left">2.04</td>
-<td align="left">2.58</td>
-<td align="left">+26.22</td>
-</tr>
-<tr>
-<td align="right">4</td>
-<td align="left">AAPL</td>
-<td align="left">Apple Inc.</td>
-<td align="left">Apr 30, 2020, 12 AMEDT</td>
-<td align="left">2.26</td>
-<td align="left">2.55</td>
-<td align="left">+12.78</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
 <h3 id="news"><strong>news</strong><a class="headerlink" href="#news" title="Permanent link">&para;</a></h3>
-<div class="tabbed-set" data-tabs="3:3"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">Details</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="2:3"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Details</label><div class="tabbed-content">
 <ul>
 <li><em>Description</em>:  Get news headline and summary information for given symbol(s)</li>
 <li><em>Return</em>:  <code>list</code></li>
@@ -759,13 +668,13 @@
 <p>If multiple symbols are used, only one request will be made regardless of the number of symbols</p>
 </div>
 </div>
-<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">Example</label><div class="tabbed-content">
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Example</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">news</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 </span></code></pre></div>
 
 </div>
-<input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><label for="__tabbed_3_3">Data</label><div class="tabbed-content">
+<input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><label for="__tabbed_2_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">[{</span>
     <span class="s1">&#39;rank&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
     <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;3a3b4532-38fb-3fcb-85b3-3cdc4d5bbabe&#39;</span><span class="p">,</span>
@@ -859,7 +768,7 @@
 </div>
 </div>
 <h3 id="quotes"><strong>quotes</strong><a class="headerlink" href="#quotes" title="Permanent link">&para;</a></h3>
-<div class="tabbed-set" data-tabs="4:3"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">Details</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="3:3"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">Details</label><div class="tabbed-content">
 <ul>
 <li><em>Description</em>:  Get real-time quote information for given symbol(s)</li>
 <li><em>Return</em>:  <code>list</code></li>
@@ -869,13 +778,13 @@
 <p>If multiple symbols are used, only one request will be made regardless of the number of symbols</p>
 </div>
 </div>
-<input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><label for="__tabbed_4_2">Example</label><div class="tabbed-content">
+<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">Example</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="n">tickers</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;fb aapl amzn nflx goog&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">tickers</span><span class="o">.</span><span class="n">quotes</span>
 </span></code></pre></div>
 
 </div>
-<input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><label for="__tabbed_4_3">Data</label><div class="tabbed-content">
+<input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><label for="__tabbed_3_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">[{</span>
     <span class="s1">&#39;language&#39;</span><span class="p">:</span> <span class="s1">&#39;en-US&#39;</span><span class="p">,</span>
     <span class="s1">&#39;region&#39;</span><span class="p">:</span> <span class="s1">&#39;US&#39;</span><span class="p">,</span>
@@ -1232,19 +1141,19 @@
 </div>
 </div>
 <h3 id="recommendations"><strong>recommendations</strong><a class="headerlink" href="#recommendations" title="Permanent link">&para;</a></h3>
-<div class="tabbed-set" data-tabs="5:3"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">Details</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="4:3"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">Details</label><div class="tabbed-content">
 <ul>
 <li><em>Description</em>:  Get real-time quote information for given symbol(s)</li>
 <li><em>Return</em>:  <code>dict</code></li>
 </ul>
 </div>
-<input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><label for="__tabbed_5_2">Example</label><div class="tabbed-content">
+<input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><label for="__tabbed_4_2">Example</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="n">tickers</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl gs hasgx ^GSPC ezu&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">tickers</span><span class="o">.</span><span class="n">recommendations</span>
 </span></code></pre></div>
 
 </div>
-<input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><label for="__tabbed_5_3">Data</label><div class="tabbed-content">
+<input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><label for="__tabbed_4_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
     <span class="s1">&#39;aapl&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;AAPL&#39;</span><span class="p">,</span>
@@ -1347,19 +1256,19 @@
 </div>
 </div>
 <h3 id="technical_insights"><strong>technical_insights</strong><a class="headerlink" href="#technical_insights" title="Permanent link">&para;</a></h3>
-<div class="tabbed-set" data-tabs="6:3"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><label for="__tabbed_6_1">Details</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="5:3"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">Details</label><div class="tabbed-content">
 <ul>
 <li><em>Description</em>:  Technical indicators for given symbol(s)</li>
 <li><em>Return</em>:  <code>dict</code></li>
 </ul>
 </div>
-<input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><label for="__tabbed_6_2">Example</label><div class="tabbed-content">
+<input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><label for="__tabbed_5_2">Example</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">technical_insights</span>
 </span></code></pre></div>
 
 </div>
-<input id="__tabbed_6_3" name="__tabbed_6" type="radio" /><label for="__tabbed_6_3">Data</label><div class="tabbed-content">
+<input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><label for="__tabbed_5_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
     <span class="s1">&#39;aapl&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="s1">&#39;aapl&#39;</span><span class="p">,</span>
