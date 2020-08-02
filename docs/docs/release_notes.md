@@ -1,5 +1,15 @@
 # Release Notes
 
+## 2.2.6
+
+- Allow premium subscribers to set environment variables for their Yahoo login credentials,
+  specifically `YF_USERNAME` and `YF_PASSWORD`
+- Fix bug when validating symbols.  If too many symbols are passed, the URL that's constructed
+  becomes too long and a 414 error occurs
+- Fix bug related to login via Selenium
+- Enable `country` argument in miscellaneous functions
+- Add argument, `adj_ohlc`, to `history` method that allows user to adjust OHLC data based on adjusted close
+
 ## 2.2.5
 
 - Add more data accessors for the `Ticker` class:  `quotes`,

@@ -77,3 +77,8 @@ nav:
         - guide/misc.md
     - Alternatives: alternative.ipynb
     - release_notes.md
+
+# Google Analytics
+google_analytics:
+    - UA-174219875-1
+    - auto

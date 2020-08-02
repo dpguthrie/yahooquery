@@ -18,7 +18,7 @@
 
 ---
 
-**Documentation**: <a target="_blank" href="https://yahooquery.github.io">https://yahooquery.github.io</a>
+**Documentation**: <a target="_blank" href="https://dpguthrie.github.io/yahooquery/">https://dpguthrie.github.io/yahooquery/</a>
 
 **Interactive Demo**: <a target="_blank" href="https://yahooquery-streamlit.herokuapp.com">https://yahooquery-streamlit.herokuapp.com</a>
 
