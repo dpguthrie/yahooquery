@@ -209,33 +209,33 @@ class Ticker(_YahooFinance):
         """
         return self._quote_summary(['calendarEvents'])
 
-    @property
-    def earnings_calendar(self):
-        """Earnings
+    # @property
+    # def earnings_calendar(self):
+    #     """Earnings
 
-        Historical earnings data for given symbol(s)
+    #     Historical earnings data for given symbol(s)
 
-        Returns
-        -------
-        pandas.DataFrame
-        """
-        if isinstance(self.session, FuturesSession):
-            return "Asynchronous requests not implemented for this property."
-        dataframes = []
-        classes = "Va(m) H(20px) Bd(0) M(0) P(0) Fz(s) Pstart(10px) O(n):f Fw(500) C($gray)"
-        url = "https://finance.yahoo.com/calendar/earnings"
-        params = {'size': 100, 'symbol': ','.join(self.symbols)}
-        for i in range(0, len(self.symbols) * 500, 100):
-            params['offset'] = i
-            r = self.session.get(url, params=params)
-            text = r.text
-            try:
-                dataframes.append(pd.read_html(text, flavor='lxml')[0])
-            except IndexError:
-                pass
-            if classes in text:
-                break
-        return pd.concat(dataframes, ignore_index=True)
+    #     Returns
+    #     -------
+    #     pandas.DataFrame
+    #     """
+    #     if isinstance(self.session, FuturesSession):
+    #         return "Asynchronous requests not implemented for this property."
+    #     dataframes = []
+    #     classes = "Va(m) H(20px) Bd(0) M(0) P(0) Fz(s) Pstart(10px) O(n):f Fw(500) C($gray)"
+    #     url = "https://finance.yahoo.com/calendar/earnings"
+    #     params = {'size': 100, 'symbol': ','.join(self.symbols)}
+    #     for i in range(0, len(self.symbols) * 500, 100):
+    #         params['offset'] = i
+    #         r = self.session.get(url, params=params)
+    #         text = r.text
+    #         try:
+    #             dataframes.append(pd.read_html(text, flavor='lxml')[0])
+    #         except IndexError:
+    #             pass
+    #         if classes in text:
+    #             break
+    #     return pd.concat(dataframes, ignore_index=True)
 
     @property
     def earnings(self):
