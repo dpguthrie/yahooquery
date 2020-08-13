@@ -18,7 +18,7 @@
 
 ---
 
-**Documentation**: <a target="_blank" href="https://dpguthrie.github.io/yahooquery/">https://dpguthrie.github.io/yahooquery/</a>
+**Documentation**: <a target="_blank" href="https://yahooquery.dpguthrie.com">https://yahooquery.dpguthrie.com</a>
 
 **Interactive Demo**: <a target="_blank" href="https://yahooquery-streamlit.herokuapp.com">https://yahooquery-streamlit.herokuapp.com</a>
 
@@ -59,7 +59,7 @@ pip install yahooquery
 
 ## Example
 
-The majority of the data available through the unofficial Yahoo Finance API is related to a company, which is represented in yahooquery as a `Ticker`.  You can instantiate the `Ticker` class by passing the company's ticker symbol.  For instance, to get data for :fontawesome-brands-apple:, pass `aapl` as the first argument to the `Ticker` class:
+The majority of the data available through the unofficial Yahoo Finance API is related to a company, which is represented in yahooquery as a `Ticker`.  You can instantiate the `Ticker` class by passing the company's ticker symbol.  For instance, to get data for Apple, Inc., pass `aapl` as the first argument to the `Ticker` class:
 
 ```python
 from yahooquery import Ticker
