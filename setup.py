@@ -17,7 +17,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="yahooquery",
-    version="2.2.6",
+    version="2.2.7",
     author="Doug Guthrie",
     author_email="douglas.p.guthrie@gmail.com",
     description="Retrieve nearly all data from Yahoo Finance for one or more ticker symbols",
@@ -25,7 +25,7 @@ setup(
     long_description_content_type="text/markdown",
     license="MIT",
     packages=find_packages(),
-    url="https://github.com/dpguthrie/yahooquery",
+    url="https://yahooquery.dpguthrie.com",
     install_requires=INSTALL_REQUIRES,
     extras_require={
         'test': TEST_REQUIRES + INSTALL_REQUIRES,
