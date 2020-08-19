@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+2.2.7
+-----
+- Fix bug related to ticker symbols with "&"
+- Add functionality to retrieve most recent 30 days of one minute interval data
+- Add Taiwan to the COUNTRIES dictionary
+
 2.2.6
 -----
 - Allow premium subscribers to set environment variables for their Yahoo login credentials,
