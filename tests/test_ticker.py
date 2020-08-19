@@ -7,9 +7,9 @@ from yahooquery import Ticker
 
 
 TICKERS = [
-    Ticker('aapl', username=os.getenv('YF_USERNAME'),
-           password=os.getenv('YF_PASSWORD')),
-    Ticker('aapl ^GSPC btcusd=x brk-b logo.is', asynchronous=True),
+    Ticker('aapl', username=os.getenv('YFF_USERNAME'),
+           password=os.getenv('YFF_PASSWORD')),
+    Ticker('aapl ^GSPC btcusd=x brk-b logo.is l&tfh.ns', asynchronous=True),
     Ticker(['aapl', 'aaapl']), Ticker('hasgx'),
     Ticker('btcusd=x', formatted=True, validate=True)
 ]
@@ -77,6 +77,10 @@ def test_news(ticker):
     assert ticker.news() is not None
 
 
+def test_news_start(ticker):
+    assert ticker.news(start='2020-01-01', count=100) is not None
+
+
 def test_all_modules(ticker):
     assert ticker.all_modules is not None
     data = ticker.all_modules
@@ -100,27 +104,19 @@ def test_bad_financials_arg():
 
 
 def test_get_financial_data(ticker):
-    assert ticker.get_financial_data([
-        'GrossProfit',
-        'NetIncome',
-        'TotalAssets',
-        'ForwardPeRatio'
-    ]) is not None
+    assert ticker.get_financial_data(
+        'GrossProfit NetIncome TotalAssets ForwardPeRatio') is not None
 
 
 def test_p_get_financial_data(ticker):
-    assert ticker.p_get_financial_data([
-        'GrossProfit',
-        'NetIncome',
-        'TotalAssets',
-        'ForwardPeRatio'
-    ]) is not None
+    assert ticker.p_get_financial_data(
+        'GrossProfit NetIncome TotalAssets ForwardPeRatio') is not None
 
 
 @pytest.mark.parametrize("period, interval", [
     (p, i) for p, i in zip([
-        '1d', '5d', '1y', '5y', 'max'], [
-        '1m', '2m', '1d', '1wk', '3mo'])])
+        '1d', '1mo', '1y', '5y', 'max'], [
+        '1m', '1m', '1d', '1wk', '3mo'])])
 def test_history(ticker, period, interval):
     assert ticker.history(period, interval) is not None
 
@@ -140,3 +136,7 @@ def test_history_start_end(ticker, start, end):
 def test_history_bad_args(ticker, period, interval):
     with pytest.raises(ValueError):
         assert ticker.history(period, interval)
+
+
+def test_adj_ohlc(ticker):
+    assert ticker.history(period='max', adj_ohlc=True) is not None
