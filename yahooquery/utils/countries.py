@@ -63,5 +63,10 @@ COUNTRIES = {
         'lang': 'en-SG',
         'region': 'SG',
         'corsDomain': 'sg.finance.yahoo.com'
-    }
+    },
+    'taiwan': {
+        'lang': 'zh-tw',
+        'region': 'TW',
+        'corsDomain': 'tw.finance.yahoo.com'
+    },
 }

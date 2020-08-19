@@ -108,7 +108,7 @@ def _convert_to_list(symbols, comma_split=False):
         return symbols
     if comma_split:
         return [x.strip() for x in symbols.split(',')]
-    return re.findall(r"[\w\-.=^]+", symbols)
+    return re.findall(r"[\w\-.=^&]+", symbols)
 
 
 def _convert_to_timestamp(date=None, start=True):

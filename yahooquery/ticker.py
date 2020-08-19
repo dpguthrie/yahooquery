@@ -1,7 +1,7 @@
+from datetime import datetime, timedelta
 import re
 
 import pandas as pd
-from requests_futures.sessions import FuturesSession
 
 from yahooquery.base import _YahooFinance
 from yahooquery.utils import (_convert_to_timestamp, _flatten_list,
@@ -118,7 +118,7 @@ class Ticker(_YahooFinance):
                 for symbol in self.symbols:
                     final_data = data[symbol][kwargs.get('data_filter')] if \
                         kwargs.get('data_filter') else data[symbol]
-                    if kwargs.get('from_dict', False):
+                    if kwargs.get('from_dict'):
                         df = pd.DataFrame(
                             [(k, v) for d in final_data for k, v in d.items()])
                         df.set_index(0, inplace=True)
@@ -1193,7 +1193,6 @@ class Ticker(_YahooFinance):
         return self._get_data('value_analyzer_drilldown')
 
     # HISTORICAL PRICE DATA
-
     def history(
             self,
             period='ytd',
@@ -1249,14 +1248,29 @@ class Ticker(_YahooFinance):
             raise ValueError("Interval values must be one of {}".format(
                 ', '.join(intervals)))
         params['interval'] = interval.lower()
-        data = self._get_data('chart', params)
-        df = self._historical_data_to_dataframe(data, params, adj_timezone)
+        if params['interval'] == '1m' and period == '1mo':
+            df = self._history_1m(adj_timezone, adj_ohlc)
+        else:
+            data = self._get_data('chart', params)
+            df = self._historical_data_to_dataframe(data, params, adj_timezone)
         if adj_ohlc and 'adjclose' in df:
-            adjust = df['close'] / df['adjclose']
-            for col in ['open', 'high', 'low']:
-                df[col] = df[col] / adjust
-            del df['close']
-            df.rename(columns={'adjclose': 'close'}, inplace=True)
+            df = self._adjust_ohlc(df)
+        return df
+
+    def _history_1m(self, adj_timezone=True, adj_ohlc=False):
+        params = {'interval': '1m'}
+        today = datetime.today()
+        dates = [_convert_to_timestamp(today - timedelta(7*x)) for x in range(5)]
+        dataframes = []
+        for i in range(len(dates) - 1):
+            params['period1'] = dates[i + 1]
+            params['period2'] = dates[i]
+            data = self._get_data('chart', params)
+            dataframes.append(
+                self._historical_data_to_dataframe(data, params, adj_timezone))
+        df = pd.concat(dataframes, sort=True)
+        df.sort_values(by=['symbol', 'date'])
+        df.fillna(value=0, inplace=True)
         return df
 
     def _historical_data_to_dataframe(self, data, params, adj_timezone):
@@ -1269,11 +1283,19 @@ class Ticker(_YahooFinance):
         if all(isinstance(d[key], pd.DataFrame) for key in d):
             df = pd.concat(d, names=['symbol', 'date'], sort=False)
             if 'dividends' in df.columns:
-                df[['dividends']] = df[['dividends']].fillna(value=0)
+                df['dividends'].fillna(0, inplace=True)
             if 'splits' in df.columns:
-                df[['splits']] = df[['splits']].fillna(value=0)
+                df['splits'].fillna(0, inplace=True)
             return df
         return d
+
+    def _adjust_ohlc(self, df):
+        adjust = df['close'] / df['adjclose']
+        for col in ['open', 'high', 'low']:
+            df[col] = df[col] / adjust
+        del df['close']
+        df.rename(columns={'adjclose': 'close'}, inplace=True)
+        return df
 
     @property
     def option_chain(self):
