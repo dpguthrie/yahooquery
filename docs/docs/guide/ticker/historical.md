@@ -13,19 +13,33 @@
     | period     | Length of time                           | `str`                        | `ytd`     | optional   | `['1d', '5d', '7d', '60d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']` |
     | interval   | Time between data points                 | `str`                        | `1d`        | optional   | `['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']` |
     | start      | Specific starting date to pull data from | `str` or `datetime.datetime` |           | optional   | If a string is passed, use the format `YYYY-MM-DD`                                                                                      |
-    | start      | Specific ending date                     | `str` or `datetime.datetime` |           | optional   | If a string is passed, use the format `YYYY-MM-DD`
+    | end      | Specific ending date                     | `str` or `datetime.datetime` |           | optional   | If a string is passed, use the format `YYYY-MM-DD`
     | adj_timezone      | Adjust datetime to the specific symbol's timezone                     | `bool` | `True`       | optional   | `True`<br>`False`
     | adj_ohlc      | Calculates an adjusted open, high, low and close prices according to split and dividend information             | `bool` | `False`       | optional   | `True`<br>`False`
+
+    !!! tip "One Minute Interval Data"
+        The Yahoo Finance API restricts the amount of one minute interval data to seven days per request.  However, the data availability extends to 30 days.  The following will allow the user to retrieve the last 30 days of one minute interval data, with the one caveat that **4 requests are made in 7 day ranges to retrieve the desired data**:
+
+        ```python
+        tickers = Ticker('fb aapl nflx', asynchronous=True)
+
+        df = tickers.history(period='1mo', interval='1m')
+        ```
+
+        Thanks to [@rodrigobercini](https://github.com/rodrigobercini) for finding [this](https://github.com/dpguthrie/yahooquery/issues/32).
+          
 
 === "Example"
 
     ```python
-    tickers = Ticker('fb aapl amzn nflx goog', asynchronous=True)
+    tickers = Ticker('fb aapl nflx', asynchronous=True)
     
     # Default period = ytd, interval = 1d
     df = tickers.history()
     df.head()
     ```
+
+=== "Data"
 
     |                                   |   high |      volume |   close |    low |   open |   adjclose |   dividends |
     |:----------------------------------|-------:|------------:|--------:|-------:|-------:|-----------:|------------:|

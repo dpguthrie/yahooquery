@@ -18,7 +18,7 @@
 
 ---
 
-**Documentation**: <a target="_blank" href="https://dpguthrie.github.io/yahooquery/">https://dpguthrie.github.io/yahooquery/</a>
+**Documentation**: <a target="_blank" href="https://yahooquery.dpguthrie.com">https://yahooquery.dpguthrie.com</a>
 
 **Interactive Demo**: <a target="_blank" href="https://yahooquery-streamlit.herokuapp.com">https://yahooquery-streamlit.herokuapp.com</a>
 
@@ -49,7 +49,7 @@ Python 2.7, 3.5+
 - [Selenium](https://www.selenium.dev/selenium/docs/api/py/) - Web browser automation
 
 !!! info
-    Selenium is only utilized to login to Yahoo, which is done when the user passes certain [keyword arguments](guide/ticker/keyword_arguments.md#username-and-password).  Logging into Yahoo enables users who are subscribers to Yahoo Finance Premium to retrieve data only accessible to premium subscribers.
+    Selenium is only utilized to login to Yahoo, which is done when the user passes certain [keyword arguments](guide/keyword_arguments.md#username-and-password).  Logging into Yahoo enables users who are subscribers to Yahoo Finance Premium to retrieve data only accessible to premium subscribers.
 
 ## Installation
 
@@ -72,7 +72,7 @@ aapl = Ticker('aapl')
 aapl.summary_detail
 ```
 
-## Multple Symbol Example
+## Multiple Symbol Example
 
 The `Ticker` class also makes it easy to retrieve data for a list of symbols with the same API.  Simply pass a list of symbols as the argument to the `Ticker` class.
 

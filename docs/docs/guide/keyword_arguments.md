@@ -1,7 +1,5 @@
 # Keyword Arguments
 
-The `Ticker` class also takes in additional keyword arguments that modify certain behavior.  The majority of the keyword arguments will affect how requests are made.
-
 ## Regular
 
 ### **asynchronous**
@@ -51,7 +49,7 @@ The `Ticker` class also takes in additional keyword arguments that modify certai
     - *Default*: `United States`
 
     !!! info
-        This functionality has not been thoroughly tested as far as comparing data returned for each country.  You will see a difference, though, in the data returned from the `news` method:
+        This functionality has not been thoroughly tested as far as comparing data returned for each country.  You will see a difference, though, in the data returned from the [news](ticker/miscellaneous.md#news) method:
 
     ??? example "View Countries"
         ```python
@@ -362,10 +360,10 @@ The `Ticker` class also takes in additional keyword arguments that modify certai
 
 === "Details"
 
-    - *Description*: Some requests to Yahoo Finance require a crumb to make the request.  **This is only utilized for [advanced configuration](../advanced.md)**
+    - *Description*: Some requests to Yahoo Finance require a crumb to make the request.  **This is only utilized for [advanced configuration](advanced.md)**
     - *Default*:  `None`
     - *Type*: `str`
 
 === "Example"
 
-    See the [Advanced Section](../advanced.md)
+    See the [Advanced Section](advanced.md)

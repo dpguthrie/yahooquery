@@ -24,32 +24,6 @@
     |  3 | 2013-04-23 00:00:00 |              1 | Apple Inc Increases Repurchase Authorization To $60 Billion From The $10 Billion; Approves Quarterly Dividend | Ownership/Control  |
     |  4 | 2013-07-23 00:00:00 |              3 | Apple Inc Declares Cash Dividend                                                                              | Performance        |
 
-### **earnings_calendar**
-
-=== "Details"
-
-    - *Description*:  Upcoming and historical earnings information for given symbol(s)
-    - *Return*:  `pandas.DataFrame`
-
-=== "Example"
-
-    ```python hl_lines="2"
-    aapl = Ticker('aapl')
-    df = aapl.earnings_calendar
-    df.head()
-    ```
-
-=== "Data"
-
-    |    | Symbol   | Company    | Earnings Date          | EPS Estimate   | Reported EPS   | Surprise(%)   |
-    |---:|:---------|:-----------|:-----------------------|:---------------|:---------------|:--------------|
-    |  0 | AAPL     | Apple Inc  | Apr 28, 2021, 6 AMEDT  | -              | -              | -             |
-    |  1 | AAPL     | Apple Inc  | Jan 26, 2021, 6 AMEDT  | -              | -              | -             |
-    |  2 | AAPL     | Apple Inc  | Oct 28, 2020, 6 AMEDT  | 2.78           | -              | -             |
-    |  3 | AAPL     | Apple Inc. | Jul 30, 2020, 12 AMEDT | 2.04           | 2.58           | +26.22        |
-    |  4 | AAPL     | Apple Inc. | Apr 30, 2020, 12 AMEDT | 2.26           | 2.55           | +12.78        |
-
-
 ### **news**
 
 === "Details"

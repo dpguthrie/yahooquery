@@ -1677,7 +1677,7 @@ from yahooquery import get_currencies, get_exchanges, get_market_summary, get_tr
 
 === "Details"
 
-    - *Description*: List of relevant exchanges for specific country
+    - *Description*: List of trending securities for specific country
     - *Returns*: `list`
     - *Arguments*
 
