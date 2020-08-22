@@ -14,9 +14,7 @@
     <a href="https://pypi.org/project/yahooquery" target="_blank">
         <img src="https://badge.fury.io/py/yahooquery.svg" alt="Package version">
     </a>
-    <a href="https://pepy.tech/badge/yahooquery" target="_blank">
-        <img src="https://pepy.tech/project/yahooquery" alt="Downloads">
-    </a>
+    [![Downloads](https://pepy.tech/badge/yahooquery)](https://pepy.tech/project/yahooquery)
 </p>
 
 ---
