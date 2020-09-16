@@ -77,7 +77,7 @@ def get_symbol_search(company, region='US', lang='en-US'):
     response = requests.get(url)
     responseJson = response.json()
     result = responseJson['ResultSet']['Result']
-    if len(result):
+    if len(result) > 0:
         symbol = result[0]['symbol']
     else:
         symbol = None
