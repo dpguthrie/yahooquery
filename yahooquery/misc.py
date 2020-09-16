@@ -58,3 +58,27 @@ def get_trending(country='United States'):
     url = '{}/v1/finance/trending/{}'.format(BASE_URL, region)
     print(url)
     return _make_request(url, 'finance', country)[0]
+
+
+def get_symbol_search(company, region='US', lang='en-US'):
+    """Uses the yahoo finance symbol lookup suggestions list.
+    Takes the first suggestion. Returns None if none.
+    """
+    #urlbase = 'http://d.yimg.com/aq/autoc?query=%s&region=US&lang=en-US'
+    urlbase = 'http://d.yimg.com/aq/autoc?query=%s&region=%s&lang=%s'
+    # note as of September 2020:
+    # This will error 400 if the region and lang params are missing. 
+    # however it seems to give the same results regardless of what region and lang are set to
+    # even if they are nonsense
+    c = company.replace('.','').replace('~', '').replace(',', '').lower()
+    #cq = urllib.parse.quote(c)
+    cq = requests.utils.requote_uri(c)
+    url = urlbase % (cq, region, lang)
+    response = requests.get(url)
+    responseJson = response.json()
+    result = responseJson['ResultSet']['Result']
+    if len(result):
+        symbol = result[0]['symbol']
+    else:
+        symbol = None
+    return symbol
