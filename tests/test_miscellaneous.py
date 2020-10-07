@@ -32,14 +32,16 @@ def test_search():
 
 def test_currency_converter():
     data = currency_converter("USD", "EUR")
-    assert list(data.keys()) == [
-        "CurrentInterbankRate",
-        "CurrentInverseInterbankRate",
-        "Average",
-        "HistoricalPoints",
-        "supportedByOfx",
-        "fetchTime",
-    ]
+    assert set(list(data.keys())) == set(
+        [
+            "CurrentInterbankRate",
+            "CurrentInverseInterbankRate",
+            "Average",
+            "HistoricalPoints",
+            "supportedByOfx",
+            "fetchTime",
+        ]
+    )
 
 
 def test_bad_get_trending():
