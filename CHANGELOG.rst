@@ -1,6 +1,21 @@
 Change Log
 ==========
 
+2.2.8
+-----
+- :code:`Ticker`, :code:`Screener`, and :code:`Research` classes now accept the
+  keyword argument :code:`progress`.  If set to :code:`True`, a progress bar will
+  be displayed when downloading data.  The default value is :code:`False`
+- Add a :code:`search` function.  This allows you to query Yahoo Finance for anything.
+  Search for a company via cusip, ISIN Number, name, etc.  The function returns a dictionary
+  containing most relevant quotes and news items.  You can also provide an argument :code:`first_quote`
+  that returns only the most relevant quote from the query
+- Add a :code:`currency_converter` function.  This will retrieve the current conversion rate between
+  two specified currencies as well as historical rates over a specified period.
+- Fix bug related to converting financials (income statement, balance sheet, cash flow) to dataframe.
+- The :code:`symbols` argument to the :code:`Ticker` class now accepts any iterable.  The strings
+  will also be converted to uppercase.
+
 2.2.7
 -----
 - Fix bug related to ticker symbols with "&"

@@ -14,8 +14,8 @@
     <a href="https://pypi.org/project/yahooquery" target="_blank">
         <img src="https://badge.fury.io/py/yahooquery.svg" alt="Package version">
     </a>
-    <a href="https://pepy.tech/badge/yahooquery" target="_blank">
-        <img src="https://pepy.tech/project/yahooquery" alt="Downloads">
+    <a href="https://pepy.tech/project/yahooquery" target="_blank">
+        <img src="https://pepy.tech/badge/yahooquery" alt="Downloads">
     </a>
 </p>
 
@@ -33,14 +33,14 @@
 
 ## Overview
 
-Yahooquery is a python interface to unofficial Yahoo Finance API endpoints.  The package allows a user to retrieve nearly all the data visible via the Yahoo Finance front-end.
+Yahooquery is a python interface to unofficial Yahoo Finance API endpoints. The package allows a user to retrieve nearly all the data visible via the Yahoo Finance front-end.
 
 Some features of yahooquery:
 
-- **Fast**:  Data is retrieved through API endpoints instead of web scraping.  Additionally, asynchronous requests can be utilized with simple configuration
-- **Simple**:  Data for multiple symbols can be retrieved with simple one-liners
-- **User-friendly**:  Pandas Dataframes are utilized where appropriate
-- **Premium**:  Yahoo Finance premium subscribers are able to retrieve data available through their subscription
+- **Fast**: Data is retrieved through API endpoints instead of web scraping. Additionally, asynchronous requests can be utilized with simple configuration
+- **Simple**: Data for multiple symbols can be retrieved with simple one-liners
+- **User-friendly**: Pandas Dataframes are utilized where appropriate
+- **Premium**: Yahoo Finance premium subscribers are able to retrieve data available through their subscription
 
 ## Requirements
 
@@ -51,8 +51,7 @@ Python 2.7, 3.5+
 - [Requests-Futures](https://github.com/ross/requests-futures) - Asynchronous Python HTTP Requests for Humans
 - [Selenium](https://www.selenium.dev/selenium/docs/api/py/) - Web browser automation
 
-
-    Selenium is only utilized to login to Yahoo, which is done when the user passes certain [keyword arguments](guide/ticker/keyword_arguments.md#username-and-password).  Logging into Yahoo enables users who are subscribers to Yahoo Finance Premium to retrieve data only accessible to premium subscribers.
+  Selenium is only utilized to login to Yahoo, which is done when the user passes certain keyword arguments. Logging into Yahoo enables users who are subscribers to Yahoo Finance Premium to retrieve data only accessible to premium subscribers.
 
 ## Installation
 
@@ -62,7 +61,7 @@ pip install yahooquery
 
 ## Example
 
-The majority of the data available through the unofficial Yahoo Finance API is related to a company, which is represented in yahooquery as a `Ticker`.  You can instantiate the `Ticker` class by passing the company's ticker symbol.  For instance, to get data for Apple, Inc., pass `aapl` as the first argument to the `Ticker` class:
+The majority of the data available through the unofficial Yahoo Finance API is related to a company, which is represented in yahooquery as a `Ticker`. You can instantiate the `Ticker` class by passing the company's ticker symbol. For instance, to get data for Apple, Inc., pass `aapl` as the first argument to the `Ticker` class:
 
 ```python
 from yahooquery import Ticker
@@ -74,7 +73,7 @@ aapl.summary_detail
 
 ## Multple Symbol Example
 
-The `Ticker` class also makes it easy to retrieve data for a list of symbols with the same API.  Simply pass a list of symbols as the argument to the `Ticker` class.
+The `Ticker` class also makes it easy to retrieve data for a list of symbols with the same API. Simply pass a list of symbols as the argument to the `Ticker` class.
 
 ```python
 from yahooquery import Ticker
