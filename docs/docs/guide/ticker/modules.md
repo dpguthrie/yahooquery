@@ -1,4 +1,4 @@
-The following data accessors, or **modules**, are grouped together because they're all retrieved from the same endpoint.  The modules are given as query parameters to the API endpoint and as such can be combined to create convenient interfaces to retrieve your desired data with a single request.
+The following data accessors, or **modules**, are grouped together because they're all retrieved from the same endpoint. The modules are given as query parameters to the API endpoint and as such can be combined to create convenient interfaces to retrieve your desired data with a single request.
 
 ## Single Module
 
@@ -189,7 +189,6 @@ The following data accessors, or **modules**, are grouped together because they'
     |  3 | Ms. Katherine L. Adams  |    55 | Sr. VP, Gen. Counsel & Sec. |       1964 |         2019 |    3598384 |                0 |                  0 |
     |  4 | Ms. Deirdre  O'Brien    |    52 | Sr. VP of People & Retail   |       1967 |         2019 |    2690253 |                0 |                  0 |
 
-
 ### **earning_history**
 
 === "Details"
@@ -213,7 +212,6 @@ The following data accessors, or **modules**, are grouped together because they'
     |  1 | aapl     |     1 |        1 |        3.03 |          2.84 |            0.19 |             0.067 | 2019-09-30 | -3q      |
     |  2 | aapl     |     2 |        1 |        4.99 |          4.55 |            0.44 |             0.097 | 2019-12-31 | -2q      |
     |  3 | aapl     |     3 |        1 |        2.55 |          2.26 |            0.29 |             0.128 | 2020-03-31 | -1q      |
-
 
 ### **earnings**
 
@@ -1860,7 +1858,6 @@ The following data accessors, or **modules**, are grouped together because they'
     |  9 | energy                 |  0.031  |  0.0656 |  0      |
     | 10 | healthcare             |  0.2933 |  0.2339 |  0.2267 |
 
-
 ### **fund_top_holdings**
 
 === "Details"
@@ -1922,7 +1919,6 @@ The following data accessors, or **modules**, are grouped together because they'
     |  2 | aapl     |     2 | 2020-07-13 06:32:14 | Morgan Stanley | Overweight |             | main     |
     |  3 | aapl     |     3 | 2020-07-13 05:47:09 | Wedbush        | Outperform |             | main     |
     |  4 | aapl     |     4 | 2020-07-07 09:04:24 | Cascend        | Buy        |             | main     |
-
 
 ### **index_trend**
 
@@ -2049,9 +2045,10 @@ The following data accessors, or **modules**, are grouped together because they'
 ### **institution_ownership**
 
 === "Details"
-    - *Description*:  Top 10 owners of a given symbol(s)
-    - *Module*:  `intitutionOwnership`
-    - *Return*:  `pandas.DataFrame`
+
+    - *Description*: Top 10 owners of a given symbol(s)
+    - *Module*: `intitutionOwnership`
+    - *Return*: `pandas.DataFrame`
 
 === "Example"
 
@@ -2323,7 +2320,7 @@ The following data accessors, or **modules**, are grouped together because they'
 
 === "Example"
 
-    ```python hl_lines="2" tab="Example"
+    ```python hl_lines="2"
     aapl = Ticker('aapl')
     df = aapl.sec_filings
     df.head()
@@ -2482,6 +2479,7 @@ The following data accessors, or **modules**, are grouped together because they'
 ### **all_modules**
 
 === "Details"
+
     - *Description*:  Returns all **modules** from above
     - *Return*:  `dict`
 
@@ -2527,6 +2525,7 @@ The following data accessors, or **modules**, are grouped together because they'
     - *Raises*: `ValueError` is raised if invalid module is given
 
     ???+ example "View Available Modules"
+
         ```python
         [
             'assetProfile', 'recommendationTrend', 'cashflowStatementHistory',
@@ -2551,7 +2550,7 @@ The following data accessors, or **modules**, are grouped together because they'
 
 === "Data"
 
-    ```python tab="Data" hl_lines="3 80 118"
+    ```python hl_lines="2 3 80 118"
     {
         "aapl": {
             "assetProfile": {

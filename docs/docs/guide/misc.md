@@ -2,13 +2,163 @@
 
 Additional data can be obtained from Yahoo Finance outside of the three classes. The following functions can be utilized to retrieve additional data unrelated to a ticker symbol:
 
-
 ## Import Functions
+
 ```python
-from yahooquery import get_currencies, get_exchanges, get_market_summary, get_trending
+import yahooquery as yq
 ```
 
 ## Functions
+
+### currency_converter
+
+=== "Details"
+
+    - *Description*: Retrieve current conversion rate between two currencies as well as historical rates
+    - *Returns*: `dict`
+    - *Arguments*
+
+    | Argument   |  Description  | Type   | Default   | Required   | Options                       |
+    |:-----------|:-----------|:-------|:----------|:-----------|:------------------------------|
+    | from_currency  | Currency to convert from | `str`  | None     | **required**   | See [get_currencies](#get_currencies) - `shortName`|
+    | to_currency  | Currency to convert to | `str`  | None     | **required**   | See [get_currencies](#get_currencies) - `shortName`|
+    | period  | Length of historical data to return | `str`  | `week`     | optional   | `day`, `week`, `month`, `6month`, `year`, `allTime` |
+
+=== "Example"
+
+    ```python hl_lines="2"
+    import yahooquery as yq
+    data = yq.currency_converter("USD", "EUR", "day")
+    ```
+
+=== "Data"
+
+    ```python
+    {
+        'CurrentInterbankRate': 0.8403,
+        'CurrentInverseInterbankRate': 1.1901,
+        'Average': 0.8443,
+        'HistoricalPoints': [{
+            'PointInTime': '2020-08-21 18:00:00',
+            'InterbankRate': 0.8478,
+            'InverseInterbankRate': 1.1795
+        }, {
+            'PointInTime': '2020-08-22 18:00:00',
+            'InterbankRate': 0.8478,
+            'InverseInterbankRate': 1.1795
+        }, {
+            'PointInTime': '2020-08-23 18:00:00',
+            'InterbankRate': 0.8475,
+            'InverseInterbankRate': 1.1799
+        }, {
+            'PointInTime': '2020-08-24 18:00:00',
+            'InterbankRate': 0.8466,
+            'InverseInterbankRate': 1.1812
+        }, {
+            'PointInTime': '2020-08-25 18:00:00',
+            'InterbankRate': 0.8453,
+            'InverseInterbankRate': 1.183
+        }, {
+            'PointInTime': '2020-08-26 18:00:00',
+            'InterbankRate': 0.8476,
+            'InverseInterbankRate': 1.1798
+        }, {
+            'PointInTime': '2020-08-27 18:00:00',
+            'InterbankRate': 0.8409,
+            'InverseInterbankRate': 1.1892
+        }, {
+            'PointInTime': '2020-08-28 18:00:00',
+            'InterbankRate': 0.8399,
+            'InverseInterbankRate': 1.1906
+        }, {
+            'PointInTime': '2020-08-29 18:00:00',
+            'InterbankRate': 0.8399,
+            'InverseInterbankRate': 1.1906
+        }, {
+            'PointInTime': '2020-08-30 18:00:00',
+            'InterbankRate': 0.8373,
+            'InverseInterbankRate': 1.1943
+        }, {
+            'PointInTime': '2020-08-31 18:00:00',
+            'InterbankRate': 0.8375,
+            'InverseInterbankRate': 1.1941
+        }, {
+            'PointInTime': '2020-09-01 18:00:00',
+            'InterbankRate': 0.8442,
+            'InverseInterbankRate': 1.1845
+        }, {
+            'PointInTime': '2020-09-02 18:00:00',
+            'InterbankRate': 0.845,
+            'InverseInterbankRate': 1.1834
+        }, {
+            'PointInTime': '2020-09-03 18:00:00',
+            'InterbankRate': 0.8455,
+            'InverseInterbankRate': 1.1828
+        }, {
+            'PointInTime': '2020-09-04 18:00:00',
+            'InterbankRate': 0.8447,
+            'InverseInterbankRate': 1.1839
+        }, {
+            'PointInTime': '2020-09-05 18:00:00',
+            'InterbankRate': 0.8447,
+            'InverseInterbankRate': 1.1839
+        }, {
+            'PointInTime': '2020-09-06 18:00:00',
+            'InterbankRate': 0.8462,
+            'InverseInterbankRate': 1.1818
+        }, {
+            'PointInTime': '2020-09-07 18:00:00',
+            'InterbankRate': 0.8478,
+            'InverseInterbankRate': 1.1795
+        }, {
+            'PointInTime': '2020-09-08 18:00:00',
+            'InterbankRate': 0.8471,
+            'InverseInterbankRate': 1.1805
+        }, {
+            'PointInTime': '2020-09-09 18:00:00',
+            'InterbankRate': 0.8439,
+            'InverseInterbankRate': 1.185
+        }, {
+            'PointInTime': '2020-09-10 18:00:00',
+            'InterbankRate': 0.8447,
+            'InverseInterbankRate': 1.1839
+        }, {
+            'PointInTime': '2020-09-11 18:00:00',
+            'InterbankRate': 0.8441,
+            'InverseInterbankRate': 1.1848
+        }, {
+            'PointInTime': '2020-09-12 18:00:00',
+            'InterbankRate': 0.8441,
+            'InverseInterbankRate': 1.1848
+        }, {
+            'PointInTime': '2020-09-13 18:00:00',
+            'InterbankRate': 0.8427,
+            'InverseInterbankRate': 1.1867
+        }, {
+            'PointInTime': '2020-09-14 18:00:00',
+            'InterbankRate': 0.8437,
+            'InverseInterbankRate': 1.1852
+        }, {
+            'PointInTime': '2020-09-15 18:00:00',
+            'InterbankRate': 0.8451,
+            'InverseInterbankRate': 1.1833
+        }, {
+            'PointInTime': '2020-09-16 18:00:00',
+            'InterbankRate': 0.8458,
+            'InverseInterbankRate': 1.1822
+        }, {
+            'PointInTime': '2020-09-17 18:00:00',
+            'InterbankRate': 0.8429,
+            'InverseInterbankRate': 1.1863
+        }, {
+            'PointInTime': '2020-09-18 18:00:00',
+            'InterbankRate': 0.8446,
+            'InverseInterbankRate': 1.184
+        }],
+        'supportedByOfx': True,
+        'fetchTime': 1600636306047
+    }
+    ```
 
 ### get_currencies
 
@@ -20,8 +170,8 @@ from yahooquery import get_currencies, get_exchanges, get_market_summary, get_tr
 === "Example"
 
     ```python hl_lines="2"
-    from yahooquery import get_currencies
-    data = get_currencies()
+    import yahooquery as yq
+    data = yq.get_currencies()
     ```
 
 === "Data"
@@ -920,8 +1070,8 @@ from yahooquery import get_currencies, get_exchanges, get_market_summary, get_tr
 === "Example"
 
     ```python hl_lines="2"
-    from yahooquery import get_currencies
-    df = get_exchanges()
+    import yahooquery as yq
+    df = yq.get_exchanges()
     df.head()
     ```
 
@@ -934,7 +1084,6 @@ from yahooquery import get_currencies, get_exchanges, get_market_summary, get_tr
     |  2 | United States of America | Dow Jones Indexes                 | nan      | Real-time | ICE Data Services |
     |  3 | United States of America | Nasdaq Stock Exchange             | nan      | Real-time | ICE Data Services |
     |  4 | United States of America | ICE Futures US                    | .NYB     | 30 min    | ICE Data Services |
-
 
 ### get_market_summary
 
@@ -949,7 +1098,7 @@ from yahooquery import get_currencies, get_exchanges, get_market_summary, get_tr
     | country  | Name of country | `str`  | `United States`       | optional   | See below |
 
     ??? example "View Countries"
-    
+
         ```python
         {
             'france': {
@@ -1023,8 +1172,8 @@ from yahooquery import get_currencies, get_exchanges, get_market_summary, get_tr
 === "Example"
 
     ```python hl_lines="2"
-    from yahooquery import get_market_summary
-    get_market_summary(country='hong kong')
+    import yahooquery as yq
+    yq.get_market_summary(country='hong kong')
     ```
 
 === "Data"
@@ -1686,7 +1835,7 @@ from yahooquery import get_currencies, get_exchanges, get_market_summary, get_tr
     | country  | Name of country | `str`  | `united states`       | optional   | See below |
 
     ??? example "View Countries"
-    
+
         ```python
         {
             'france': {
@@ -1760,8 +1909,8 @@ from yahooquery import get_currencies, get_exchanges, get_market_summary, get_tr
 === "Example"
 
     ```python hl_lines="2"
-    from yahooquery import get_trending
-    data = get_trending()
+    import yahooquery as yq
+    data = yq.get_trending()
     ```
 
 === "Data"
@@ -1812,5 +1961,115 @@ from yahooquery import get_currencies, get_exchanges, get_market_summary, get_tr
         }],
         'jobTimestamp': 1596251351296,
         'startInterval': 202008010200
+    }
+    ```
+
+### search
+
+=== "Details"
+
+    - *Description*: Query Yahoo Finance for anything:  companies, ticker symbols, cusips, news, etc.
+    - *Returns*: `dict`
+    - *Arguments*
+
+    | Argument   |  Description  | Type   | Default   | Required   | Options                       |
+    |:-----------|:-----------|:-------|:----------|:-----------|:------------------------------|
+    | query  | What you'd like to query from Yahoo Finance | `str`  | None     | **required**   | N/A |
+    | quotes_count  | Maximum number of quotes to return | `int`  | 10     | optional   | N/A |
+    | news_count  | Maximum number of news items to return | `int`  | 10     | optional   | N/A |
+    | first_quote  | Return only the first quote result | `bool`  | `False`     | optional   | `True`, `False` |
+    | country  | Name of country | `str`  | `United States`       | optional   | See below |
+
+    ??? example "View Countries"
+
+        ```python
+        {
+            'france': {
+                'lang': 'fr-FR',
+                'region': 'FR',
+                'corsDomain': 'fr.finance.yahoo.com'
+            },
+            'india': {
+                'lang': 'en-IN',
+                'region': 'IN',
+                'corsDomain': 'in.finance.yahoo.com'
+            },
+            'hong kong': {
+                'lang': 'zh-Hant-HK',
+                'region': 'HK',
+                'corsDomain': 'hk.finance.yahoo.com'
+            },
+            'germany': {
+                'lang': 'de-DE',
+                'region': 'DE',
+                'corsDomain': 'de.finance.yahoo.com'
+            },
+            'canada': {
+                'lang': 'en-CA',
+                'region': 'CA',
+                'corsDomain': 'ca.finance.yahoo.com'
+            },
+            'spain': {
+                'lang': 'es-ES',
+                'region': 'ES',
+                'corsDomain': 'es.finance.yahoo.com'
+            },
+            'italy': {
+                'lang': 'it-IT',
+                'region': 'IT',
+                'corsDomain': 'it.finance.yahoo.com'
+            },
+            'united states': {
+                'lang': 'en-US',
+                'region': 'US',
+                'corsDomain': 'finance.yahoo.com'
+            },
+            'australia': {
+                'lang': 'en-AU',
+                'region': 'AU',
+                'corsDomain': 'au.finance.yahoo.com'
+            },
+            'united kingdom': {
+                'lang': 'en-GB',
+                'region': 'GB',
+                'corsDomain': 'uk.finance.yahoo.com'
+            },
+            'brazil': {
+                'lang': 'pt-BR',
+                'region': 'BR',
+                'corsDomain': 'br.financas.yahoo.com'
+            },
+            'new zealand': {
+                'lang': 'en-NZ',
+                'region': 'NZ',
+                'corsDomain': 'nz.finance.yahoo.com'
+            },
+            'singapore': {
+                'lang': 'en-SG',
+                'region': 'SG',
+                'corsDomain': 'sg.finance.yahoo.com'
+            }
+        }
+        ```
+
+=== "Example"
+
+    ```python hl_lines="2"
+    import yahooquery as yq
+    data = yq.search("38141G104", first_quote=True)
+    ```
+
+=== "Data"
+
+    ```python
+    {
+        'exchange': 'NYQ',
+        'quoteType': 'EQUITY',
+        'symbol': 'GS',
+        'index': 'quotes',
+        'score': 33156.0,
+        'typeDisp': 'Equity',
+        'longname': 'The Goldman Sachs Group, Inc.',
+        'isYahooFinance': True
     }
     ```

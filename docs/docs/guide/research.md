@@ -10,7 +10,7 @@ from yahooquery import Research
 ## Create Instance
 
 ```python
-r = Research(username='username@yahoo.com', password=password)
+r = Research(username='username@yahoo.com', password='password')
 ```
 
 ## Research
@@ -31,7 +31,7 @@ r = Research(username='username@yahoo.com', password=password)
     | report_type   | Report types | `str` or `list` | None   | optional   | See below     |
     | report_date   | Date range | `str` | None   | optional   | See below     |
 
-    === "trend"
+    === "investment_rating"
 
         ```python
         {

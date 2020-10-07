@@ -9,76 +9,76 @@ repo_url: https://github.com/dpguthrie/yahooquery
 
 # Configuration
 theme:
-    name: material
-    palette:
-        primary: deep-purple
-    icon:
-        repo: fontawesome/brands/github-alt
-    logo: img/logo_transparent_2.png
-    favicon: img/favicon.png
-    language: en
+  name: material
+  palette:
+    primary: deep-purple
+  icon:
+    repo: fontawesome/brands/github-alt
+  logo: img/logo_transparent_2.png
+  favicon: img/favicon.png
+  language: en
 
 # Extras
 extra:
-    social:
-        - icon: fontawesome/brands/github-alt
-          link: https://github.com/dpguthrie
-        - icon: fontawesome/brands/linkedin
-          link: https://www.linkedin.com/in/douglas-guthrie-07994a48/
-        - icon: fontawesome/brands/medium
-          link: https://medium.com/@douglas.p.guthrie
-        - icon: fontawesome/solid/globe
-          link: https://dpguthrie.com
+  social:
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/dpguthrie
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/douglas-guthrie-07994a48/
+    - icon: fontawesome/brands/medium
+      link: https://medium.com/@douglas.p.guthrie
+    - icon: fontawesome/solid/globe
+      link: https://dpguthrie.com
 
 extra_css:
-    - css/termynal.css
+  - css/termynal.css
 
 extra_javascript:
-    - js/termynal.js
-    - js/custom.js
+  - js/termynal.js
+  - js/custom.js
 
 # Extensions
 markdown_extensions:
-    - admonition
-    - codehilite:
-        guess_lang: false
-    - toc:
-        permalink: true
-    - pymdownx.superfences
-    - pymdownx.tabbed
-    - pymdownx.details
-    - pymdownx.emoji:
-        emoji_index: !!python/name:materialx.emoji.twemoji
-        emoji_generator: !!python/name:materialx.emoji.to_svg
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
 
 # Navigation
 nav:
-    - index.md
-    - User Guide:
-        - guide/index.md
-        - Classes:
-            - guide/keyword_arguments.md
-            - Ticker:
-                - guide/ticker/intro.md
-                - guide/ticker/modules.md
-                - guide/ticker/financials.md
-                - guide/ticker/options.md
-                - guide/ticker/historical.md
-                - guide/ticker/miscellaneous.md
-                - guide/ticker/premium.md
-            - guide/screener.md
-            - guide/research.md
-            - Advanced Configuration: guide/advanced.md
-        - Functions: guide/misc.md
-    - Alternatives: alternative.ipynb
-    - Changelog: release_notes.md
+  - index.md
+  - User Guide:
+      - guide/index.md
+      - Classes:
+          - guide/keyword_arguments.md
+          - Ticker:
+              - guide/ticker/intro.md
+              - guide/ticker/modules.md
+              - guide/ticker/financials.md
+              - guide/ticker/options.md
+              - guide/ticker/historical.md
+              - guide/ticker/miscellaneous.md
+              - guide/ticker/premium.md
+          - guide/screener.md
+          - guide/research.md
+          - Advanced Configuration: guide/advanced.md
+      - Functions: guide/misc.md
+  - Alternatives: alternative.ipynb
+  - Changelog: release_notes.md
 
 # Google Analytics
 google_analytics:
-    - UA-174219875-1
-    - auto
+  - UA-174219875-1
+  - auto
 
 # Plugins
 plugins:
-    - search
-    - mkdocs-jupyter
+  - search
+  - mkdocs-jupyter

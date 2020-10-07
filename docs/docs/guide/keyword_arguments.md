@@ -118,7 +118,12 @@
                 'lang': 'en-SG',
                 'region': 'SG',
                 'corsDomain': 'sg.finance.yahoo.com'
-            }
+            },
+            'taiwan': {
+                'lang': 'zh-tw',
+                'region': 'TW',
+                'corsDomain': 'tw.finance.yahoo.com'
+            },
         }
         ```
 
@@ -157,7 +162,7 @@
         'aapl',
         formatted=True
     )
-    ``` 
+    ```
 
 ### **max_workers**
 
@@ -177,6 +182,23 @@
         'aapl',
         asynchronous=True,
         max_workers=4
+    )
+    ```
+
+### **progress**
+
+=== "Details"
+
+    - *Description*: - Show a progress bar when downloading data
+    - *Default* - `False`
+    - *Type* - `bool`
+
+=== "Example"
+
+    ```python hl_lines="3"
+    Ticker(
+        'aapl',
+        progress=True
     )
     ```
 
