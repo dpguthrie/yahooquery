@@ -12,14 +12,7 @@ BASE_URL = "https://query2.finance.yahoo.com"
 
 
 def _make_request(
-    url: str,
-    *,
-    response_field: str = None,
-    country: str = None,
-    method: str = "get",
-    params: dict = {},
-    data: dict = None,
-    **kwargs
+    url, response_field=None, country=None, method="get", params={}, data=None, **kwargs
 ):
     if country:
         country = country.lower()
@@ -43,11 +36,11 @@ def _make_request(
 
 
 def search(
-    query: str,
-    country: str = "United States",
-    quotes_count: int = 10,
-    news_count: int = 10,
-    first_quote: bool = False,
+    query,
+    country="United States",
+    quotes_count=10,
+    news_count=10,
+    first_quote=False,
 ) -> dict:
     """Search Yahoo Finance for anything
 
@@ -71,20 +64,20 @@ def search(
     return data
 
 
-def get_currencies() -> List[dict]:
+def get_currencies():
     """Get a list of currencies"""
     url = "{}/v1/finance/currencies".format(BASE_URL)
     return _make_request(url, response_field="currencies", country="United States")
 
 
-def get_exchanges() -> pd.DataFrame:
+def get_exchanges():
     """Get a list of available exchanges and their suffixes"""
     url = "https://help.yahoo.com/kb/finance-for-web/SLN2310.html?impressions=true"
     dataframes = pd.read_html(url)
     return dataframes[0]
 
 
-def get_market_summary(country: str = "United States") -> List[dict]:
+def get_market_summary(country="United States"):
     """Get a market summary
 
     Parameters
@@ -101,7 +94,7 @@ def get_market_summary(country: str = "United States") -> List[dict]:
     return _make_request(url, response_field="marketSummaryResponse", country=country)
 
 
-def get_trending(country: str = "United States") -> dict:
+def get_trending(country="United States"):
     """Get trending stocks for a specific region
 
     Parameters
@@ -122,9 +115,7 @@ def get_trending(country: str = "United States") -> dict:
     return _make_request(url, response_field="finance", country=country)[0]
 
 
-def currency_converter(
-    from_currency: str, to_currency: str, period: str = "week"
-) -> dict:
+def currency_converter(from_currency, to_currency, period="week"):
     """Currency conversion given two currencies
 
     Parameters
