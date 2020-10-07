@@ -1,6 +1,13 @@
 import pytest
-from yahooquery import (get_currencies, get_exchanges, get_market_summary,
-                        get_trending)
+
+from yahooquery import (
+    currency_converter,
+    get_currencies,
+    get_exchanges,
+    get_market_summary,
+    get_trending,
+    search,
+)
 
 
 def test_get_currencies():
@@ -19,11 +26,27 @@ def test_get_trending():
     assert get_trending() is not None
 
 
+def test_search():
+    assert search("aapl")["quotes"][0]["longname"] == "Apple Inc."
+
+
+def test_currency_converter():
+    data = currency_converter("USD", "EUR")
+    assert list(data.keys()) == [
+        "CurrentInterbankRate",
+        "CurrentInverseInterbankRate",
+        "Average",
+        "HistoricalPoints",
+        "supportedByOfx",
+        "fetchTime",
+    ]
+
+
 def test_bad_get_trending():
     with pytest.raises(KeyError):
-        assert get_trending('zimbabwe')
+        assert get_trending("zimbabwe")
 
 
 def test_bad_market_summary():
     with pytest.raises(KeyError):
-        assert get_market_summary('zimbabwe')
+        assert get_market_summary("zimbabwe")

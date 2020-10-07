@@ -5,7 +5,7 @@ from yahooquery import Screener
 
 def test_screener():
     s = Screener()
-    assert s.get_screeners('most_actives') is not None
+    assert s.get_screeners("most_actives") is not None
 
 
 def test_available_screeners():
@@ -16,4 +16,4 @@ def test_available_screeners():
 def test_bad_screener():
     with pytest.raises(ValueError):
         s = Screener()
-        assert s.get_screeners('most_active')
+        assert s.get_screeners("most_active")
