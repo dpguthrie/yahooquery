@@ -41,7 +41,7 @@ def search(
     quotes_count=10,
     news_count=10,
     first_quote=False,
-) -> dict:
+):
     """Search Yahoo Finance for anything
 
     Parameters
