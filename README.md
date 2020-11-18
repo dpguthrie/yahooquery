@@ -71,7 +71,7 @@ aapl = Ticker('aapl')
 aapl.summary_detail
 ```
 
-## Multple Symbol Example
+## Multiple Symbol Example
 
 The `Ticker` class also makes it easy to retrieve data for a list of symbols with the same API. Simply pass a list of symbols as the argument to the `Ticker` class.
 
