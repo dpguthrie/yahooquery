@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="#"><img src="docs/docs/img/banner_image_2.png"></a>
+    <a href="#"><img src="docs/docs/img/logo_transparent_2.png"></a>
 </p>
 <p align="center">
     <em>Python wrapper for an unofficial Yahoo Finance API</em>
