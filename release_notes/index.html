@@ -484,6 +484,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#228" class="md-nav__link">
+    2.2.8
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#227" class="md-nav__link">
     2.2.7
   </a>
@@ -696,6 +703,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#228" class="md-nav__link">
+    2.2.8
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#227" class="md-nav__link">
     2.2.7
   </a>
@@ -898,6 +912,13 @@
                 
                 
                 <h1 id="release-notes">Release Notes<a class="headerlink" href="#release-notes" title="Permanent link">&para;</a></h1>
+<h2 id="228">2.2.8<a class="headerlink" href="#228" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>Ticker</code>, <code>Screener</code>, and <code>Research</code> classes now accept the keyword argument <code>progress</code>.  If set to <code>True</code>, a progress bar will be displayed when downloading data.  The default value is <code>False</code>.</li>
+<li>Add a <code>search</code> function.  This allows you to query Yahoo Finance for anything.  Search for a company via cusip, ISIN number, name, etc.  The function returns a dictionary containing most relevant quotes and news items.  You can also provide an argument <code>first_quote</code> that returns only the most relevant quote from the query.</li>
+<li>Add a <code>currency_converter</code> function.  This will retrieve the current conversion rate between two specified currencies as well as historical rates over a specified period.</li>
+<li>Fix bug related to converting financials (income statement, balance sheet, cash flow) to dataframe.</li>
+</ul>
 <h2 id="227">2.2.7<a class="headerlink" href="#227" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Fix bug related to ticker symbols with "&amp;"</li>
