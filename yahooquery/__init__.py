@@ -1,3 +1,5 @@
+"""Python interface to unofficial Yahoo Finance API endpoints"""
+
 name = "yahooquery"
 __version__ = "2.2.9"
 
