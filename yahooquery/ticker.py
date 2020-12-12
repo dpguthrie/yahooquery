@@ -1227,12 +1227,7 @@ class Ticker(_YahooFinance):
             end = _convert_to_timestamp(end, start=False)
             params = {"period1": start, "period2": end}
         else:
-            period = period.lower()
-            if period not in periods:
-                raise ValueError(
-                    "Period values must be one of {}".format(", ".join(periods))
-                )
-            params = {"range": period}
+            params = {"range": period.lower()}
         if interval not in intervals:
             raise ValueError(
                 "Interval values must be one of {}".format(", ".join(intervals))

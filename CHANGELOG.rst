@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2.2.9
+-----
+- Fix internal method :code:`_format_data` in the :code:`_YahooFinance` class to account for dates held in lists
+- Use flit to publish package to pypi.  Additionally, make selenium an optional package to install through :code:`pip install yahooquery[premium]`
+
 2.2.8
 -----
 - :code:`Ticker`, :code:`Screener`, and :code:`Research` classes now accept the

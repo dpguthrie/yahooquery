@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="#"><img src="img/banner_image_2.png"></a>
+    <a href="#"><img src="img/full.png"></a>
 </p>
 <p align="center">
     <em>Python wrapper for an unofficial Yahoo Finance API</em>
@@ -46,12 +46,26 @@ Python 2.7, 3.5+
 - [Pandas](https://pandas.pydata.org) - Fast, powerful, flexible and easy to use open source data analysis and manipulation tool
 - [Requests](https://requests.readthedocs.io/en/master/) - The elegant and simple HTTP library for Python, built for human beings.
 - [Requests-Futures](https://github.com/ross/requests-futures) - Asynchronous Python HTTP Requests for Humans
+
+### Yahoo Finance Premium Subscribers
+
 - [Selenium](https://www.selenium.dev/selenium/docs/api/py/) - Web browser automation
 
 !!! info
     Selenium is only utilized to login to Yahoo, which is done when the user passes certain [keyword arguments](guide/keyword_arguments.md#username-and-password).  Logging into Yahoo enables users who are subscribers to Yahoo Finance Premium to retrieve data only accessible to premium subscribers.
 
 ## Installation
+
+If you're a Yahoo Finance premium subscriber and would like to retrieve data available through your subscription, do the following:
+
+<div class="termynal" data-termynal data-ty-typeDelay="40" data-ty-lineDelay="700">
+    <span data-ty="input">pip install yahooquery[premium]</span>
+    <span data-ty="progress"></span>
+    <span data-ty>Successfully installed yahooquery</span>
+    <a href="#" data-terminal-control="">restart ↻</a>
+</div>
+
+Otherwise, omit the premium argument:
 
 <div class="termynal" data-termynal data-ty-typeDelay="40" data-ty-lineDelay="700">
     <span data-ty="input">pip install yahooquery</span>

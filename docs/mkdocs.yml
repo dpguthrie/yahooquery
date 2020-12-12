@@ -11,11 +11,11 @@ repo_url: https://github.com/dpguthrie/yahooquery
 theme:
   name: material
   palette:
-    primary: deep-purple
+    primary: black
   icon:
     repo: fontawesome/brands/github-alt
-  logo: img/logo_transparent_2.png
-  favicon: img/favicon.png
+  logo: img/logo-white.png
+  favicon: img/logo-white.png
   language: en
 
 # Extras

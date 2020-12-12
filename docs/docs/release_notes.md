@@ -1,5 +1,12 @@
 # Release Notes
 
+## 2.2.8
+
+- `Ticker`, `Screener`, and `Research` classes now accept the keyword argument `progress`.  If set to `True`, a progress bar will be displayed when downloading data.  The default value is `False`.
+- Add a `search` function.  This allows you to query Yahoo Finance for anything.  Search for a company via cusip, ISIN number, name, etc.  The function returns a dictionary containing most relevant quotes and news items.  You can also provide an argument `first_quote` that returns only the most relevant quote from the query.
+- Add a `currency_converter` function.  This will retrieve the current conversion rate between two specified currencies as well as historical rates over a specified period.
+- Fix bug related to converting financials (income statement, balance sheet, cash flow) to dataframe.
+
 ## 2.2.7
 
 - Fix bug related to ticker symbols with "&"

@@ -34,6 +34,8 @@ SEPERATE_ENDPOINTS = FINANCIALS + [
     "all_modules",
     "get_modules",
     "symbols",
+    "p_portal",
+    "p_value_analyzer",
 ]
 
 

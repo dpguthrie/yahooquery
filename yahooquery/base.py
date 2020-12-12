@@ -941,7 +941,10 @@ class _YahooFinance(object):
                     try:
                         obj[k] = [item.get("fmt") for item in v]
                     except AttributeError:
-                        obj[k] = v
+                        obj[k] = [
+                            datetime.fromtimestamp(date).strftime("%Y-%m-%d %H:%M:S")
+                            for date in v
+                        ]
                 else:
                     try:
                         obj[k] = datetime.fromtimestamp(v).strftime("%Y-%m-%d %H:%M:%S")
