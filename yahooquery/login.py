@@ -7,7 +7,7 @@ try:
     from selenium.webdriver.common.by import By
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.webdriver.support.ui import WebDriverWait
-except ModuleNotFoundError:
+except ImportError:
     # Selenium was not installed
     pass
 from yahooquery.utils import USER_AGENT_LIST
