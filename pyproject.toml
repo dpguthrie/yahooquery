@@ -31,7 +31,7 @@ description-file = "README.md"
 Documentation = "https://yahooquery.dpguthrie.com"
 Demo = "https://yahooquery-streamlit.herokuapp.com"
 
-[tool.flit.metadata.requires.extra]
+[tool.flit.metadata.requires-extra]
 test = [
     "pytest ==6.0.2",
     "pytest-cov==2.10.1",
