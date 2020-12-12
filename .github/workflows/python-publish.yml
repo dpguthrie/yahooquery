@@ -9,7 +9,6 @@ on:
 jobs:
   publish:
     name: Publish to PyPi
-    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
     runs-on: ubuntu-latest
     steps:
     - name: Checkout source
