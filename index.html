@@ -233,6 +233,19 @@
     Requirements
   </a>
   
+    <nav class="md-nav" aria-label="Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#yahoo-finance-premium-subscribers" class="md-nav__link">
+    Yahoo Finance Premium Subscribers
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -561,6 +574,19 @@
     Requirements
   </a>
   
+    <nav class="md-nav" aria-label="Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#yahoo-finance-premium-subscribers" class="md-nav__link">
+    Yahoo Finance Premium Subscribers
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -654,6 +680,9 @@
 <li><a href="https://pandas.pydata.org">Pandas</a> - Fast, powerful, flexible and easy to use open source data analysis and manipulation tool</li>
 <li><a href="https://requests.readthedocs.io/en/master/">Requests</a> - The elegant and simple HTTP library for Python, built for human beings.</li>
 <li><a href="https://github.com/ross/requests-futures">Requests-Futures</a> - Asynchronous Python HTTP Requests for Humans</li>
+</ul>
+<h3 id="yahoo-finance-premium-subscribers">Yahoo Finance Premium Subscribers<a class="headerlink" href="#yahoo-finance-premium-subscribers" title="Permanent link">&para;</a></h3>
+<ul>
 <li><a href="https://www.selenium.dev/selenium/docs/api/py/">Selenium</a> - Web browser automation</li>
 </ul>
 <div class="admonition info">
@@ -661,6 +690,15 @@
 <p>Selenium is only utilized to login to Yahoo, which is done when the user passes certain <a href="guide/keyword_arguments/#username-and-password">keyword arguments</a>.  Logging into Yahoo enables users who are subscribers to Yahoo Finance Premium to retrieve data only accessible to premium subscribers.</p>
 </div>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<p>If you're a Yahoo Finance premium subscriber and would like to retrieve data available through your subscription, do the following:</p>
+<div class="termynal" data-termynal data-ty-typeDelay="40" data-ty-lineDelay="700">
+    <span data-ty="input">pip install yahooquery[premium]</span>
+    <span data-ty="progress"></span>
+    <span data-ty>Successfully installed yahooquery</span>
+    <a href="#" data-terminal-control="">restart ↻</a>
+</div>
+
+<p>Otherwise, omit the premium argument:</p>
 <div class="termynal" data-termynal data-ty-typeDelay="40" data-ty-lineDelay="700">
     <span data-ty="input">pip install yahooquery</span>
     <span data-ty="progress"></span>
