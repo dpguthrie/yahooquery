@@ -17,9 +17,11 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.7
-    - name: install flit
+    - name: Install flit
       run: |
         pip install flit~=3.0
+    - name: Install Dependencies
+      run: flit install --symlink
     - name: Build and publish
       run: |
         flit publish
