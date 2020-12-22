@@ -1063,7 +1063,10 @@ class _YahooFinance(object):
             response = future.result()
             json = self._validate_response(response.json(), response_field)
             symbol = self._get_symbol(response, params)
-            data[symbol] = self._construct_data(json, response_field, **kwargs)
+            if symbol is not None:
+                data[symbol] = self._construct_data(json, response_field, **kwargs)
+            else:
+                data = self._construct_data(json, response_field, **kwargs)
         return data
 
     def _sync_requests(self, response_field, urls, params, **kwargs):

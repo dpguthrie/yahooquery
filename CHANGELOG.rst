@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+2.2.11
+------
+- Fix bug with async requests and :code:`symbols` as a query parameter
+
 2.2.9
 -----
 - Fix internal method :code:`_format_data` in the :code:`_YahooFinance` class to account for dates held in lists
