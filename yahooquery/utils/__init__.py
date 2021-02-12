@@ -133,7 +133,7 @@ def _history_dataframe(data, symbol, params, adj_timezone=True):
         df = pd.merge(
             df,
             _events_to_dataframe(data, symbol, params, adj_timezone),
-            how="left",
+            how="outer",
             left_index=True,
             right_index=True,
         )
@@ -161,7 +161,7 @@ def _events_to_dataframe(data, symbol, params, adj_timezone):
             pass
     return (
         pd.merge(
-            dataframes[0], dataframes[1], how="left", left_index=True, right_index=True
+            dataframes[0], dataframes[1], how="outer", left_index=True, right_index=True
         )
         if len(dataframes) > 1
         else dataframes[0]
