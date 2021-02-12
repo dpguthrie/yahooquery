@@ -1220,7 +1220,6 @@ class Ticker(_YahooFinance):
             historical pricing data
         """
         config = self._CONFIG["chart"]
-        periods = config["query"]["range"]["options"]
         intervals = config["query"]["interval"]["options"]
         if start or period is None or period.lower() == "max":
             start = _convert_to_timestamp(start)
