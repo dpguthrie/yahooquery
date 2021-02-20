@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+2.2.14
+------
+- Updated the financials dataframes (cash_flow, income_statement, balance_sheet, all_financial_data,
+  get_financial_data) to include another column titled "currencyCode".  This will identify the currency
+  used in the financial statement.
+
+2.2.13
+------
+- Fix bug related to dividends and stock splits.  The merge statement to combine the pandas dataframes
+  was using a left join instead of an outer join, which caused stock splits to drop.
+
 2.2.11
 ------
 - Fix bug with async requests and :code:`symbols` as a query parameter
