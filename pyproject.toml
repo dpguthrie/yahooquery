@@ -1,32 +1,48 @@
-
-[tool.poetry]
-name = "yahooquery"
-version = "2.2.14"
-description = "Python interface to unofficial Yahoo Finance API endpoints"
-authors = ["Doug Guthrie <douglas.p.guthrie@gmail.com>"]
-license = "MIT"
-
-[tool.poetry.dependencies]
-python = ">=3.6.1,<4.0"
-lxml = ">=4.6.2"
-pandas = ">=1.1.5,<2"
-requests-futures = ">=1.0.0,<2"
-tqdm = ">=4.54.1,<5"
-pytest-env = "^0.6.2"
-mkdocs-material = "^6.2.8"
-python-dateutil = "^2.8.1"
-
-[tool.poetry.dev-dependencies]
-pytest = "^6.2.2"
-flake8 = "^3.8.4"
-pre-commit = "^2.10.1"
-isort = "^5.7.0"
-jupyter = "^1.0.0"
-pytest-cov = "^2.11.1"
-pytest-env = "^0.6.2"
-mypy = "^0.800"
-mkdocs = "^1.1.2"
-
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["flit"]
+build-backend = "flit.buildapi"
+
+[tool.flit.metadata]
+module = "yahooquery"
+author = "Doug Guthrie"
+author-email = "douglas.p.guthrie@gmail.com"
+home-page = "https://github.com/dpguthrie/yahooquery"
+classifiers = [
+    "Programming Language :: Python :: 2.7",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: MIT License",
+]
+requires = [
+    "lxml >=4.6.2",
+    "pandas >=0.24.0",
+    "requests-futures >=1.0.0",
+    "tqdm >=4.54.1",
+]
+description-file = "README.md"
+
+[tool.flit.metadata.urls]
+Documentation = "https://yahooquery.dpguthrie.com"
+Demo = "https://yahooquery-streamlit.herokuapp.com"
+
+[tool.flit.metadata.requires-extra]
+test = [
+    "pytest ==6.0.2",
+    "pytest-cov==2.10.1",
+    "coverage==5.2.1",
+    "selenium >=3.141.0",
+]
+premium = [
+    "selenium >=3.141.0",
+]
+doc = [
+    "mkdocs >=1.1.2,<2.0.0",
+    "mkdocs-jupyter >=0.12.0,<0.13.0",
+    "mkdocs-material >=6.1.7,<7.0.0",
+]
