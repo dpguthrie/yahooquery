@@ -524,8 +524,11 @@ class Ticker(_YahooFinance):
                 for p in ls:
                     df["dataType"] = df["dataType"].apply(lambda x: str(x).lstrip(p))
                 df["asOfDate"] = pd.to_datetime(df["asOfDate"], format="%Y-%m-%d")
+                index = ["symbol", "asOfDate", "periodType"]
+                if financials_type != "valuation":
+                    index.append("currencyCode")
                 df = df.pivot_table(
-                    index=["symbol", "asOfDate", "periodType"],
+                    index=index,
                     columns="dataType",
                     values="reportedValue",
                 )
