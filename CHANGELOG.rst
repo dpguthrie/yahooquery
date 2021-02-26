@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+2.2.15
+------
+- Updated the data available from the cash flow statement
+
 2.2.14
 ------
 - Updated the financials dataframes (cash_flow, income_statement, balance_sheet, all_financial_data,
