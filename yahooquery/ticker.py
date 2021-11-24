@@ -1264,6 +1264,7 @@ class Ticker(_YahooFinance):
         return df
 
     def _historical_data_to_dataframe(self, data, params, adj_timezone):
+        d = {}
         invalid = []
         for symbol in self._symbols:
             if data[symbol] is not None:
