@@ -1264,12 +1264,20 @@ class Ticker(_YahooFinance):
         return df
 
     def _historical_data_to_dataframe(self, data, params, adj_timezone):
-        d = {}
+        invalid = []
         for symbol in self._symbols:
-            if "timestamp" in data[symbol]:
-                d[symbol] = _history_dataframe(data, symbol, params, adj_timezone)
+            if data[symbol] is not None:
+                if "timestamp" in data[symbol]:
+                    d[symbol] = _history_dataframe(data, symbol, params, adj_timezone)
+                else:
+                    d[symbol] = data[symbol]
             else:
-                d[symbol] = data[symbol]
+                invalid.append(symbol)
+        self._symbols = [s for s in self._symbols if not s in invalid]
+        if self.invalid_symbols is not None:
+            self.invalid_symbols += invalid
+        else:
+            self.invalid_symbols = invalid
         if all(isinstance(d[key], pd.DataFrame) for key in d):
             df = pd.concat(d, names=["symbol", "date"], sort=False)
             if "dividends" in df.columns:
