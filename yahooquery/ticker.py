@@ -1264,6 +1264,12 @@ class Ticker(_YahooFinance):
         return df
 
     def _historical_data_to_dataframe(self, data, params, adj_timezone):
+        # d = {}
+        # for symbol in self._symbols:
+        #     if "timestamp" in data[symbol]:
+        #         d[symbol] = _history_dataframe(data, symbol, params, adj_timezone)
+        #     else:
+        #         d[symbol] = data[symbol]
         d = {}
         invalid = []
         for symbol in self._symbols:
