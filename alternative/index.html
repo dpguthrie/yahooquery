@@ -25726,6 +25726,19 @@ data = tickers.all_modules</div>
     analytics.page();
     }}();
   </script>
+  <script>
+    document.querySelectorAll('a.md-nav__link').forEach(link => {
+      if (link.href.includes('#')) {
+        link.addEventListener('click', (e) => {
+          // Retrieve href and store in targetUrl variable
+          let targetUrl = e.target.href;
+          analytics.track('Link Clicked', {'link': targetUrl});
+        });
+      }
+      
+    });
+  
+  </script>
 
   </body>
 </html>
