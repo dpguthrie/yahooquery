@@ -1,7 +1,4 @@
 
-
-
-
 <!doctype html>
 <html lang="en" class="no-js">
   <head>
@@ -12,11 +9,11 @@
         <meta name="description" content="Python wrapper for unofficial Yahoo Finance API">
       
       
-      
         <meta name="author" content="Doug Guthrie">
       
-      <link rel="shortcut icon" href="../../../img/logo-white.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.13">
+      
+      <link rel="icon" href="../../../img/logo-white.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.15">
     
     
       
@@ -24,34 +21,34 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.077507d7.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.c382b1dc.min.css">
       
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ff0a5ce4.min.css">
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cc9b2e1e.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#000000">
+        
       
+    
+    
+    
       
         
         
-        <meta name="theme-color" content="#000000">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
-    
-    
-    
-      
-        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
-        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
-      
-    
     
     
       <link rel="stylesheet" href="../../../css/termynal.css">
     
+    <script>__md_scope=new URL("../../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
-        
-<script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-174219875-1","auto"),ga("set","anonymizeIp",!0),ga("send","pageview"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){if(this.value){var e=document.location.pathname;ga("send","pageview",e+"?q="+this.value)}})}),document.addEventListener("DOMContentSwitch",function(){ga("send","pageview",document.location.pathname)})</script>
-<script async src="https://www.google-analytics.com/analytics.js"></script>
-      
+
     
     
   </head>
@@ -60,8 +57,11 @@
     
     
     
+    
+    
     <body dir="ltr" data-md-color-scheme="" data-md-color-primary="black" data-md-color-accent="">
   
+    
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -78,47 +78,57 @@
       
     </div>
     
-      <header class="md-header" data-md-component="header">
-  <nav class="md-header-nav md-grid" aria-label="Header">
-    <a href="../../.." title="yahooquery" class="md-header-nav__button md-logo" aria-label="yahooquery">
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="yahooquery" class="md-header__button md-logo" aria-label="yahooquery" data-md-component="logo">
       
   <img src="../../../img/logo-white.png" alt="logo">
 
     </a>
-    <label class="md-header-nav__button md-icon" for="__drawer">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
     </label>
-    <div class="md-header-nav__title" data-md-component="header-title">
-      
-        <div class="md-header-nav__ellipsis">
-          <span class="md-header-nav__topic md-ellipsis">
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
             yahooquery
           </span>
-          <span class="md-header-nav__topic md-ellipsis">
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
             
               Modules
             
           </span>
         </div>
-      
+      </div>
     </div>
     
-      <label class="md-header-nav__button md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
       </label>
-      
-<div class="md-search" data-md-component="search" role="dialog">
+      <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
       </label>
-      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
-      </button>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" data-md-scrollfix>
@@ -134,12 +144,11 @@
 </div>
     
     
-      <div class="md-header-nav__source">
-        
-<a href="https://github.com/dpguthrie/yahooquery/" title="Go to repository" class="md-source">
+      <div class="md-header__source">
+        <a href="https://github.com/dpguthrie/yahooquery" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
   </div>
   <div class="md-source__repository">
     yahooquery
@@ -148,25 +157,30 @@
       </div>
     
   </nav>
+  
 </header>
     
     <div class="md-container" data-md-component="container">
       
+      
         
-      
-      
+          
         
       
       <main class="md-main" data-md-component="main">
         <div class="md-main__inner md-grid">
           
             
-              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
-                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="yahooquery" class="md-nav__button md-logo" aria-label="yahooquery">
+    <a href="../../.." title="yahooquery" class="md-nav__button md-logo" aria-label="yahooquery" data-md-component="logo">
       
   <img src="../../../img/logo-white.png" alt="logo">
 
@@ -175,11 +189,10 @@
   </label>
   
     <div class="md-nav__source">
-      
-<a href="https://github.com/dpguthrie/yahooquery/" title="Go to repository" class="md-source">
+      <a href="https://github.com/dpguthrie/yahooquery" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
   </div>
   <div class="md-source__repository">
     yahooquery
@@ -193,12 +206,15 @@
       
       
 
-
-  <li class="md-nav__item">
-    <a href="../../.." title="Home" class="md-nav__link">
-      Home
-    </a>
-  </li>
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
 
     
       
@@ -206,129 +222,155 @@
       
 
   
-
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+  
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+  
+  
     
-    <label class="md-nav__link" for="nav-2">
-      User Guide
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="User Guide" data-md-level="1">
-      <label class="md-nav__title" for="nav-2">
-        <span class="md-nav__icon md-icon"></span>
-        User Guide
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          User Guide
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="User Guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          User Guide
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
           
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../" title="Introduction" class="md-nav__link">
-      Introduction
-    </a>
-  </li>
-
-        
-          
-          
-          
-
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
   
 
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+            
+          
+            
+              
+  
+  
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-2" type="checkbox" id="nav-2-2" checked>
+  
+  
     
-    <label class="md-nav__link" for="nav-2-2">
-      Classes
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="Classes" data-md-level="2">
-      <label class="md-nav__title" for="nav-2-2">
-        <span class="md-nav__icon md-icon"></span>
-        Classes
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2" type="checkbox" id="__nav_2_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2">
+          Classes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Classes" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Classes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
           
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../keyword_arguments/" title="Keyword Arguments" class="md-nav__link">
-      Keyword Arguments
-    </a>
-  </li>
-
-        
-          
-          
-          
-
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../keyword_arguments/" class="md-nav__link">
+        Keyword Arguments
+      </a>
+    </li>
   
 
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+            
+          
+            
+              
+  
+  
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-2-2" type="checkbox" id="nav-2-2-2" checked>
+  
+  
     
-    <label class="md-nav__link" for="nav-2-2-2">
-      Ticker
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="Ticker" data-md-level="3">
-      <label class="md-nav__title" for="nav-2-2-2">
-        <span class="md-nav__icon md-icon"></span>
-        Ticker
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2_2" type="checkbox" id="__nav_2_2_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2_2">
+          Ticker
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Ticker" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Ticker
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
           
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../intro/" title="Ticker - Intro" class="md-nav__link">
-      Ticker - Intro
-    </a>
-  </li>
-
-        
-          
-          
-          
-
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../intro/" class="md-nav__link">
+        Ticker - Intro
+      </a>
+    </li>
   
 
-
-  <li class="md-nav__item md-nav__item--active">
+            
+          
+            
+              
+  
+  
     
-    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Modules
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Modules
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-    
-    <a href="./" title="Modules" class="md-nav__link md-nav__link--active">
-      Modules
-    </a>
-    
+      </a>
       
+        
+
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
   
   
   
@@ -336,7 +378,7 @@
       <span class="md-nav__icon md-icon"></span>
       Table of contents
     </label>
-    <ul class="md-nav__list" data-md-scrollfix>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#single-module" class="md-nav__link">
@@ -612,155 +654,186 @@
     </ul>
   
 </nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../financials/" class="md-nav__link">
+        Financials
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../options/" class="md-nav__link">
+        Options
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../historical/" class="md-nav__link">
+        Historical Prices
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../miscellaneous/" class="md-nav__link">
+        Miscellaneous
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../premium/" class="md-nav__link">
+        Premium
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../screener/" class="md-nav__link">
+        Screener
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/" class="md-nav__link">
+        Research
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/" class="md-nav__link">
+        Advanced Configuration
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../misc/" class="md-nav__link">
+        Functions
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
     
-  </li>
+      
+      
+      
 
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../financials/" title="Financials" class="md-nav__link">
-      Financials
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../options/" title="Options" class="md-nav__link">
-      Options
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../historical/" title="Historical Prices" class="md-nav__link">
-      Historical Prices
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../miscellaneous/" title="Miscellaneous" class="md-nav__link">
-      Miscellaneous
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../premium/" title="Premium" class="md-nav__link">
-      Premium
-    </a>
-  </li>
-
-        
-      </ul>
-    </nav>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../screener/" title="Screener" class="md-nav__link">
-      Screener
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../research/" title="Research" class="md-nav__link">
-      Research
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../advanced/" title="Advanced Configuration" class="md-nav__link">
-      Advanced Configuration
-    </a>
-  </li>
-
-        
-      </ul>
-    </nav>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../misc/" title="Functions" class="md-nav__link">
-      Functions
-    </a>
-  </li>
-
-        
-      </ul>
-    </nav>
-  </li>
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../alternative/" class="md-nav__link">
+        Alternatives
+      </a>
+    </li>
+  
 
     
       
       
       
 
-
-  <li class="md-nav__item">
-    <a href="../../../alternative/" title="Alternatives" class="md-nav__link">
-      Alternatives
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../../../release_notes/" title="Changelog" class="md-nav__link">
-      Changelog
-    </a>
-  </li>
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../release_notes/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
 
     
   </ul>
@@ -770,11 +843,14 @@
               </div>
             
             
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
+
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
   
   
   
@@ -782,7 +858,7 @@
       <span class="md-nav__icon md-icon"></span>
       Table of contents
     </label>
-    <ul class="md-nav__list" data-md-scrollfix>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#single-module" class="md-nav__link">
@@ -1063,21 +1139,19 @@
               </div>
             
           
-          <div class="md-content">
+          <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/dpguthrie/yahooquery/edit/master/docs/guide/ticker/modules.md" title="Edit this page" class="md-content__button md-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
-                  </a>
-                
-                
-                  
-                
-                
-                  <h1>Modules</h1>
-                
-                <p>The following data accessors, or <strong>modules</strong>, are grouped together because they're all retrieved from the same endpoint. The modules are given as query parameters to the API endpoint and as such can be combined to create convenient interfaces to retrieve your desired data with a single request.</p>
+  <a href="https://github.com/dpguthrie/yahooquery/edit/master/docs/guide/ticker/modules.md" title="Edit this page" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+  <h1>Modules</h1>
+
+<p>The following data accessors, or <strong>modules</strong>, are grouped together because they're all retrieved from the same endpoint. The modules are given as query parameters to the API endpoint and as such can be combined to create convenient interfaces to retrieve your desired data with a single request.</p>
 <h2 id="single-module">Single Module<a class="headerlink" href="#single-module" title="Permanent link">&para;</a></h2>
 <h3 id="asset_profile"><strong>asset_profile</strong><a class="headerlink" href="#asset_profile" title="Permanent link">&para;</a></h3>
 <div class="tabbed-set" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Details</label><div class="tabbed-content">
@@ -1091,7 +1165,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">asset_profile</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><label for="__tabbed_1_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="s1">&#39;aapl&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;address1&#39;</span><span class="p">:</span> <span class="s1">&#39;One Apple Park Way&#39;</span><span class="p">,</span>
@@ -1198,7 +1271,6 @@
         <span class="s1">&#39;website&#39;</span><span class="p">:</span> <span class="s1">&#39;http://www.apple.com&#39;</span><span class="p">,</span>
         <span class="s1">&#39;zip&#39;</span><span class="p">:</span> <span class="s1">&#39;95014&#39;</span><span class="p">}}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="calendar_events"><strong>calendar_events</strong><a class="headerlink" href="#calendar_events" title="Permanent link">&para;</a></h3>
@@ -1213,7 +1285,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">calendar_events</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><label for="__tabbed_2_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -1233,7 +1304,6 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="company_officers"><strong>company_officers</strong><a class="headerlink" href="#company_officers" title="Permanent link">&para;</a></h3>
@@ -1252,7 +1322,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">company_officers</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><label for="__tabbed_3_3">Data</label><div class="tabbed-content">
 <table>
@@ -1341,7 +1410,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">earning_history</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><label for="__tabbed_4_3">Data</label><div class="tabbed-content">
 <table>
@@ -1424,7 +1492,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">earnings</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><label for="__tabbed_5_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -1507,7 +1574,6 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="earnings_trend"><strong>earnings_trend</strong><a class="headerlink" href="#earnings_trend" title="Permanent link">&para;</a></h3>
@@ -1522,7 +1588,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">earnings_trend</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_6_3" name="__tabbed_6" type="radio" /><label for="__tabbed_6_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -1742,7 +1807,6 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="esg_scores"><strong>esg_scores</strong><a class="headerlink" href="#esg_scores" title="Permanent link">&para;</a></h3>
@@ -1757,7 +1821,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">esg_scores</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_7_3" name="__tabbed_7" type="radio" /><label for="__tabbed_7_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -1825,7 +1888,6 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="financial_data"><strong>financial_data</strong><a class="headerlink" href="#financial_data" title="Permanent link">&para;</a></h3>
@@ -1840,7 +1902,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">financial_data</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_8_3" name="__tabbed_8" type="radio" /><label for="__tabbed_8_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -1878,7 +1939,6 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="fund_bond_holdings"><strong>fund_bond_holdings</strong><a class="headerlink" href="#fund_bond_holdings" title="Permanent link">&para;</a></h3>
@@ -1901,7 +1961,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">fund</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;vbmfx&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">fund</span><span class="o">.</span><span class="n">fund_bond_holdings</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_9_3" name="__tabbed_9" type="radio" /><label for="__tabbed_9_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -1913,7 +1972,6 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="fund_bond_ratings"><strong>fund_bond_ratings</strong><a class="headerlink" href="#fund_bond_ratings" title="Permanent link">&para;</a></h3>
@@ -1936,7 +1994,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">funds</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;vbmfx vicbx vstbx vwehx&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">funds</span><span class="o">.</span><span class="n">fund_bond_holdings</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_10_3" name="__tabbed_10" type="radio" /><label for="__tabbed_10_3">Data</label><div class="tabbed-content">
 <table>
@@ -2037,7 +2094,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">fund</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;hasgx&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">fund</span><span class="o">.</span><span class="n">fund_equity_holdings</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_11_3" name="__tabbed_11" type="radio" /><label for="__tabbed_11_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -2057,7 +2113,6 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="fund_holding_info"><strong>fund_holding_info</strong><a class="headerlink" href="#fund_holding_info" title="Permanent link">&para;</a></h3>
@@ -2080,7 +2135,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">fund</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;hasgx&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">fund</span><span class="o">.</span><span class="n">fund_holding_info</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_12_3" name="__tabbed_12" type="radio" /><label for="__tabbed_12_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -2223,7 +2277,6 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="fund_ownership"><strong>fund_ownership</strong><a class="headerlink" href="#fund_ownership" title="Permanent link">&para;</a></h3>
@@ -2238,7 +2291,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">fund_ownership</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_13_3" name="__tabbed_13" type="radio" /><label for="__tabbed_13_3">Data</label><div class="tabbed-content">
 <table>
@@ -2386,7 +2438,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">fund</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;hasgx&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">fund</span><span class="o">.</span><span class="n">fund_performance</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_14_3" name="__tabbed_14" type="radio" /><label for="__tabbed_14_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -3040,7 +3091,6 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="fund_profile"><strong>fund_profile</strong><a class="headerlink" href="#fund_profile" title="Permanent link">&para;</a></h3>
@@ -3059,7 +3109,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">fund</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;hasgx&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">fund</span><span class="o">.</span><span class="n">fund_profile</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_15_3" name="__tabbed_15" type="radio" /><label for="__tabbed_15_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -3196,7 +3245,6 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="fund_sector_weightings"><strong>fund_sector_weightings</strong><a class="headerlink" href="#fund_sector_weightings" title="Permanent link">&para;</a></h3>
@@ -3219,7 +3267,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">funds</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;hasgx dodgx cipnx&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">funds</span><span class="o">.</span><span class="n">fund_sector_weightings</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_16_3" name="__tabbed_16" type="radio" /><label for="__tabbed_16_3">Data</label><div class="tabbed-content">
 <table>
@@ -3334,7 +3381,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">fund</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;hasgx&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">fund</span><span class="o">.</span><span class="n">fund_top_holdings</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_17_3" name="__tabbed_17" type="radio" /><label for="__tabbed_17_3">Data</label><div class="tabbed-content">
 <table>
@@ -3424,7 +3470,6 @@
 <span class="hll"><span class="n">df</span> <span class="o">=</span> <span class="n">aapl</span><span class="o">.</span><span class="n">grading_history</span>
 </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </code></pre></div>
-
 </div>
 <input id="__tabbed_18_3" name="__tabbed_18" type="radio" /><label for="__tabbed_18_3">Data</label><div class="tabbed-content">
 <table>
@@ -3507,7 +3552,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">index_trend</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_19_3" name="__tabbed_19" type="radio" /><label for="__tabbed_19_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -3543,7 +3587,6 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="industry_trend"><strong>industry_trend</strong><a class="headerlink" href="#industry_trend" title="Permanent link">&para;</a></h3>
@@ -3557,7 +3600,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">industry_trend</span>
 </span></code></pre></div>
-
 </div>
 </div>
 <h3 id="insider_holders"><strong>insider_holders</strong><a class="headerlink" href="#insider_holders" title="Permanent link">&para;</a></h3>
@@ -3572,7 +3614,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">insider_holders</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_21_3" name="__tabbed_21" type="radio" /><label for="__tabbed_21_3">Data</label><div class="tabbed-content">
 <table>
@@ -3761,7 +3802,6 @@
 <span class="hll"><span class="n">df</span> <span class="o">=</span> <span class="n">aapl</span><span class="o">.</span><span class="n">insider_transactions</span>
 </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </code></pre></div>
-
 </div>
 <input id="__tabbed_22_3" name="__tabbed_22" type="radio" /><label for="__tabbed_22_3">Data</label><div class="tabbed-content">
 <table>
@@ -3874,7 +3914,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">institution_ownership</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_23_3" name="__tabbed_23" type="radio" /><label for="__tabbed_23_3">Data</label><div class="tabbed-content">
 <table>
@@ -4018,7 +4057,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">key_stats</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_24_3" name="__tabbed_24" type="radio" /><label for="__tabbed_24_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -4062,7 +4100,6 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="major_holders"><strong>major_holders</strong><a class="headerlink" href="#major_holders" title="Permanent link">&para;</a></h3>
@@ -4077,7 +4114,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">major_holders</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_25_3" name="__tabbed_25" type="radio" /><label for="__tabbed_25_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -4088,7 +4124,6 @@
     <span class="s2">&quot;institutionsCount&quot;</span><span class="p">:</span> <span class="mi">4296</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="page_views"><strong>page_views</strong><a class="headerlink" href="#page_views" title="Permanent link">&para;</a></h3>
@@ -4103,7 +4138,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">page_views</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_26_3" name="__tabbed_26" type="radio" /><label for="__tabbed_26_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -4115,7 +4149,6 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="price"><strong>price</strong><a class="headerlink" href="#price" title="Permanent link">&para;</a></h3>
@@ -4130,7 +4163,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">price</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_27_3" name="__tabbed_27" type="radio" /><label for="__tabbed_27_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -4176,7 +4208,6 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="quote_type"><strong>quote_type</strong><a class="headerlink" href="#quote_type" title="Permanent link">&para;</a></h3>
@@ -4191,7 +4222,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">quote_type</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_28_3" name="__tabbed_28" type="radio" /><label for="__tabbed_28_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -4212,7 +4242,6 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="recommendation_trend"><strong>recommendation_trend</strong><a class="headerlink" href="#recommendation_trend" title="Permanent link">&para;</a></h3>
@@ -4227,7 +4256,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">recommendation_trend</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_29_3" name="__tabbed_29" type="radio" /><label for="__tabbed_29_3">Data</label><div class="tabbed-content">
 <table>
@@ -4296,7 +4324,6 @@
 <span class="hll"><span class="n">df</span> <span class="o">=</span> <span class="n">aapl</span><span class="o">.</span><span class="n">sec_filings</span>
 </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </code></pre></div>
-
 </div>
 <input id="__tabbed_30_3" name="__tabbed_30" type="radio" /><label for="__tabbed_30_3">Data</label><div class="tabbed-content">
 <table>
@@ -4373,7 +4400,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">share_purchase_activity</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_31_3" name="__tabbed_31" type="radio" /><label for="__tabbed_31_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -4393,7 +4419,6 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="summary_detail"><strong>summary_detail</strong><a class="headerlink" href="#summary_detail" title="Permanent link">&para;</a></h3>
@@ -4408,7 +4433,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">summary_detail</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_32_3" name="__tabbed_32" type="radio" /><label for="__tabbed_32_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -4457,7 +4481,6 @@
 <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="summary_profile"><strong>summary_profile</strong><a class="headerlink" href="#summary_profile" title="Permanent link">&para;</a></h3>
@@ -4472,7 +4495,6 @@
 <div class="highlight"><pre><span></span><code><span class="n">aapl</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>
 <span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">summary_profile</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_33_3" name="__tabbed_33" type="radio" /><label for="__tabbed_33_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -4493,7 +4515,6 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
 <h2 id="multiple-modules">Multiple Modules<a class="headerlink" href="#multiple-modules" title="Permanent link">&para;</a></h2>
@@ -4537,7 +4558,6 @@
     <span class="s1">&#39;cashflowStatementHistoryQuarterly&#39;</span><span class="p">,</span> <span class="s1">&#39;earnings&#39;</span><span class="p">,</span> <span class="s1">&#39;pageViews&#39;</span><span class="p">,</span> <span class="s1">&#39;financialData&#39;</span>
 <span class="p">])</span>
 </code></pre></div>
-
 </div>
 </div>
 <h3 id="get_modules"><strong>get_modules</strong><a class="headerlink" href="#get_modules" title="Permanent link">&para;</a></h3>
@@ -4548,7 +4568,9 @@
 <li><em>Return</em>:  <code>dict</code></li>
 <li><em>Raises</em>: <code>ValueError</code> is raised if invalid module is given</li>
 </ul>
-<details class="example" open="open"><summary>View Available Modules</summary><div class="highlight"><pre><span></span><code><span class="p">[</span>
+<details class="example" open="open">
+<summary>View Available Modules</summary>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
     <span class="s1">&#39;assetProfile&#39;</span><span class="p">,</span> <span class="s1">&#39;recommendationTrend&#39;</span><span class="p">,</span> <span class="s1">&#39;cashflowStatementHistory&#39;</span><span class="p">,</span>
     <span class="s1">&#39;indexTrend&#39;</span><span class="p">,</span> <span class="s1">&#39;defaultKeyStatistics&#39;</span><span class="p">,</span> <span class="s1">&#39;industryTrend&#39;</span><span class="p">,</span> <span class="s1">&#39;quoteType&#39;</span><span class="p">,</span>
     <span class="s1">&#39;incomeStatementHistory&#39;</span><span class="p">,</span> <span class="s1">&#39;fundOwnership&#39;</span><span class="p">,</span> <span class="s1">&#39;summaryDetail&#39;</span><span class="p">,</span> <span class="s1">&#39;insiderHolders&#39;</span><span class="p">,</span>
@@ -4560,7 +4582,6 @@
     <span class="s1">&#39;pageViews&#39;</span><span class="p">,</span> <span class="s1">&#39;financialData&#39;</span>
 <span class="p">]</span>
 </code></pre></div>
-
 </details>
 </div>
 <input id="__tabbed_35_2" name="__tabbed_35" type="radio" /><label for="__tabbed_35_2">Example</label><div class="tabbed-content">
@@ -4568,7 +4589,6 @@
 <span class="hll"><span class="n">modules</span> <span class="o">=</span> <span class="s1">&#39;assetProfile earnings defaultKeyStatistics&#39;</span>
 </span><span class="hll"><span class="n">aapl</span><span class="o">.</span><span class="n">get_modules</span><span class="p">(</span><span class="n">modules</span><span class="p">)</span>
 </span></code></pre></div>
-
 </div>
 <input id="__tabbed_35_3" name="__tabbed_35" type="radio" /><label for="__tabbed_35_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -4768,132 +4788,122 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 </div>
 </div>
-                
-              
-              
-                
-
 
               
             </article>
           </div>
         </div>
+        
       </main>
       
-        
-<footer class="md-footer">
+        <footer class="md-footer">
   
-    <div class="md-footer-nav">
-      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
         
-          <a href="../intro/" title="Ticker - Intro" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
-            <div class="md-footer-nav__button md-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        <a href="../intro/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Ticker - Intro" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Ticker - Intro
             </div>
-            <div class="md-footer-nav__title">
-              <div class="md-ellipsis">
-                <span class="md-footer-nav__direction">
-                  Previous
-                </span>
-                Ticker - Intro
-              </div>
-            </div>
-          </a>
+          </div>
+        </a>
+      
+      
         
-        
-          <a href="../financials/" title="Financials" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-footer-nav__title">
-              <div class="md-ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
-                Financials
-              </div>
+        <a href="../financials/" class="md-footer__link md-footer__link--next" aria-label="Next: Financials" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Financials
             </div>
-            <div class="md-footer-nav__button md-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-            </div>
-          </a>
-        
-      </nav>
-    </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
-      <div class="md-footer-copyright">
-        
-        Made with
-        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-          Material for MkDocs
-        </a>
-      </div>
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
       
-  <div class="md-footer-social">
+        <div class="md-social">
+  
+    
     
       
       
-        
-        
-      
-      <a href="https://github.com/dpguthrie" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
-      </a>
+    
+    <a href="https://github.com/dpguthrie" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+    </a>
+  
+    
     
       
       
-        
-        
-      
-      <a href="https://www.linkedin.com/in/douglas-guthrie-07994a48/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-footer-social__link">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
-      </a>
+    
+    <a href="https://www.linkedin.com/in/douglas-guthrie-07994a48/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+  
+    
     
       
       
-        
-        
-      
-      <a href="https://medium.com/@douglas.p.guthrie" target="_blank" rel="noopener" title="medium.com" class="md-footer-social__link">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0 32v448h448V32H0zm372.2 106.1l-24 23c-2.1 1.6-3.1 4.2-2.7 6.7v169.3c-.4 2.6.6 5.2 2.7 6.7l23.5 23v5.1h-118V367l24.3-23.6c2.4-2.4 2.4-3.1 2.4-6.7V199.8l-67.6 171.6h-9.1L125 199.8v115c-.7 4.8 1 9.7 4.4 13.2l31.6 38.3v5.1H71.2v-5.1l31.6-38.3c3.4-3.5 4.9-8.4 4.1-13.2v-133c.4-3.7-1-7.3-3.8-9.8L75 138.1V133h87.3l67.4 148L289 133.1h83.2v5z"/></svg>
-      </a>
+    
+    <a href="https://medium.com/@douglas.p.guthrie" target="_blank" rel="noopener" title="medium.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M180.5 74.262C80.813 74.262 0 155.633 0 256s80.819 181.738 180.5 181.738S361 356.373 361 256 280.191 74.262 180.5 74.262Zm288.25 10.646c-49.845 0-90.245 76.619-90.245 171.095s40.406 171.1 90.251 171.1 90.251-76.619 90.251-171.1H559c0-94.503-40.4-171.095-90.248-171.095Zm139.506 17.821c-17.526 0-31.735 68.628-31.735 153.274s14.2 153.274 31.735 153.274S640 340.631 640 256c0-84.649-14.215-153.271-31.742-153.271Z"/></svg>
+    </a>
+  
+    
     
       
       
-        
-        
-      
-      <a href="https://dpguthrie.com" target="_blank" rel="noopener" title="dpguthrie.com" class="md-footer-social__link">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M336.5 160C322 70.7 287.8 8 248 8s-74 62.7-88.5 152h177zM152 256c0 22.2 1.2 43.5 3.3 64h185.3c2.1-20.5 3.3-41.8 3.3-64s-1.2-43.5-3.3-64H155.3c-2.1 20.5-3.3 41.8-3.3 64zm324.7-96c-28.6-67.9-86.5-120.4-158-141.6 24.4 33.8 41.2 84.7 50 141.6h108zM177.2 18.4C105.8 39.6 47.8 92.1 19.3 160h108c8.7-56.9 25.5-107.8 49.9-141.6zM487.4 192H372.7c2.1 21 3.3 42.5 3.3 64s-1.2 43-3.3 64h114.6c5.5-20.5 8.6-41.8 8.6-64s-3.1-43.5-8.5-64zM120 256c0-21.5 1.2-43 3.3-64H8.6C3.2 212.5 0 233.8 0 256s3.2 43.5 8.6 64h114.6c-2-21-3.2-42.5-3.2-64zm39.5 96c14.5 89.3 48.7 152 88.5 152s74-62.7 88.5-152h-177zm159.3 141.6c71.4-21.2 129.4-73.7 158-141.6h-108c-8.8 56.9-25.6 107.8-50 141.6zM19.3 352c28.6 67.9 86.5 120.4 158 141.6-24.4-33.8-41.2-84.7-50-141.6h-108z"/></svg>
-      </a>
     
-  </div>
-
+    <a href="https://dpguthrie.com" target="_blank" rel="noopener" title="dpguthrie.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M352 256c0 22.2-1.2 43.6-3.3 64H163.3c-2.1-20.4-4.2-41.8-4.2-64 0-22.2 2.1-43.6 4.2-64h185.4c2.1 20.4 3.3 41.8 3.3 64zm151.9-64c5.3 20.5 8.1 41.9 8.1 64s-2.8 43.5-8.1 64H380.8c2.1-20.6 3.2-42.9 3.2-64 0-22-1.1-43.4-3.2-64h123.1zm-10.5-32H376.7c-10-63.86-29.8-117.38-55.3-151.558C399.8 29.09 463.4 85.94 493.4 160zm-149.1 0H167.7c6.1-36.4 15.5-68.62 27-94.65 10.5-23.61 22.2-40.74 33.5-51.54C239.4 3.178 248.7 0 256 0c7.3 0 16.6 3.178 27.8 13.81 11.3 10.8 23 27.93 33.5 51.54 11.5 26.03 20.9 58.25 27 94.65zm-325.69 0C48.59 85.94 112.2 29.09 190.6 8.442 165.1 42.62 145.3 96.14 135.3 160H18.61zm112.59 32c-2.1 20.6-4.1 42-4.1 64 0 21.1 2 43.4 4.1 64H8.065C2.8 299.5 0 278.1 0 256s2.8-43.5 8.065-64H131.2zm63.5 254.6c-11.5-26-20.9-58.2-27-94.6h176.6c-6.1 36.4-15.5 68.6-27 94.6-10.5 23.7-22.2 40.8-33.5 51.6-11.2 10.6-20.5 13.8-28.7 13.8-6.4 0-15.7-3.2-26.9-13.8-11.3-10.8-23-27.9-33.5-51.6zm-4.1 57C112.2 482.9 48.59 426.1 18.61 352H135.3c10 63.9 29.8 117.4 55.3 151.6zm130.8 0c25.5-34.2 45.3-87.7 55.3-151.6h116.7c-30 74.1-93.6 130.9-172 151.6z"/></svg>
+    </a>
+  
+</div>
+      
     </div>
   </div>
 </footer>
       
     </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
-      <script src="../../../assets/javascripts/vendor.2d1db4bd.min.js"></script>
-      <script src="../../../assets/javascripts/bundle.6627ddf3.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
-      
-      <script>
-        app = initialize({
-          base: "../../..",
-          features: [],
-          search: Object.assign({
-            worker: "../../../assets/javascripts/worker/search.5eca75d3.min.js"
-          }, typeof search !== "undefined" && search)
-        })
-      </script>
-      
-        <script src="../../../js/termynal.js"></script>
-      
-        <script src="../../../js/custom.js"></script>
-      
     
+<script>
+    !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics._writeKey="My5mtQSf2eBfWAPVZEd4ygkboRX2sBVS";;analytics.SNIPPET_VERSION="4.15.3";
+    analytics.load("My5mtQSf2eBfWAPVZEd4ygkboRX2sBVS");
+    analytics.page();
+    }}();
+  </script>
+
   </body>
 </html>
