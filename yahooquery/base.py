@@ -495,7 +495,9 @@ class _YahooFinance(object):
         },
         "majorHoldersBreakdown": {"convert_dates": []},
         "pageViews": {"convert_dates": []},
-        "price": {"convert_dates": ["preMarketTime", "regularMarketTime"]},
+        "price": {"convert_dates": [
+            "postMarketTime", "preMarketTime", "regularMarketTime"
+        ]},
         "quoteType": {"convert_dates": ["firstTradeDateEpochUtc"]},
         "recommendationTrend": {"filter": "trend", "convert_dates": []},
         "secFilings": {"filter": "filings", "convert_dates": ["epochDate"]},
