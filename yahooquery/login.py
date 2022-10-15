@@ -30,7 +30,7 @@ class YahooSelenium(object):
         self.chrome_options.add_argument("--ignore-certificate-errors")
         self.chrome_options.add_argument("--ignore-ssl-errors")
         self.driver = webdriver.Chrome(
-            chrome_options=self.chrome_options,
+            options=self.chrome_options,
         )
 
     def _get_user_data(self):
@@ -53,13 +53,13 @@ class YahooSelenium(object):
         try:
             self.driver.execute_script("window.open('{}');".format(self.LOGIN_URL))
             self.driver.switch_to.window(self.driver.window_handles[-1])
-            self.driver.find_element_by_id("login-username").send_keys(self.username)
-            self.driver.find_element_by_xpath("//input[@id='login-signin']").click()
+            self.driver.find_element(By.ID, "login-username").send_keys(self.username)
+            self.driver.find_element(By.XPATH, "//input[@id='login-signin']").click()
             password_element = WebDriverWait(self.driver, 10).until(
                 EC.presence_of_element_located((By.ID, "login-passwd"))
             )
             password_element.send_keys(self.password)
-            self.driver.find_element_by_xpath("//button[@id='login-signin']").click()
+            self.driver.find_element(By.XPATH, "//button[@id='login-signin']").click()
             d = self._get_user_data()
             self.driver.quit()
             return d
