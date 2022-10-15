@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import re
+from tkinter import E
 
 import pandas as pd
 
@@ -114,13 +115,16 @@ class Ticker(_YahooFinance):
     def _to_dataframe(self, data, **kwargs):
         if not self.formatted:
             dataframes = []
-            try:
-                for symbol in self.symbols:
+            for symbol in self.symbols:
+                try:
                     final_data = (
                         data[symbol][kwargs.get("data_filter")]
                         if kwargs.get("data_filter")
                         else data[symbol]
                     )
+                except TypeError:
+                    pass
+                else:
                     if kwargs.get("from_dict"):
                         df = pd.DataFrame(
                             [(k, v) for d in final_data for k, v in d.items()]
@@ -130,6 +134,7 @@ class Ticker(_YahooFinance):
                     else:
                         df = pd.DataFrame(final_data)
                     dataframes.append(df)
+            try:
                 if kwargs.get("from_dict", False):
                     df = pd.concat(dataframes, axis=1)
                 else:
@@ -139,9 +144,10 @@ class Ticker(_YahooFinance):
                         names=["symbol", "row"],
                         sort=False,
                     )
+            except ValueError:
+                df = pd.DataFrame()
+            finally:
                 return df
-            except TypeError:
-                return data
         else:
             return data
 
