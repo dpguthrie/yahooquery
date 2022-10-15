@@ -61,7 +61,7 @@ def _init_session(session=None, **kwargs):
             total=kwargs.get("retry", 5),
             backoff_factor=kwargs.get("backoff_factor", 0.3),
             status_forcelist=kwargs.get("status_forcelist", [429, 500, 502, 503, 504]),
-            method_whitelist=["HEAD", "GET", "OPTIONS", "POST", "TRACE"],
+            allowed_methods=["HEAD", "GET", "OPTIONS", "POST", "TRACE"],
         )
         if kwargs.get("verify") is not None:
             session.verify = kwargs.get("verify")
