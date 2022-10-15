@@ -1,6 +1,7 @@
 import pytest
 import itertools
 import os
+import pandas as pd
 from datetime import datetime
 
 from yahooquery import Ticker
@@ -147,6 +148,11 @@ def test_p_get_financial_data(ticker):
 )
 def test_history(ticker, period, interval):
     assert ticker.history(period, interval) is not None
+    
+    
+def test_dividend_history(ticker):
+    series = ticker.dividend_history(start='1970-01-01')
+    assert isinstance(series, pd.Series)
 
 
 @pytest.mark.parametrize(
