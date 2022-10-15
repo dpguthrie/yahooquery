@@ -1189,6 +1189,34 @@ class Ticker(_YahooFinance):
         return self._get_data("value_analyzer_drilldown")
 
     # HISTORICAL PRICE DATA
+    def dividend_history(self, start, end=None):
+        """
+        Historical dividend data
+
+        Pulls historical dividend data for a given symbol(s)
+
+        Parameters
+        ----------
+        start: str or datetime.datetime
+            Specify a starting point to pull data from.  Can be expressed as a
+            string with the format YYYY-MM-DD or as a datetime object
+        end: str of datetime.datetime, default None, optional
+            Specify a ending point to pull data from.  Can be expressed as a
+            string with the format YYYY-MM-DD or as a datetime object.
+
+        Returns
+        -------
+        pandas.Series
+            historical pricing data
+        """
+        df = self.history(start=start, end=end)
+        if 'dividends' in df:
+            return df[df['dividends'] != 0]['dividends']
+        
+        return pd.DataFrame(
+            columns=['symbol', 'date', 'dividends']
+        ).set_index(['symbol', 'date'])['dividends']
+    
     def history(
         self,
         period="ytd",
