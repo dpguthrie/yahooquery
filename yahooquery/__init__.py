@@ -7,7 +7,6 @@ from .research import Research  # noqa
 from .ticker import Ticker  # noqa
 from .screener import Screener  # noqa
 from .misc import (  # noqa
-    currency_converter,
     get_currencies,
     get_exchanges,
     get_market_summary,
