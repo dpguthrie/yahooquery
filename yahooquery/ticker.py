@@ -1270,14 +1270,17 @@ class Ticker(_YahooFinance):
                 d[symbol] = _history_dataframe(data, symbol, params, adj_timezone)
             else:
                 d[symbol] = data[symbol]
-        if all(isinstance(d[key], pd.DataFrame) for key in d):
+        d = {k: v for k, v in d.items() if isinstance(v, pd.DataFrame)}
+        try:
             df = pd.concat(d, names=["symbol", "date"], sort=False)
+        except ValueError:
+            df = pd.DataFrame(columns=['high', 'low', 'volume', 'open', 'close'])
+        else:
             if "dividends" in df.columns:
                 df["dividends"].fillna(0, inplace=True)
             if "splits" in df.columns:
                 df["splits"].fillna(0, inplace=True)
-            return df
-        return d
+        return df
 
     def _adjust_ohlc(self, df):
         adjust = df["close"] / df["adjclose"]
