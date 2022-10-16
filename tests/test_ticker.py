@@ -12,7 +12,7 @@ TICKERS = [
         "aapl", username=os.getenv("YFF_USERNAME"), password=os.getenv("YFF_PASSWORD")
     ),
     Ticker("aapl ^GSPC btcusd=x brk-b logo.is l&tfh.ns", asynchronous=True),
-    Ticker(["aapl", "aaapl"]),
+    Ticker("aaapl"),
     Ticker("hasgx"),
     Ticker("btcusd=x", formatted=True, validate=True),
 ]
@@ -147,7 +147,7 @@ def test_p_get_financial_data(ticker):
     ],
 )
 def test_history(ticker, period, interval):
-    assert ticker.history(period, interval) is not None
+    assert isinstance(ticker.history(period, interval), pd.DataFrame)
     
     
 def test_dividend_history(ticker):
