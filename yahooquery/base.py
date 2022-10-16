@@ -1,10 +1,8 @@
 import os
-import re
 import time
 from concurrent.futures import as_completed
 from datetime import datetime
 
-import requests
 from requests_futures.sessions import FuturesSession
 
 from tqdm import tqdm
