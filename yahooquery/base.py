@@ -560,6 +560,14 @@ class _YahooFinance(object):
     }
 
     _CONFIG = {
+        "yfp_fair_value": {
+            "path": "https://query2.finance.yahoo.com/ws/value-analyzer/v1/finance/premium/valueAnalyzer/multiquote",
+            "response_field": "finance",
+            "query": {
+                "formatted": {"required": False, "default": False},
+                "symbols": {"required": True, "default": None},
+            }
+        },
         "news": {
             "path": "https://query2.finance.yahoo.com/v2/finance/news",
             "response_field": "Content",

@@ -1002,6 +1002,10 @@ class Ticker(_YahooFinance):
         return self._quote_summary_dataframe(
             "topHoldings", data_filter="sectorWeightings", from_dict=True
         )
+        
+    @property
+    def p_fair_value(self):
+        return self._get_data("yfp_fair_value")
 
     # PREMIUM
     def p_all_financial_data(self, frequency="a"):
@@ -1205,12 +1209,12 @@ class Ticker(_YahooFinance):
 
         Returns
         -------
-        pandas.Series
+        pandas.DataFrame
             historical pricing data
         """
         df = self.history(start=start, end=end)
         if 'dividends' in df:
-            return df[df['dividends'] != 0]['dividends']
+            return df[df['dividends'] != 0].loc[:, ['dividends']]
         
         return pd.DataFrame(
             columns=['symbol', 'date', 'dividends']
