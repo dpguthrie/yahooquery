@@ -151,8 +151,8 @@ def test_history(ticker, period, interval):
     
     
 def test_dividend_history(ticker):
-    series = ticker.dividend_history(start='1970-01-01')
-    assert isinstance(series, pd.Series)
+    df = ticker.dividend_history(start='1970-01-01')
+    assert isinstance(df, pd.DataFrame)
 
 
 @pytest.mark.parametrize(
