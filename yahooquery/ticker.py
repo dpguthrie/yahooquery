@@ -1279,6 +1279,7 @@ class Ticker(_YahooFinance):
             df = self._historical_data_to_dataframe(data, params, adj_timezone)
         if adj_ohlc and "adjclose" in df:
             df = self._adjust_ohlc(df)
+        df = df[~df.index.duplicated(keep='first')]
         return df
 
     def _history_1m(self, adj_timezone=True, adj_ohlc=False):
