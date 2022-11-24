@@ -122,18 +122,20 @@ def _convert_to_timestamp(date=None, start=True):
 def _get_daily_index(data, index_utc, adj_timezone):
     # evalute if last indice represents a live interval
     timestamp = data["meta"]["regularMarketTime"]
-    last_trade = pd.Timestamp.fromtimestamp(timestamp, tz="UTC")
+    last_trade = pd.Timestamp.fromtimestamp(timestamp)
+    last_trade = last_trade.tz_localize("UTC")
     has_live_indice = index_utc[-1] >= last_trade - pd.Timedelta(2, "S")
     if has_live_indice:
         # remove it
         live_indice = index_utc[-1]
         index_utc = index_utc[:-1]
+        ONE_DAY = datetime.timedelta(1)
         # evaluate if it should be put back later. If the close price for
         # the day is already included in the data, i.e. if the live indice
         # is simply duplicating data represented in the prior row, then the
         # following will evaluate to False (as live_indice will now be
         # within one day of the prior indice)
-        keep_live_indice = live_indice > index_utc[-1] + datetime.timedelta(1)
+        keep_live_indice = index_utc.empty or live_indice > index_utc[-1] + ONE_DAY
 
     tz = data["meta"]["exchangeTimezoneName"]
     index_local = index_utc.tz_convert(tz)
@@ -187,7 +189,7 @@ def _history_dataframe(data, daily, adj_timezone=True):
     df = df[cols]  # determine column order
 
     index = pd.to_datetime(df.index, unit="s", utc=True)
-    if daily:
+    if daily and not df.empty:
         index = _get_daily_index(data, index, adj_timezone)
         if len(index) == len(df) - 1:
             # a live_indice was removed
