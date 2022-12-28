@@ -1,7 +1,7 @@
+import datetime
 import random
 import re
 import time
-from datetime import datetime
 
 import pandas as pd
 from requests import Session
@@ -112,57 +112,91 @@ def _convert_to_list(symbols, comma_split=False):
 def _convert_to_timestamp(date=None, start=True):
     if date is None:
         date = int((-858880800 * start) + (time.time() * (not start)))
-    elif isinstance(date, datetime):
+    elif isinstance(date, datetime.datetime):
         date = int(time.mktime(date.timetuple()))
     else:
         date = int(time.mktime(time.strptime(str(date), "%Y-%m-%d")))
     return date
 
 
-def _history_dataframe(data, symbol, params, adj_timezone=True):
-    df = pd.DataFrame(data[symbol]["indicators"]["quote"][0])
-    if data[symbol]["indicators"].get("adjclose"):
-        df["adjclose"] = data[symbol]["indicators"]["adjclose"][0]["adjclose"]
-    df.index = pd.to_datetime(data[symbol]["timestamp"], unit="s") + pd.Timedelta(
-        (data[symbol]["meta"]["gmtoffset"] * adj_timezone), "s"
-    )
-    if params["interval"][-1] not in ["m", "h"]:
-        df.index = df.index.date
-    df.dropna(inplace=True)
-    if data[symbol].get("events"):
-        df = pd.merge(
-            df,
-            _events_to_dataframe(data, symbol, params, adj_timezone),
-            how="outer",
-            left_index=True,
-            right_index=True,
-        )
+def _get_daily_index(data, index_utc, adj_timezone):
+    # evalute if last indice represents a live interval
+    timestamp = data["meta"]["regularMarketTime"]
+    last_trade = pd.Timestamp.fromtimestamp(timestamp)
+    last_trade = last_trade.tz_localize("UTC")
+    has_live_indice = index_utc[-1] >= last_trade - pd.Timedelta(2, "S")
+    if has_live_indice:
+        # remove it
+        live_indice = index_utc[-1]
+        index_utc = index_utc[:-1]
+        ONE_DAY = datetime.timedelta(1)
+        # evaluate if it should be put back later. If the close price for
+        # the day is already included in the data, i.e. if the live indice
+        # is simply duplicating data represented in the prior row, then the
+        # following will evaluate to False (as live_indice will now be
+        # within one day of the prior indice)
+        keep_live_indice = index_utc.empty or live_indice > index_utc[-1] + ONE_DAY
+
+    tz = data["meta"]["exchangeTimezoneName"]
+    index_local = index_utc.tz_convert(tz)
+    times = index_local.time
+
+    bv = times <= datetime.time(14)
+    if (bv).all():
+        index = index_local.floor("d")
+    elif (~bv).all():
+        index = index_local.ceil("d")
+    else:
+        # mix of open times pre and post 14:00.
+        index1 = index_local[bv].floor("d")
+        index2 = index_local[~bv].ceil("d")
+        index = index1.union(index2)
+
+    index = pd.Index(index.date)
+    if has_live_indice and keep_live_indice:
+        live_indice = live_indice.astimezone(tz) if adj_timezone else live_indice
+        index = index.insert(len(index), live_indice.to_pydatetime())
+    return index
+
+
+def _event_as_srs(event_data, event):
+    index = pd.Index([int(v) for v in event_data.keys()], dtype="int64")
+    if event == "dividends":
+        values = [d["amount"] for d in event_data.values()]
+    else:
+        values = [d["numerator"] / d["denominator"] for d in event_data.values()]
+    return pd.Series(values, index=index)
+
+
+def _history_dataframe(data, daily, adj_timezone=True):
+    data_dict = data["indicators"]["quote"][0].copy()
+    cols = [
+        col for col in ("open", "high", "low", "close", "volume") if col in data_dict
+    ]
+    if "adjclose" in data["indicators"]:
+        data_dict["adjclose"] = data["indicators"]["adjclose"][0]["adjclose"]
+        cols.append("adjclose")
+
+    if 'events' in data:
+        for event, event_data in data["events"].items():
+            if event not in ("dividends", "splits"):
+                continue
+            data_dict[event] = _event_as_srs(event_data, event)
+            cols.append(event)
+
+    df = pd.DataFrame(data_dict, index=data["timestamp"])  # align all on timestamps
+    df.dropna(how="all", inplace=True)
+    df = df[cols]  # determine column order
+
+    index = pd.to_datetime(df.index, unit="s", utc=True)
+    if daily and not df.empty:
+        index = _get_daily_index(data, index, adj_timezone)
+        if len(index) == len(df) - 1:
+            # a live_indice was removed
+            df = df.iloc[:-1]
+    elif adj_timezone:
+        tz = data["meta"]["exchangeTimezoneName"]
+        index = index.tz_convert(tz)
+
+    df.index = index
     return df
-
-
-def _events_to_dataframe(data, symbol, params, adj_timezone):
-    dataframes = []
-    for event in ["dividends", "splits"]:
-        try:
-            df = pd.DataFrame(data[symbol]["events"][event].values())
-            df.set_index("date", inplace=True)
-            df.index = pd.to_datetime(df.index, unit="s") + pd.Timedelta(
-                (data[symbol]["meta"]["gmtoffset"] * adj_timezone), "s"
-            )
-            if params["interval"][-1] not in ["m", "h"]:
-                df.index = df.index.date
-            if event == "dividends":
-                df.rename(columns={"amount": "dividends"}, inplace=True)
-            else:
-                df["splits"] = df["numerator"] / df["denominator"]
-                df = df[["splits"]]
-            dataframes.append(df)
-        except KeyError:
-            pass
-    return (
-        pd.merge(
-            dataframes[0], dataframes[1], how="outer", left_index=True, right_index=True
-        )
-        if len(dataframes) > 1
-        else dataframes[0]
-    )
