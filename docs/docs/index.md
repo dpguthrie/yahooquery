@@ -20,7 +20,7 @@
 
 **Documentation**: <a target="_blank" href="https://yahooquery.dpguthrie.com">https://yahooquery.dpguthrie.com</a>
 
-**Interactive Demo**: <a target="_blank" href="https://yahooquery-streamlit.herokuapp.com">https://yahooquery-streamlit.herokuapp.com</a>
+**Interactive Demo**: <a target="_blank" href="https://dpguthrie-yahooquery-streamlit-app-eydpjo.streamlit.app/">https://dpguthrie-yahooquery-streamlit-app-eydpjo.streamlit.app/</a>
 
 **Source Code**: <a target="_blank" href="https://github.com/dpguthrie/yahooquery">https://github.com/dpguthrie/yahooquery</a>
 
