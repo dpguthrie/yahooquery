@@ -536,13 +536,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#currency_converter" class="md-nav__link">
-    currency_converter
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#get_currencies" class="md-nav__link">
     get_currencies
   </a>
@@ -669,13 +662,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#currency_converter" class="md-nav__link">
-    currency_converter
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#get_currencies" class="md-nav__link">
     get_currencies
   </a>
@@ -739,202 +725,19 @@
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">yahooquery</span> <span class="k">as</span> <span class="nn">yq</span>
 </code></pre></div>
 <h2 id="functions">Functions<a class="headerlink" href="#functions" title="Permanent link">&para;</a></h2>
-<h3 id="currency_converter">currency_converter<a class="headerlink" href="#currency_converter" title="Permanent link">&para;</a></h3>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>There is pretty significant rate limiting when using this function (It's an external service to Yahoo Finance)</p>
-</div>
-<div class="tabbed-set" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Details</label><div class="tabbed-content">
-<ul>
-<li><em>Description</em>: Retrieve current conversion rate between two currencies as well as historical rates</li>
-<li><em>Returns</em>: <code>dict</code></li>
-<li><em>Arguments</em></li>
-</ul>
-<table>
-<thead>
-<tr>
-<th align="left">Argument</th>
-<th align="left">Description</th>
-<th align="left">Type</th>
-<th align="left">Default</th>
-<th align="left">Required</th>
-<th align="left">Options</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left">from_currency</td>
-<td align="left">Currency to convert from</td>
-<td align="left"><code>str</code></td>
-<td align="left">None</td>
-<td align="left"><strong>required</strong></td>
-<td align="left">See <a href="#get_currencies">get_currencies</a> - <code>shortName</code></td>
-</tr>
-<tr>
-<td align="left">to_currency</td>
-<td align="left">Currency to convert to</td>
-<td align="left"><code>str</code></td>
-<td align="left">None</td>
-<td align="left"><strong>required</strong></td>
-<td align="left">See <a href="#get_currencies">get_currencies</a> - <code>shortName</code></td>
-</tr>
-<tr>
-<td align="left">period</td>
-<td align="left">Length of historical data to return</td>
-<td align="left"><code>str</code></td>
-<td align="left"><code>week</code></td>
-<td align="left">optional</td>
-<td align="left"><code>day</code>, <code>week</code>, <code>month</code>, <code>6month</code>, <code>year</code>, <code>allTime</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Example</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">yahooquery</span> <span class="k">as</span> <span class="nn">yq</span>
-<span class="hll"><span class="n">data</span> <span class="o">=</span> <span class="n">yq</span><span class="o">.</span><span class="n">currency_converter</span><span class="p">(</span><span class="s2">&quot;USD&quot;</span><span class="p">,</span> <span class="s2">&quot;EUR&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">)</span>
-</span></code></pre></div>
-</div>
-<input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><label for="__tabbed_1_3">Data</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-    <span class="s1">&#39;CurrentInterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8403</span><span class="p">,</span>
-    <span class="s1">&#39;CurrentInverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1901</span><span class="p">,</span>
-    <span class="s1">&#39;Average&#39;</span><span class="p">:</span> <span class="mf">0.8443</span><span class="p">,</span>
-    <span class="s1">&#39;HistoricalPoints&#39;</span><span class="p">:</span> <span class="p">[{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-08-21 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8478</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1795</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-08-22 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8478</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1795</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-08-23 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8475</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1799</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-08-24 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8466</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1812</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-08-25 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8453</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.183</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-08-26 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8476</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1798</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-08-27 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8409</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1892</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-08-28 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8399</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1906</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-08-29 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8399</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1906</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-08-30 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8373</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1943</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-08-31 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8375</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1941</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-09-01 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8442</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1845</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-09-02 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.845</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1834</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-09-03 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8455</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1828</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-09-04 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8447</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1839</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-09-05 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8447</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1839</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-09-06 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8462</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1818</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-09-07 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8478</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1795</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-09-08 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8471</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1805</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-09-09 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8439</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.185</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-09-10 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8447</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1839</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-09-11 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8441</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1848</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-09-12 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8441</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1848</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-09-13 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8427</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1867</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-09-14 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8437</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1852</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-09-15 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8451</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1833</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-09-16 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8458</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1822</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-09-17 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8429</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.1863</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s1">&#39;PointInTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-09-18 18:00:00&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;InterbankRate&#39;</span><span class="p">:</span> <span class="mf">0.8446</span><span class="p">,</span>
-        <span class="s1">&#39;InverseInterbankRate&#39;</span><span class="p">:</span> <span class="mf">1.184</span>
-    <span class="p">}],</span>
-    <span class="s1">&#39;supportedByOfx&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="s1">&#39;fetchTime&#39;</span><span class="p">:</span> <span class="mi">1600636306047</span>
-<span class="p">}</span>
-</code></pre></div>
-</div>
-</div>
 <h3 id="get_currencies">get_currencies<a class="headerlink" href="#get_currencies" title="Permanent link">&para;</a></h3>
-<div class="tabbed-set" data-tabs="2:3"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Details</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Details</label><div class="tabbed-content">
 <ul>
 <li><em>Description</em>: List of currencies Yahoo Finance supports</li>
 <li><em>Returns</em>: <code>list</code></li>
 </ul>
 </div>
-<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Example</label><div class="tabbed-content">
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Example</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">yahooquery</span> <span class="k">as</span> <span class="nn">yq</span>
 <span class="hll"><span class="n">data</span> <span class="o">=</span> <span class="n">yq</span><span class="o">.</span><span class="n">get_currencies</span><span class="p">()</span>
 </span></code></pre></div>
 </div>
-<input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><label for="__tabbed_2_3">Data</label><div class="tabbed-content">
+<input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><label for="__tabbed_1_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">[{</span>
     <span class="s1">&#39;shortName&#39;</span><span class="p">:</span> <span class="s1">&#39;FJD&#39;</span><span class="p">,</span>
     <span class="s1">&#39;longName&#39;</span><span class="p">:</span> <span class="s1">&#39;Fijian Dollar&#39;</span><span class="p">,</span>
@@ -1820,19 +1623,19 @@
 </div>
 </div>
 <h3 id="get_exchanges">get_exchanges<a class="headerlink" href="#get_exchanges" title="Permanent link">&para;</a></h3>
-<div class="tabbed-set" data-tabs="3:3"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">Details</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="2:3"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Details</label><div class="tabbed-content">
 <ul>
 <li><em>Description</em>: List of exchanges and suffixes to use to to retrieve data on various exchanges</li>
 <li><em>Returns</em>: <code>pandas.DataFrame</code></li>
 </ul>
 </div>
-<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">Example</label><div class="tabbed-content">
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Example</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">yahooquery</span> <span class="k">as</span> <span class="nn">yq</span>
 <span class="hll"><span class="n">df</span> <span class="o">=</span> <span class="n">yq</span><span class="o">.</span><span class="n">get_exchanges</span><span class="p">()</span>
 </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </code></pre></div>
 </div>
-<input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><label for="__tabbed_3_3">Data</label><div class="tabbed-content">
+<input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><label for="__tabbed_2_3">Data</label><div class="tabbed-content">
 <table>
 <thead>
 <tr>
@@ -1890,7 +1693,7 @@
 </div>
 </div>
 <h3 id="get_market_summary">get_market_summary<a class="headerlink" href="#get_market_summary" title="Permanent link">&para;</a></h3>
-<div class="tabbed-set" data-tabs="4:3"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">Details</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="3:3"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">Details</label><div class="tabbed-content">
 <ul>
 <li><em>Description</em>: List of relevant exchanges for specific country</li>
 <li><em>Returns</em>: <code>list</code></li>
@@ -1990,12 +1793,12 @@
 </code></pre></div>
 </details>
 </div>
-<input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><label for="__tabbed_4_2">Example</label><div class="tabbed-content">
+<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">Example</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">yahooquery</span> <span class="k">as</span> <span class="nn">yq</span>
 <span class="hll"><span class="n">yq</span><span class="o">.</span><span class="n">get_market_summary</span><span class="p">(</span><span class="n">country</span><span class="o">=</span><span class="s1">&#39;hong kong&#39;</span><span class="p">)</span>
 </span></code></pre></div>
 </div>
-<input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><label for="__tabbed_4_3">Data</label><div class="tabbed-content">
+<input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><label for="__tabbed_3_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">[{</span>
     <span class="s1">&#39;exchangeTimezoneName&#39;</span><span class="p">:</span> <span class="s1">&#39;America/New_York&#39;</span><span class="p">,</span>
     <span class="s1">&#39;fullExchangeName&#39;</span><span class="p">:</span> <span class="s1">&#39;SNP&#39;</span><span class="p">,</span>
@@ -2641,7 +2444,7 @@
 </div>
 </div>
 <h3 id="get_trending">get_trending<a class="headerlink" href="#get_trending" title="Permanent link">&para;</a></h3>
-<div class="tabbed-set" data-tabs="5:3"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">Details</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="4:3"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">Details</label><div class="tabbed-content">
 <ul>
 <li><em>Description</em>: List of trending securities for specific country</li>
 <li><em>Returns</em>: <code>list</code></li>
@@ -2741,12 +2544,12 @@
 </code></pre></div>
 </details>
 </div>
-<input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><label for="__tabbed_5_2">Example</label><div class="tabbed-content">
+<input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><label for="__tabbed_4_2">Example</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">yahooquery</span> <span class="k">as</span> <span class="nn">yq</span>
 <span class="hll"><span class="n">data</span> <span class="o">=</span> <span class="n">yq</span><span class="o">.</span><span class="n">get_trending</span><span class="p">()</span>
 </span></code></pre></div>
 </div>
-<input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><label for="__tabbed_5_3">Data</label><div class="tabbed-content">
+<input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><label for="__tabbed_4_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
     <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
     <span class="s1">&#39;quotes&#39;</span><span class="p">:</span> <span class="p">[{</span>
@@ -2797,7 +2600,7 @@
 </div>
 </div>
 <h3 id="search">search<a class="headerlink" href="#search" title="Permanent link">&para;</a></h3>
-<div class="tabbed-set" data-tabs="6:3"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><label for="__tabbed_6_1">Details</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="5:3"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">Details</label><div class="tabbed-content">
 <ul>
 <li><em>Description</em>: Query Yahoo Finance for anything:  companies, ticker symbols, cusips, news, etc.</li>
 <li><em>Returns</em>: <code>dict</code></li>
@@ -2929,12 +2732,12 @@
 </code></pre></div>
 </details>
 </div>
-<input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><label for="__tabbed_6_2">Example</label><div class="tabbed-content">
+<input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><label for="__tabbed_5_2">Example</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">yahooquery</span> <span class="k">as</span> <span class="nn">yq</span>
 <span class="hll"><span class="n">data</span> <span class="o">=</span> <span class="n">yq</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;38141G104&quot;</span><span class="p">,</span> <span class="n">first_quote</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span></code></pre></div>
 </div>
-<input id="__tabbed_6_3" name="__tabbed_6" type="radio" /><label for="__tabbed_6_3">Data</label><div class="tabbed-content">
+<input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><label for="__tabbed_5_3">Data</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
     <span class="s1">&#39;exchange&#39;</span><span class="p">:</span> <span class="s1">&#39;NYQ&#39;</span><span class="p">,</span>
     <span class="s1">&#39;quoteType&#39;</span><span class="p">:</span> <span class="s1">&#39;EQUITY&#39;</span><span class="p">,</span>
