@@ -155,7 +155,10 @@ def _get_daily_index(data, index_utc, adj_timezone):
     index = pd.Index(index.date)
     if has_live_indice and keep_live_indice:
         live_indice = live_indice.astimezone(tz) if adj_timezone else live_indice
-        index = index.insert(len(index), live_indice.to_pydatetime())
+        if not index.empty:
+            index = index.insert(len(index), live_indice.to_pydatetime())
+        else:
+            index = pd.Index([live_indice.to_pydatetime()], dtype="object")
     return index
 
 
