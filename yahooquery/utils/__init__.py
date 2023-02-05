@@ -167,7 +167,10 @@ def _event_as_srs(event_data, event):
     if event == "dividends":
         values = [d["amount"] for d in event_data.values()]
     else:
-        values = [d["numerator"] / d["denominator"] for d in event_data.values()]
+        values = [
+            d["numerator"] / d["denominator"] if d["denominator"] else float('inf')
+            for d in event_data.values()
+        ]
     return pd.Series(values, index=index)
 
 
