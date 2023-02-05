@@ -1304,7 +1304,7 @@ class Ticker(_YahooFinance):
         d = {}
         for symbol in self._symbols:
             if "timestamp" in data[symbol]:
-                daily = params["interval"][-1] == "d"
+                daily = params["interval"][-1] not in ["m", "h"]
                 d[symbol] = _history_dataframe(data[symbol], daily, adj_timezone)
             else:
                 d[symbol] = data[symbol]
