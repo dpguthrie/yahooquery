@@ -1,7 +1,6 @@
 import datetime
 import random
 import re
-import time
 
 import pandas as pd
 from requests import Session
@@ -110,13 +109,11 @@ def _convert_to_list(symbols, comma_split=False):
 
 
 def _convert_to_timestamp(date=None, start=True):
-    if date is None:
-        date = int((-858880800 * start) + (time.time() * (not start)))
-    elif isinstance(date, datetime.datetime):
-        date = int(time.mktime(date.timetuple()))
-    else:
-        date = int(time.mktime(time.strptime(str(date), "%Y-%m-%d")))
-    return date
+    if date is not None:
+        return int(pd.Timestamp(date).timestamp())
+    if start:
+        return int(pd.Timestamp("1942-01-01").timestamp())
+    return int(pd.Timestamp.now().timestamp())
 
 
 def _get_daily_index(data, index_utc, adj_timezone):
