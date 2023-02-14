@@ -1257,7 +1257,19 @@ class Ticker(_YahooFinance):
         Returns
         -------
         pandas.DataFrame
-            historical pricing data
+            Historical pricing data. Indexed with a pd.MultiIndex with two
+            levels 'symbol' and 'dates'.
+
+            If `interval` is intraday then 'dates' level will be
+            represented with a `pd.DatetimeIndex`.
+
+            If `interval` is '1d' or higher then 'dates' level will be
+            represented with a `pd.Index` with dtype 'object'. Rows
+            relating to closed sessions are indexed with `datatime.date`.
+            If the 'close' of the last row represents the latest price of
+            an open session then this last row will be indexed with a
+            `datatime.datetime` object giving the time of the last trade
+            that the 'close' price relates to.
         """
         config = self._CONFIG["chart"]
         intervals = config["query"]["interval"]["options"]
@@ -1304,7 +1316,7 @@ class Ticker(_YahooFinance):
         d = {}
         for symbol in self._symbols:
             if "timestamp" in data[symbol]:
-                daily = params["interval"][-1] == "d"
+                daily = params["interval"][-1] not in ["m", "h"]
                 d[symbol] = _history_dataframe(data[symbol], daily, adj_timezone)
             else:
                 d[symbol] = data[symbol]

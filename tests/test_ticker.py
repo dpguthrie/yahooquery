@@ -479,8 +479,8 @@ class TestHistoryDataframe():
         """
         if last_trade is None:
             last_trade = 1669237204
-            expected_ts = pd.Timestamp('2022-11-23 21:00:04')
-            assert pd.Timestamp.fromtimestamp(last_trade) == expected_ts
+            expected_ts = pd.Timestamp('2022-11-23 21:00:04', tz="UTC")
+            assert pd.Timestamp.fromtimestamp(last_trade, tz="UTC") == expected_ts
         meta = {
             'regularMarketTime': last_trade,
             'exchangeTimezoneName': tz,
@@ -642,8 +642,8 @@ class TestHistoryDataframe():
     ):
         """Test daily data with live indice."""
         live_indice = 1669231860
-        expected_li_ts = pd.Timestamp("2022-11-23 19:31")
-        assert pd.Timestamp.fromtimestamp(live_indice) == expected_li_ts
+        expected_li_ts = pd.Timestamp("2022-11-23 19:31", tz="UTC")
+        assert pd.Timestamp.fromtimestamp(live_indice, tz="UTC") == expected_li_ts
 
         tss, expected_days, *_ = timestamps_daily
         tss = tss[:-1]
@@ -672,8 +672,8 @@ class TestHistoryDataframe():
     ):
         """Test live indice removed if day already represented."""
         live_indice = 1669237204
-        expected_li_ts = pd.Timestamp("2022-11-23 21:00:04")
-        assert pd.Timestamp.fromtimestamp(live_indice) == expected_li_ts
+        expected_li_ts = pd.Timestamp("2022-11-23 21:00:04", tz="UTC")
+        assert pd.Timestamp.fromtimestamp(live_indice, tz="UTC") == expected_li_ts
 
         tss = timestamps_daily[0]
         # to get it all to fit to 14 indices, lose the first ts

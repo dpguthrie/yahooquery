@@ -1,7 +1,6 @@
 import datetime
 import random
 import re
-import time
 
 import pandas as pd
 from requests import Session
@@ -110,21 +109,22 @@ def _convert_to_list(symbols, comma_split=False):
 
 
 def _convert_to_timestamp(date=None, start=True):
-    if date is None:
-        date = int((-858880800 * start) + (time.time() * (not start)))
-    elif isinstance(date, datetime.datetime):
-        date = int(time.mktime(date.timetuple()))
-    else:
-        date = int(time.mktime(time.strptime(str(date), "%Y-%m-%d")))
-    return date
+    if date is not None:
+        return int(pd.Timestamp(date).timestamp())
+    if start:
+        return int(pd.Timestamp("1942-01-01").timestamp())
+    return int(pd.Timestamp.now().timestamp())
 
 
 def _get_daily_index(data, index_utc, adj_timezone):
     # evalute if last indice represents a live interval
     timestamp = data["meta"]["regularMarketTime"]
-    last_trade = pd.Timestamp.fromtimestamp(timestamp)
-    last_trade = last_trade.tz_localize("UTC")
-    has_live_indice = index_utc[-1] >= last_trade - pd.Timedelta(2, "S")
+    if timestamp is None:
+        # without last trade data unable to ascertain if there's a live indice
+        has_live_indice = False
+    else:
+        last_trade = pd.Timestamp.fromtimestamp(timestamp, tz="UTC")
+        has_live_indice = index_utc[-1] >= last_trade - pd.Timedelta(2, "S")
     if has_live_indice:
         # remove it
         live_indice = index_utc[-1]
@@ -155,7 +155,10 @@ def _get_daily_index(data, index_utc, adj_timezone):
     index = pd.Index(index.date)
     if has_live_indice and keep_live_indice:
         live_indice = live_indice.astimezone(tz) if adj_timezone else live_indice
-        index = index.insert(len(index), live_indice.to_pydatetime())
+        if not index.empty:
+            index = index.insert(len(index), live_indice.to_pydatetime())
+        else:
+            index = pd.Index([live_indice.to_pydatetime()], dtype="object")
     return index
 
 
@@ -164,7 +167,10 @@ def _event_as_srs(event_data, event):
     if event == "dividends":
         values = [d["amount"] for d in event_data.values()]
     else:
-        values = [d["numerator"] / d["denominator"] for d in event_data.values()]
+        values = [
+            d["numerator"] / d["denominator"] if d["denominator"] else float('inf')
+            for d in event_data.values()
+        ]
     return pd.Series(values, index=index)
 
 
