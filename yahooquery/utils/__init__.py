@@ -141,14 +141,14 @@ def _get_daily_index(data, index_utc, adj_timezone):
     times = index_local.time
 
     bv = times <= datetime.time(14)
-    if (bv).all():
-        index = index_local.floor("d")
+    if (bv).all() or data["meta"].get("exchangeName", "Nope") == "SAO":  # see issue 163
+        index = index_local.floor("d", ambiguous=True)
     elif (~bv).all():
-        index = index_local.ceil("d")
+        index = index_local.ceil("d", ambiguous=True)
     else:
         # mix of open times pre and post 14:00.
-        index1 = index_local[bv].floor("d")
-        index2 = index_local[~bv].ceil("d")
+        index1 = index_local[bv].floor("d", ambiguous=True)
+        index2 = index_local[~bv].ceil("d", ambiguous=True)
         index = index1.union(index2)
 
     index = pd.Index(index.date)
