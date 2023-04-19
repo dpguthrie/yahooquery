@@ -276,36 +276,6 @@ class Ticker(_YahooFinance):
         """
         return self._quote_summary(["financialData"])
 
-    def news(self, count=25, start=None):
-        """News articles related to given symbol(s)
-
-        Obtain news articles related to a given symbol(s).  Data includes
-        the title of the article, summary, url, author_name, publisher
-
-        Parameters
-        ----------
-        count: int
-            Desired number of news items to return
-        start: str or datetime
-            Date to begin retrieving news items.  If date is a str, utilize
-            the following format: YYYY-MM-DD.
-
-        Notes
-        -----
-        It's recommended to use only one symbol for this property as the data
-        returned does not distinguish between what symbol the news stories
-        belong to
-
-        Returns
-        -------
-        dict
-        """
-        if start:
-            start = _convert_to_timestamp(start)
-        return self._chunk_symbols(
-            "news", params={"count": count, "start": start}, list_result=True
-        )
-
     @property
     def index_trend(self):
         """Index Trend
