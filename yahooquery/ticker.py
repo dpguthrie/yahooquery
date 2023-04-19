@@ -457,7 +457,7 @@ class Ticker(_YahooFinance):
         return self._get_data("insights")
 
     def _financials(
-        self, financials_type, frequency=None, premium=False, types=None, trailing=True
+        self, financials_type, frequency=None, premium=False, types=None, trailing=True, period={}
     ):
         try:
             time_dict = self.FUNDAMENTALS_TIME_ARGS[frequency[:1].lower()]
@@ -476,9 +476,10 @@ class Ticker(_YahooFinance):
             ]
         else:
             prefixed_types = ["{}{}".format(prefix, t) for t in types]
-        data = self._get_data(
-            key, {"type": ",".join(prefixed_types)}, **{"list_result": True}
-        )
+        parmas = {"type": ",".join(prefixed_types)}
+        if period:
+            parmas['period1'],parmas['period2'] = period['period1'],period['period2']
+        data = self._get_data(key, parmas, **{"list_result": True})
         dataframes = []
         try:
             for k in data.keys():
