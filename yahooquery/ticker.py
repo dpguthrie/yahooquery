@@ -637,6 +637,12 @@ class Ticker(_YahooFinance):
         """
         return self._financials("balance_sheet", frequency, trailing=trailing)
 
+    def history_balance_sheet(self, start, end ,frequency="a", trailing=True):
+
+        period = {"period1": _convert_to_timestamp(start),
+                "period2": _convert_to_timestamp(end)}
+        return self._financials("balance_sheet", frequency, trailing=trailing, period=period)
+    
     def cash_flow(self, frequency="a", trailing=True):
         """Cash Flow
 
