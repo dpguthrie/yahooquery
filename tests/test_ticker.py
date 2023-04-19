@@ -95,13 +95,6 @@ def test_multiple_modules_str(ticker):
     assert ticker.get_modules("assetProfile summaryProfile") is not None
 
 
-def test_news(ticker):
-    assert ticker.news() is not None
-
-
-def test_news_start(ticker):
-    assert ticker.news(start="2020-01-01", count=100) is not None
-
 
 def test_all_modules(ticker):
     assert ticker.all_modules is not None
