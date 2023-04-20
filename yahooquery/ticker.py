@@ -638,7 +638,29 @@ class Ticker(_YahooFinance):
         return self._financials("balance_sheet", frequency, trailing=trailing)
 
     def history_balance_sheet(self, start, end ,frequency="a", trailing=True):
+        """Balance Sheet History
 
+        Retrieves balance sheet data between start and end dates.
+
+        Parameters
+        ----------
+        frequency: str, default 'a', optional
+            Specify either annual or quarterly balance sheet.  Value should
+            be 'a' or 'q'.
+        trailing: bool, default True, optional
+            Specify whether or not you'd like trailing twelve month (TTM)
+            data returned
+        start: str or datetime.datetime, default None, optional
+            Specify a starting point to pull data from.  Can be expressed as a
+            string with the format YYYY-MM-DD or as a datetime object
+        end: str of datetime.datetime, default None, optional
+            Specify a ending point to pull data from.  Can be expressed as a
+            string with the format YYYY-MM-DD or as a datetime object.
+
+        Returns
+        -------
+        pandas.DataFrame
+        """
         period = {"period1": _convert_to_timestamp(start),
                 "period2": _convert_to_timestamp(end)}
         return self._financials("balance_sheet", frequency, trailing=trailing, period=period)
