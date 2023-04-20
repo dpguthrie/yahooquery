@@ -685,6 +685,27 @@ class Ticker(_YahooFinance):
         pandas.DataFrame
         """
         return self._financials("cash_flow", frequency, trailing=trailing)
+    def history_cash_flow(self, start, end ,frequency="a", trailing=True):
+        """History Cash Flow
+
+        Retrieves cash flow data between start and end dates.
+
+        Parameters
+        ----------
+        frequency: str, default 'a', optional
+            Specify either annual or quarterly cash flow statement.  Value
+            should be 'a' or 'q'.
+        trailing: bool, default True, optional
+            Specify whether or not you'd like trailing twelve month (TTM)
+            data returned
+
+        Returns
+        -------
+        pandas.DataFrame
+        """
+        period = {"period1": _convert_to_timestamp(start),
+                "period2": _convert_to_timestamp(end)}
+        return self._financials("cash_flow", frequency, trailing=trailing, period=period)
 
     @property
     def company_officers(self):
