@@ -32,6 +32,13 @@ FINANCIALS = [
     "p_valuation_measures",
 ]
 
+FINANCIALS_HISTORY = [
+    "history_cash_flow",
+    "history_income_statement",
+    "history_balance_sheet"
+]
+
+
 SEPERATE_ENDPOINTS = FINANCIALS + [
     "option_chain",
     "history",
@@ -112,6 +119,20 @@ def test_modules(ticker, module):
 )
 def test_financials(ticker, frequency, module):
     assert getattr(ticker, module)(frequency) is not None
+
+@pytest.mark.parametrize(
+    "module, start, end",
+    [el for el in itertools.product(FINANCIALS_HISTORY,
+    [
+        (start, end)
+        for start, end in zip(
+            [datetime.datetime(2019, 1, 1), "2019-01-01"],
+            ["2019-12-30", datetime.datetime(2019, 12, 30)],
+        )
+    ])]
+)
+def test_history_start_end(ticker, start, end,module):
+    assert getattr(ticker, module)(start=start, end=end) is not None
 
 
 def test_bad_financials_arg():
