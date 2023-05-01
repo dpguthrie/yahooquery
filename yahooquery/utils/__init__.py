@@ -122,7 +122,7 @@ def _get_daily_index(data, index_utc, adj_timezone):
         # without last trade data unable to ascertain if there's a live indice
         has_live_indice = False
     else:
-        last_trade = pd.Timestamp.fromtimestamp(timestamp, tz="UTC")
+        last_trade = pd.Timestamp.utcfromtimestamp(timestamp).tz_localize(tz="UTC")
         has_live_indice = index_utc[-1] >= last_trade - pd.Timedelta(2, "S")
     if has_live_indice:
         # remove it
