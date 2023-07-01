@@ -40,7 +40,7 @@ class Ticker(_YahooFinance):
     retry: int, default 5, optional
         Number of times to retry on a failed request
     status_forcelist: list, default [404, 429, 500, 502, 503, 504], optional
-        A set of integer HTTP status codes taht we should force a retry on
+        A set of integer HTTP status codes that we should force a retry on
     timeout: int, default 5, optional
         Stop waiting for a response after a given number of seconds
     user_agent: str, default random.choice, optional
@@ -50,9 +50,15 @@ class Ticker(_YahooFinance):
         Validate existence of symbols during instantiation
     verify: bool or str, default True, optional
         Used to verify SSL certificates for HTTPS requests.  Can either be
-        a boolean, in which case it controsl whether we verify the server's
+        a boolean, in which case it control whether we verify the server's
         TLS certificate, or a string in which case it must be a path to a CA
         bundle to use.
+    progress: bool, default False, optional
+        Shows a progress bar when retrieving data.
+    username: str, default None, optional
+        Username for Yahoo Finance Premium
+    password: str, default None, optional
+        Password for Yahoo Finance Premium
 
     Notes
     -----
