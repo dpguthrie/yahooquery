@@ -48,7 +48,7 @@ class Screener(_YahooFinance):
     def _check_screen_ids(self, screen_ids):
         all_screeners = list(SCREENERS.keys())
         if not isinstance(screen_ids, list):
-            screen_ids = re.findall(r"[a-zA-Z_]+", screen_ids)
+            screen_ids = re.findall(r"[a-zA-Z0-9_]+", screen_ids)
         if any(elem not in all_screeners for elem in screen_ids):
             raise ValueError(
                 "One of {} is not a valid screener.  \
