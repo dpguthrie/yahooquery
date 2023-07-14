@@ -1,48 +1,34 @@
+[tool.poetry]
+name = "yahooquery"
+version = "3.0.0"
+description = "Python wrapper for an unofficial Yahoo Finance API"
+authors = ["Doug Guthrie <douglas.p.guthrie@gmail.com>"]
+documentation = "https://yahooquery.dpguthrie.com"
+keywords = ["python", "API", "finance", "stocks", "Yahoo Finance"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+requests = "^2.31.0"
+pandas = "^2.0.3"
+requests-futures = "^1.0.1"
+selenium = "^4.10.0"
+tqdm = "^4.65.0"
+lxml = "^4.9.3"
+webdriver-manager = "^3.8.6"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.4.0"
+isort = "^5.12.0"
+flake8 = "^6.0.0"
+mypy = "^1.4.1"
+pytest-cov = "^4.1.0"
+black = "^23.7.0"
+pre-commit = "^3.3.3"
+ipython = "^8.14.0"
+mkdocs-material = "^9.1.18"
+
 [build-system]
-requires = ["flit"]
-build-backend = "flit.buildapi"
-
-[tool.flit.metadata]
-module = "yahooquery"
-author = "Doug Guthrie"
-author-email = "douglas.p.guthrie@gmail.com"
-home-page = "https://github.com/dpguthrie/yahooquery"
-classifiers = [
-    "Programming Language :: Python :: 2.7",
-    "Programming Language :: Python :: 3.5",
-    "Programming Language :: Python :: 3.6",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Intended Audience :: Developers",
-    "Intended Audience :: Financial and Insurance Industry",
-    "Operating System :: OS Independent",
-    "License :: OSI Approved :: MIT License",
-]
-requires = [
-    "lxml >=4.9.1",
-    "pandas >=0.24.0",
-    "requests-futures >=1.0.0",
-    "tqdm >=4.54.1",
-]
-description-file = "README.md"
-
-[tool.flit.metadata.urls]
-Documentation = "https://yahooquery.dpguthrie.com"
-Demo = "https://yahooquery-streamlit.herokuapp.com"
-
-[tool.flit.metadata.requires-extra]
-test = [
-    "pytest ==6.0.2",
-    "pytest-cov==2.10.1",
-    "coverage==5.2.1",
-    "selenium >=3.141.0",
-]
-premium = [
-    "selenium >=3.141.0",
-]
-doc = [
-    "mkdocs >=1.1.2,<2.0.0",
-    "mkdocs-jupyter >=0.12.0,<0.13.0",
-    "mkdocs-material >=6.1.7,<7.0.0",
-]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

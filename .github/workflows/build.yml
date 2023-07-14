@@ -1,0 +1,26 @@
+name: Build
+
+on:
+  pull_request_target:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.9"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install poetry
+        make install_dev
+    - name: Run tests and coverage
+      run: make test_cov
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v2
