@@ -1,0 +1,53 @@
+default_stages: [push]
+default_language_version:
+  python: python3.9
+repos:
+- repo: local
+  hooks:
+  - id: isort
+    stages: [commit,push]
+    name: isort
+    entry: poetry run isort -rc
+    language: system
+    types: [python]
+  - id: black
+    stages: [commit,push]
+    name: black
+    entry: poetry run black -S .
+    language: system
+    types: [python]
+  - id: mypy
+    stages: [commit,push]
+    name: mypy
+    entry: poetry run mypy --ignore-missing-imports
+    language: system
+    types: [python]
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v2.1.0
+  hooks:
+  - id: trailing-whitespace
+    stages: [commit,push]
+  - id: check-added-large-files
+  - id: check-ast
+    stages: [commit,push]
+  - id: check-case-conflict
+  - id: check-byte-order-marker
+  - id: check-executables-have-shebangs
+  - id: check-docstring-first
+    stages: [commit,push]
+  - id: check-json
+  - id: check-merge-conflict
+    stages: [commit,push]
+  - id: check-symlinks
+  - id: check-vcs-permalinks
+  - id: check-xml
+  - id: check-yaml
+  - id: debug-statements
+  - id: detect-private-key
+  - id: flake8
+    stages: [commit,push]
+  - id: forbid-new-submodules
+  - id: no-commit-to-branch
+    stages: [commit,push]
+    args:
+    - --branch=main
