@@ -6,6 +6,9 @@ Change Log
 ## Update
 - Update quote summary endpoint from v10 to v6.  The v10 endpoint currently requires a crumb as a query parameter, which is not something this library does not currently support.
 
+## Fix
+- Bug related to retrieving screen IDs with a number
+
 2.3.1
 -----
 ## FIx
