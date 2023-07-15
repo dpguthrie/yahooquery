@@ -583,7 +583,7 @@ class _YahooFinance(object):
             },
         },
         "quoteSummary": {
-            "path": "https://query2.finance.yahoo.com/v10/finance/quoteSummary/{symbol}",
+            "path": "https://query2.finance.yahoo.com/v6/finance/quoteSummary/{symbol}",
             "response_field": "quoteSummary",
             "query": {
                 "formatted": {"required": False, "default": False},
