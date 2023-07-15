@@ -1,6 +1,24 @@
 Change Log
 ==========
 
+2.3.2
+-----
+## Update
+- Update quote summary endpoint from v10 to v6.  The v10 endpoint currently requires a crumb as a query parameter, which is not something this library does not currently support.
+
+2.3.1
+-----
+## FIx
+- Fixes for history method
+
+2.3.0
+-----
+## Added
+- `dividend_history` method that returns historical dividends paid for a given symbol(s)
+
+## Fixed
+- `history` method has been refactored pretty heavily with the help of @maread99 (Thank you!).  Timezone info is now included in the `date` column.  Also, a dataframe will always be returned regardless of bad symbols existing.  Previously, a dictionary was returned with the json response for the bad symbol(s) and dataframes for successful responses.
+
 2.2.15
 ------
 - Updated the data available from the cash flow statement
