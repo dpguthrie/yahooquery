@@ -1,7 +1,7 @@
 """Python interface to unofficial Yahoo Finance API endpoints"""
 
 name = "yahooquery"
-__version__ = "2.3.1"
+__version__ = "2.3.2"
 
 from .research import Research  # noqa
 from .ticker import Ticker  # noqa
