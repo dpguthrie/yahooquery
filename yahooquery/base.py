@@ -1,4 +1,6 @@
+import json
 import os
+import re
 import time
 from concurrent.futures import as_completed
 from datetime import datetime
@@ -583,7 +585,7 @@ class _YahooFinance(object):
             },
         },
         "quoteSummary": {
-            "path": "https://query2.finance.yahoo.com/v6/finance/quoteSummary/{symbol}",
+            "path": "https://query2.finance.yahoo.com/v10/finance/quoteSummary/{symbol}",
             "response_field": "quoteSummary",
             "query": {
                 "formatted": {"required": False, "default": False},
@@ -815,7 +817,7 @@ class _YahooFinance(object):
             },
         },
         "quotes": {
-            "path": "https://query2.finance.yahoo.com/v6/finance/quote",
+            "path": "https://query2.finance.yahoo.com/v7/finance/quote",
             "response_field": "quoteResponse",
             "query": {"symbols": {"required": True, "default": None}},
         },
@@ -927,12 +929,12 @@ class _YahooFinance(object):
         self.country = kwargs.get("country", "united states").lower()
         self.formatted = kwargs.pop("formatted", False)
         self.session = _init_session(kwargs.pop("session", None), **kwargs)
-        self.crumb = kwargs.pop("crumb", None)
         self.progress = kwargs.pop("progress", False)
         username = os.getenv("YF_USERNAME") or kwargs.get("username")
         password = os.getenv("YF_PASSWORD") or kwargs.get("password")
-        if username and password:
+        if username is not None and password is not None:
             self.login(username, password)
+        self.crumb = self.get_crumb()
 
     @property
     def symbols(self):
@@ -944,6 +946,25 @@ class _YahooFinance(object):
     @symbols.setter
     def symbols(self, symbols):
         self._symbols = _convert_to_list(symbols)
+        
+    def get_crumb(self):
+        response = self.session.get('https://query2.finance.yahoo.com/v1/test/getcrumb')
+        if isinstance(self.session, FuturesSession):
+            response = response.result()
+        crumb = response.text
+        if crumb is not None and len(crumb) > 0:
+            return crumb
+        
+        response = self.session.get('https://finance.yahoo.com')
+        if isinstance(self.session, FuturesSession):
+            response = response.result()
+        path = re.compile(r'window\.YAHOO\.context = ({.*?});', re.DOTALL)
+        match = re.search(path, response.text)
+        if match:
+            js_dict = json.loads(match.group(1))
+            return js_dict.get('crumb', None)
+        
+        return None
 
     @property
     def country(self):
@@ -958,14 +979,14 @@ class _YahooFinance(object):
                 )
             )
         self._country = country.lower()
-        self._default_query_params = COUNTRIES[self._country]
+        self._country_params = COUNTRIES[self._country]
 
     @property
     def default_query_params(self):
         """
         Dictionary containing default query parameters that are sent with
-        each request.  The dictionary contains three keys:  lang, region, and
-        corsDomain.
+        each request.  The dictionary contains four keys:  lang, region, 
+        corsDomain, and crumb
 
         Notes
         -----
@@ -975,15 +996,19 @@ class _YahooFinance(object):
         To change the default query parameters, set the country property equal
         to a valid country.
         """
-        return self._default_query_params
+        params = self._country_params
+        if self.crumb is not None:
+            params['crumb'] = self.crumb
+        else:
+            print('Warning:  Crumb is not set')
+        return params
+            
 
     def login(self, username, password):
-        ys = YahooSelenium(username=username, password=password)
+        ys = YahooSelenium(username, password)
         d = ys.yahoo_login()
         try:
             [self.session.cookies.set(c["name"], c["value"]) for c in d["cookies"]]
-            self.crumb = d["crumb"]
-            self.userId = d["userId"]
         except TypeError:
             print(
                 "Invalid credentials provided.  Please check username and"
@@ -1119,7 +1144,7 @@ class _YahooFinance(object):
                     )
                 }
             )
-        params.update(self._default_query_params)
+        params.update(self.default_query_params)
         params = {
             k: str(v).lower() if v is True or v is False else v
             for k, v in params.items()
@@ -1228,3 +1253,5 @@ class _YahooFinance(object):
         except TypeError:
             data = json
         return data
+
+ 
