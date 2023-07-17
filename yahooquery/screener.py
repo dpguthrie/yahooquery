@@ -29,7 +29,7 @@ class Screener(_YahooFinance):
             new_params.update(
                 {optional: params.get(optional, config["query"][optional]["default"])}
             )
-        new_params.update(self._default_query_params)
+        new_params.update(self.default_query_params)
         new_params = {
             k: str(v).lower() if v is True or v is False else v
             for k, v in new_params.items()
