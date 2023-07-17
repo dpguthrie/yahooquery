@@ -166,7 +166,9 @@ def _init_session(session=None, **kwargs):
 def setup_session_with_cookies(session: Session):
     headers = {**random.choice(HEADERS), **addl_headers}
     session.headers = headers
-    _ = session.get('https://finance.yahoo.com')
+    response = session.get('https://finance.yahoo.com')
+    if isinstance(session, FuturesSession):
+        response = response.result()
     return session
 
 
