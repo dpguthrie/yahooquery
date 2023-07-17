@@ -1,53 +1,33 @@
-import random
-import re
-
 try:
     from selenium import webdriver
     from selenium.common.exceptions import TimeoutException
     from selenium.webdriver.common.by import By
+    from selenium.webdriver.chrome.service import Service as ChromeService
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.webdriver.support.ui import WebDriverWait
+    from webdriver_manager.chrome import ChromeDriverManager
 except ImportError:
     # Selenium was not installed
     pass
-from yahooquery.utils import USER_AGENT_LIST
 
 
 class YahooSelenium(object):
 
     LOGIN_URL = "https://login.yahoo.com"
 
-    def __init__(self, **kwargs):
-        self.username = kwargs.get("username")
-        self.password = kwargs.get("password")
-        self.chrome_options = webdriver.ChromeOptions()
-        self.chrome_options.add_argument(
-            "--user-agent=" + kwargs.get("user_agent", random.choice(USER_AGENT_LIST))
-        )
-        self.chrome_options.add_argument("--headless")
-        self.chrome_options.add_argument("--no-sandbox")
-        self.chrome_options.add_argument("--log-level=3")
-        self.chrome_options.add_argument("--ignore-certificate-errors")
-        self.chrome_options.add_argument("--ignore-ssl-errors")
+    def __init__(self, username: str, password: str):
+        self.username = username
+        self.password = password
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--log-level=3")
+        chrome_options.add_argument("--ignore-certificate-errors")
+        chrome_options.add_argument("--ignore-ssl-errors")
         self.driver = webdriver.Chrome(
-            options=self.chrome_options,
+            service=ChromeService(ChromeDriverManager().install()),
+            options=chrome_options,
         )
-
-    def _get_user_data(self):
-        page_source = self.driver.page_source
-        userId = re.findall('"UserStore":{"guid":"(.+?)"', page_source)
-        crumb = re.findall('"CrumbStore":{"crumb":"(.+?)"', page_source)
-        return {
-            "crumb": crumb[0].replace("\\u002F", "/") if crumb else None,
-            "userId": userId[0] if userId else None,
-            "cookies": self.driver.get_cookies(),
-        }
-
-    def yahoo_data(self):
-        self.driver.get("https://finance.yahoo.com/trending-tickers")
-        d = self._get_user_data()
-        self.driver.quit()
-        return d
 
     def yahoo_login(self):
         try:
@@ -60,9 +40,9 @@ class YahooSelenium(object):
             )
             password_element.send_keys(self.password)
             self.driver.find_element(By.XPATH, "//button[@id='login-signin']").click()
-            d = self._get_user_data()
+            cookies = self.driver.get_cookies()
             self.driver.quit()
-            return d
+            return {'cookies': cookies}
         except TimeoutException:
             return (
                 "A timeout exception has occured.  Most likely it's due "
