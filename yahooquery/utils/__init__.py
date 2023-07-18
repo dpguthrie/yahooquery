@@ -1,4 +1,5 @@
 import datetime
+import json
 import random
 import re
 
@@ -139,6 +140,7 @@ class TimeoutHTTPAdapter(HTTPAdapter):
 
 
 def _init_session(session=None, **kwargs):
+    crumb = None
     if session is None:
         if kwargs.get("asynchronous"):
             session = FuturesSession(max_workers=kwargs.get("max_workers", 8))
@@ -159,18 +161,28 @@ def _init_session(session=None, **kwargs):
                 max_retries=retries, timeout=kwargs.get("timeout", DEFAULT_TIMEOUT)
             ),
         )
-        session = setup_session_with_cookies(session)
-    return session
+        session, crumb = setup_session_with_cookies_and_crumb(session)
+    return session, crumb
 
 
-def setup_session_with_cookies(session: Session):
+def setup_session_with_cookies_and_crumb(session: Session):
     headers = {**random.choice(HEADERS), **addl_headers}
     session.headers = headers
-    response = session.get('https://finance.yahoo.com')
+    response = session.get('https://finance.yahoo.com', hooks={'response': get_crumb})
     if isinstance(session, FuturesSession):
         response = response.result()
-    return session
+    return session, response.crumb
 
+
+def get_crumb(r: Response, *args, **kwargs):
+    r.crumb = None
+    path = re.compile(r'window\.YAHOO\.context = ({.*?});', re.DOTALL)
+    match = re.search(path, r.text)
+    if match:
+        js_dict = json.loads(match.group(1))
+        r.crumb = js_dict.get('crumb', None)
+
+    return r
 
 def _flatten_list(ls):
     return [item for sublist in ls for item in sublist]
