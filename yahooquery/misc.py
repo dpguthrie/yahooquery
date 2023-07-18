@@ -24,7 +24,9 @@ def _make_request(
                     country, ", ".join(sorted(COUNTRIES.keys()))
                 )
             )
-    session = _init_session(**kwargs)
+    session, crumb = _init_session(**kwargs)
+    if crumb is not None:
+        params['crumb'] = crumb
     r = getattr(session, method)(url, params=params, json=data)
     json = r.json()
     if response_field:

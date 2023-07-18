@@ -928,13 +928,14 @@ class _YahooFinance(object):
     def __init__(self, **kwargs):
         self.country = kwargs.get("country", "united states").lower()
         self.formatted = kwargs.pop("formatted", False)
-        self.session = _init_session(kwargs.pop("session", None), **kwargs)
+        self.session, self.crumb = _init_session(kwargs.pop("session", None), **kwargs)
         self.progress = kwargs.pop("progress", False)
         username = os.getenv("YF_USERNAME") or kwargs.get("username")
         password = os.getenv("YF_PASSWORD") or kwargs.get("password")
-        if username is not None and password is not None:
+        if username and password:
             self.login(username, password)
-        self.crumb = self.get_crumb()
+        if self.crumb is None:
+            self.set_crumb()
 
     @property
     def symbols(self):
@@ -947,24 +948,13 @@ class _YahooFinance(object):
     def symbols(self, symbols):
         self._symbols = _convert_to_list(symbols)
         
-    def get_crumb(self):
+    def set_crumb(self):
         response = self.session.get('https://query2.finance.yahoo.com/v1/test/getcrumb')
         if isinstance(self.session, FuturesSession):
             response = response.result()
         crumb = response.text
         if crumb is not None and len(crumb) > 0:
-            return crumb
-        
-        response = self.session.get('https://finance.yahoo.com')
-        if isinstance(self.session, FuturesSession):
-            response = response.result()
-        path = re.compile(r'window\.YAHOO\.context = ({.*?});', re.DOTALL)
-        match = re.search(path, response.text)
-        if match:
-            js_dict = json.loads(match.group(1))
-            return js_dict.get('crumb', None)
-        
-        return None
+            self.crumb = crumb
 
     @property
     def country(self):
