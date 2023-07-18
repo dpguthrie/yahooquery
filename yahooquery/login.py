@@ -2,6 +2,7 @@ try:
     from selenium import webdriver
     from selenium.common.exceptions import TimeoutException
     from selenium.webdriver.common.by import By
+    from selenium.webdriver.chrome.options import Options
     from selenium.webdriver.chrome.service import Service as ChromeService
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.webdriver.support.ui import WebDriverWait
@@ -18,7 +19,7 @@ class YahooSelenium(object):
     def __init__(self, username: str, password: str):
         self.username = username
         self.password = password
-        chrome_options = webdriver.ChromeOptions()
+        chrome_options = Options()
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--log-level=3")
