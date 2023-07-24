@@ -1,6 +1,6 @@
 try:
     from selenium import webdriver
-    from selenium.common.exceptions import TimeoutException
+    from selenium.common.exceptions import NoSuchElementException, TimeoutException
     from selenium.webdriver.common.by import By
     from selenium.webdriver.chrome.options import Options
     from selenium.webdriver.chrome.service import Service as ChromeService
@@ -9,14 +9,16 @@ try:
     from webdriver_manager.chrome import ChromeDriverManager
 except ImportError:
     # Selenium was not installed
-    pass
+    _has_selenium = False
+else:
+    _has_selenium = True
 
 
 class YahooSelenium(object):
 
     LOGIN_URL = "https://login.yahoo.com"
 
-    def __init__(self, username: str, password: str):
+    def __init__(self, username: str = None, password: str = None):
         self.username = username
         self.password = password
         chrome_options = Options()
@@ -49,3 +51,15 @@ class YahooSelenium(object):
                 "A timeout exception has occured.  Most likely it's due "
                 "to invalid login credentials.  Please try again."
             )
+
+    def get_cookies(self):
+        cookies = []
+        self.driver.get('https://es.finance.yahoo.com')
+        try:
+            self.driver.find_element(By.CLASS_NAME, "accept-all").click()            
+        except NoSuchElementException:
+            # Consent dialog was not found, keep going
+            pass
+        finally:
+            cookies.extend(self.driver.get_cookies())
+        return cookies
