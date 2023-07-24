@@ -8,8 +8,8 @@ from datetime import datetime
 from requests_futures.sessions import FuturesSession
 
 from tqdm import tqdm
-from yahooquery.login import YahooSelenium
-from yahooquery.utils import _convert_to_list, _init_session
+from yahooquery.login import YahooSelenium, _has_selenium
+from yahooquery.utils import _convert_to_list, _get_crumb, _init_session
 from yahooquery.utils.countries import COUNTRIES
 
 try:
@@ -935,7 +935,7 @@ class _YahooFinance(object):
         if username and password:
             self.login(username, password)
         if self.crumb is None:
-            self.set_crumb()
+            self._session_helper()
 
     @property
     def symbols(self):
@@ -948,13 +948,36 @@ class _YahooFinance(object):
     def symbols(self, symbols):
         self._symbols = _convert_to_list(symbols)
         
-    def set_crumb(self):
-        response = self.session.get('https://query2.finance.yahoo.com/v1/test/getcrumb')
-        if isinstance(self.session, FuturesSession):
-            response = response.result()
-        crumb = response.text
-        if crumb is not None and len(crumb) > 0:
-            self.crumb = crumb
+    def _session_helper(self, page_text=''):
+        if not _has_selenium:
+            print(
+                'Yahooquery was unable to obtain a crumb, which is required for some '
+                'requests to Yahoo Finance API endpoints.  There is a fallback option '
+                'to retrieve that crumb with Selenium.  However, you do not have it '
+                'installed.  Please use `pip install yahooquery[premium]` to include '
+                'the required dependencies for selenium.'
+            )
+            return
+        
+        # First retrieve the cookies, add them to the session
+        if 'A1' not in self.session.cookies:
+            ys = YahooSelenium()
+            cookies = ys.get_cookies()
+            for cookie in cookies:
+                self.session.cookies.set(cookie['name'], cookie['value'])
+                
+            # Need the page text to retrieve the crumb
+            page_text = ys.driver.page_source
+            ys.driver.quit()
+        
+        # Now retrieve the crumb, two different options here
+        self.crumb = _get_crumb(page_text, self.session)
+        if self.crumb is None:
+            print(
+                'Unable to obtain the appropriate cookies and/or crumb.  Data '
+                'retrieval will be somewhat limited as a result.'
+            )
+            
 
     @property
     def country(self):
@@ -995,10 +1018,11 @@ class _YahooFinance(object):
             
 
     def login(self, username, password):
-        ys = YahooSelenium(username, password)
+        ys = YahooSelenium(username=username, password=password)
         d = ys.yahoo_login()
         try:
             [self.session.cookies.set(c["name"], c["value"]) for c in d["cookies"]]
+            self._session_helper()
         except TypeError:
             print(
                 "Invalid credentials provided.  Please check username and"
