@@ -173,17 +173,39 @@ def _init_session(session=None, **kwargs):
 
 
 def setup_session_with_cookies_and_crumb(session: Session):
+    # Send initial request to get cookies and crumb
+    finance_url = "https://finance.yahoo.com"
     headers = {**random.choice(HEADERS), **addl_headers}
     session.headers = headers
     try:
-        response = session.get('https://finance.yahoo.com')
+        response = session.get(finance_url)
     except Exception:
         return session, None
-    else:
+
+    if isinstance(session, FuturesSession):
+        response = response.result()
+
+    # If redirected to GDPR consent screen (EU regions), accept and continue
+    if response.url.startswith('https://consent.yahoo.com/'):
+        try:
+            session_id = response.url.split("sessionId=")[1]
+            csrf_token = response.text.split('csrfToken" value="')[1].split('"')[0]
+            response = session.post(response.url, data={
+                "csrfToken": csrf_token,
+                "sessionId": session_id,
+                "originDoneUrl": finance_url,
+                "namespace": "yahoo",
+                "agree": "agree"
+            })
+        except Exception:
+            return session, None
+
         if isinstance(session, FuturesSession):
             response = response.result()
-        crumb = _get_crumb(response.text, session)
-        return session, crumb
+
+    # Extract crumb
+    crumb = _get_crumb(response.text, session)
+    return session, crumb
 
 
 def _get_crumb(page_text, session):
