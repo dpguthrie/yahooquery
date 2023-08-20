@@ -195,6 +195,48 @@ class Ticker(_YahooFinance):
             )
         return self._quote_summary(modules)
 
+    def get_historical_price_ratios(self, types: list[str] | str, diluted: bool = False):
+        """Historical price ratios for the given symbol(s)
+
+        See how price ratios changed over time.
+
+        Parameters
+        ----------
+        types: list or str
+            Desired types of data for retrieval.  Example: for PE use NetIncome and for PS use TotalRevenue.
+        diluted: bool. default False, optional
+            Specify whether to use BasicAverageShares or DilutedAverageShares
+
+        Returns
+        -------
+        pandas.DataFrame
+            Historical price ratios. Indexed with a pd.MultiIndex with two
+                levels 'symbol' and 'date'.
+        """
+        if not isinstance(types, list):
+            types = re.findall(r"[a-zA-Z]+", types)
+        if diluted:
+            shares_outstanding = "DilutedAverageShares"
+        else:
+            shares_outstanding = "BasicAverageShares"
+        types.append(shares_outstanding)
+        types_over_time = self.get_financial_data(types, frequency="a")
+        start_date = min(types_over_time.asOfDate)
+        history = self.history(start=start_date)[["adjclose"]]
+        types_over_time = (
+            types_over_time[["asOfDate", *types]]
+            .rename({"asOfDate": "date"}, axis=1)
+            .groupby(["symbol", "date"])
+            .sum()
+        )
+        df = pd.merge(
+            history, types_over_time, left_index=True, right_index=True, how="left"
+        ).fillna(method="ffill").dropna()
+        for type_ in types:
+            df[f"PriceTo{type_}"] = df.adjclose * df[shares_outstanding] / df[type_]
+        df = df.drop(columns=['adjclose', *types, f'PriceTo{shares_outstanding}'])
+        return df
+
     @property
     def asset_profile(self):
         """Asset Profile
