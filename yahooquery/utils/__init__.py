@@ -5,8 +5,8 @@ import re
 import pandas as pd
 from requests import Session
 from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
 from requests_futures.sessions import FuturesSession
+from urllib3.util import Retry
 
 
 DEFAULT_TIMEOUT = 5
