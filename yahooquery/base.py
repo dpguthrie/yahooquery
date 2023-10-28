@@ -1012,8 +1012,6 @@ class _YahooFinance(object):
         params = self._country_params
         if self.crumb is not None:
             params['crumb'] = self.crumb
-        else:
-            print('Warning:  Crumb is not set')
         return params
             
 
@@ -1063,20 +1061,6 @@ class _YahooFinance(object):
                 invalid_symbols.append(k)
         self.symbols = valid_symbols
         self.invalid_symbols = invalid_symbols or None
-
-    # def _get_crumb(self):
-    #     """Retrieve crumb from yahoo finance
-
-    #     Yahoo Finance requires a crumb to be passed as a query parameter
-    #     to certain endpoints.  This will be called in the event the crumb
-    #     is None
-    #     """
-    #     r = requests.get("https://finance.yahoo.com/screener/new")
-    #     crumbs = re.findall('"crumb":"(.+?)"', r.text)
-    #     crumb = crumbs[-1].replace("\\u002F", "/")
-    #     if not crumb:
-    #         return "Unable to retrieve crumb.  Try again"
-    #     return crumb
 
     def _format_data(self, obj, dates):
         for k, v in obj.items():
