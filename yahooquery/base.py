@@ -583,7 +583,7 @@ class _YahooFinance(object):
             },
         },
         "quoteSummary": {
-            "path": "https://query2.finance.yahoo.com/v6/finance/quoteSummary/{symbol}",
+            "path": "https://query2.finance.yahoo.com/v10/finance/quoteSummary/{symbol}",
             "response_field": "quoteSummary",
             "query": {
                 "formatted": {"required": False, "default": False},
@@ -815,7 +815,7 @@ class _YahooFinance(object):
             },
         },
         "quotes": {
-            "path": "https://query2.finance.yahoo.com/v6/finance/quote",
+            "path": "https://query2.finance.yahoo.com/v7/finance/quote",
             "response_field": "quoteResponse",
             "query": {"symbols": {"required": True, "default": None}},
         },
@@ -926,8 +926,7 @@ class _YahooFinance(object):
     def __init__(self, **kwargs):
         self.country = kwargs.get("country", "united states").lower()
         self.formatted = kwargs.pop("formatted", False)
-        self.session = _init_session(kwargs.pop("session", None), **kwargs)
-        self.crumb = kwargs.pop("crumb", None)
+        self.session, self.crumb = _init_session(kwargs.pop("session", None), **kwargs)
         self.progress = kwargs.pop("progress", False)
         username = os.getenv("YF_USERNAME") or kwargs.get("username")
         password = os.getenv("YF_PASSWORD") or kwargs.get("password")
@@ -958,14 +957,14 @@ class _YahooFinance(object):
                 )
             )
         self._country = country.lower()
-        self._default_query_params = COUNTRIES[self._country]
+        self._country_params = COUNTRIES[self._country]
 
     @property
     def default_query_params(self):
         """
         Dictionary containing default query parameters that are sent with
-        each request.  The dictionary contains three keys:  lang, region, and
-        corsDomain.
+        each request.  The dictionary contains four keys:  lang, region, 
+        corsDomain, and crumb
 
         Notes
         -----
@@ -975,15 +974,17 @@ class _YahooFinance(object):
         To change the default query parameters, set the country property equal
         to a valid country.
         """
-        return self._default_query_params
+        params = self._country_params
+        if self.crumb is not None:
+            params['crumb'] = self.crumb
+        return params
+            
 
     def login(self, username, password):
         ys = YahooSelenium(username=username, password=password)
         d = ys.yahoo_login()
         try:
             [self.session.cookies.set(c["name"], c["value"]) for c in d["cookies"]]
-            self.crumb = d["crumb"]
-            self.userId = d["userId"]
         except TypeError:
             print(
                 "Invalid credentials provided.  Please check username and"
@@ -1024,20 +1025,6 @@ class _YahooFinance(object):
                 invalid_symbols.append(k)
         self.symbols = valid_symbols
         self.invalid_symbols = invalid_symbols or None
-
-    # def _get_crumb(self):
-    #     """Retrieve crumb from yahoo finance
-
-    #     Yahoo Finance requires a crumb to be passed as a query parameter
-    #     to certain endpoints.  This will be called in the event the crumb
-    #     is None
-    #     """
-    #     r = requests.get("https://finance.yahoo.com/screener/new")
-    #     crumbs = re.findall('"crumb":"(.+?)"', r.text)
-    #     crumb = crumbs[-1].replace("\\u002F", "/")
-    #     if not crumb:
-    #         return "Unable to retrieve crumb.  Try again"
-    #     return crumb
 
     def _format_data(self, obj, dates):
         for k, v in obj.items():
@@ -1119,7 +1106,7 @@ class _YahooFinance(object):
                     )
                 }
             )
-        params.update(self._default_query_params)
+        params.update(self.default_query_params)
         params = {
             k: str(v).lower() if v is True or v is False else v
             for k, v in params.items()
@@ -1228,3 +1215,5 @@ class _YahooFinance(object):
         except TypeError:
             data = json
         return data
+
+ 
