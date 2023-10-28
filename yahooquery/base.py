@@ -934,8 +934,6 @@ class _YahooFinance(object):
         password = os.getenv("YF_PASSWORD") or kwargs.get("password")
         if username and password:
             self.login(username, password)
-        if self.crumb is None:
-            self._session_helper()
 
     @property
     def symbols(self):
@@ -947,37 +945,6 @@ class _YahooFinance(object):
     @symbols.setter
     def symbols(self, symbols):
         self._symbols = _convert_to_list(symbols)
-        
-    def _session_helper(self, page_text=''):
-        if not _has_selenium:
-            print(
-                'Yahooquery was unable to obtain a crumb, which is required for some '
-                'requests to Yahoo Finance API endpoints.  There is a fallback option '
-                'to retrieve that crumb with Selenium.  However, you do not have it '
-                'installed.  Please use `pip install yahooquery[premium]` to include '
-                'the required dependencies for selenium.'
-            )
-            return
-        
-        # First retrieve the cookies, add them to the session
-        if 'A1' not in self.session.cookies:
-            ys = YahooSelenium()
-            cookies = ys.get_cookies()
-            for cookie in cookies:
-                self.session.cookies.set(cookie['name'], cookie['value'])
-                
-            # Need the page text to retrieve the crumb
-            page_text = ys.driver.page_source
-            ys.driver.quit()
-        
-        # Now retrieve the crumb, two different options here
-        self.crumb = _get_crumb(page_text, self.session)
-        if self.crumb is None:
-            print(
-                'Unable to obtain the appropriate cookies and/or crumb.  Data '
-                'retrieval will be somewhat limited as a result.'
-            )
-            
 
     @property
     def country(self):
@@ -1020,7 +987,6 @@ class _YahooFinance(object):
         d = ys.yahoo_login()
         try:
             [self.session.cookies.set(c["name"], c["value"]) for c in d["cookies"]]
-            self._session_helper()
         except TypeError:
             print(
                 "Invalid credentials provided.  Please check username and"

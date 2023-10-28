@@ -13,9 +13,6 @@ from requests.exceptions import ConnectionError, RetryError
 from requests.packages.urllib3.util.retry import Retry
 from requests_futures.sessions import FuturesSession
 
-# first party
-from yahooquery.login import YahooSelenium, _has_selenium
-
 
 DEFAULT_TIMEOUT = 5
 
@@ -173,39 +170,31 @@ def _init_session(session=None, **kwargs):
 
 
 def setup_session_with_cookies_and_crumb(session: Session):
-    headers = {**random.choice(HEADERS), **addl_headers}
+    headers = {**random.choice(HEADERS)}
     session.headers = headers
     try:
-        response = session.get('https://finance.yahoo.com')
+        response = session.get('https://fc.yahoo.com')
     except Exception:
         return session, None
     else:
         if isinstance(session, FuturesSession):
             response = response.result()
-        crumb = _get_crumb(response.text, session)
+        
+        session.cookies = response.cookies
+        crumb = _get_crumb(session)
         return session, crumb
 
 
-def _get_crumb(page_text, session):
-    crumb = None
-    path = re.compile(r'window\.YAHOO\.context = ({.*?});', re.DOTALL)
-    match = re.search(path, page_text)
-    if match:
-        dct = json.loads(match.group(1))
-        crumb = dct.get('crumb', None)
-        if crumb is not None:
-            return crumb
-    
+def _get_crumb(session):
     try:
         response = session.get('https://query2.finance.yahoo.com/v1/test/getcrumb')
         if isinstance(session, FuturesSession):
             response = response.result()
-        crumb = response.text
+        return response.text
     except (ConnectionError, RetryError) as e:
         # Cookies most likely not set in previous request
-        pass
+        return None
 
-    return crumb
 
 def _flatten_list(ls):
     return [item for sublist in ls for item in sublist]
