@@ -1,6 +1,4 @@
-import json
 import os
-import re
 import time
 from concurrent.futures import as_completed
 from datetime import datetime
@@ -8,8 +6,8 @@ from datetime import datetime
 from requests_futures.sessions import FuturesSession
 
 from tqdm import tqdm
-from yahooquery.login import YahooSelenium, _has_selenium
-from yahooquery.utils import _convert_to_list, _get_crumb, _init_session
+from yahooquery.login import YahooSelenium
+from yahooquery.utils import _convert_to_list, _init_session
 from yahooquery.utils.countries import COUNTRIES
 
 try:
