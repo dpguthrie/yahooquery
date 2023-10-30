@@ -65,7 +65,7 @@ class Screener(_YahooFinance):
         """
         return list(SCREENERS.keys())
 
-    def get_screeners(self, screen_ids, count=25):
+    def get_screeners(self, screen_ids, count=25, start=0):
         """Return list of predefined screeners from Yahoo Finance
 
         Parameters:
@@ -76,4 +76,4 @@ class Screener(_YahooFinance):
         """
         screen_ids = self._check_screen_ids(screen_ids)
         scrIds = [SCREENERS[screener]["id"] for screener in screen_ids]
-        return self._get_data("screener", params={"scrIds": scrIds, "count": count})
+        return self._get_data("screener", params={"scrIds": scrIds, "count": count, "start": start})

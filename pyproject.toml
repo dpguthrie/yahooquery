@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "yahooquery"
-version = "2.3.3"
+version = "2.3.4"
 description = "Python wrapper for an unofficial Yahoo Finance API"
 authors = ["Doug Guthrie <douglas.p.guthrie@gmail.com>"]
 documentation = "https://yahooquery.dpguthrie.com"
@@ -15,8 +15,8 @@ pandas = "^2.0.3"
 requests-futures = "^1.0.1"
 tqdm = "^4.65.0"
 lxml = "^4.9.3"
-selenium = {version = "^4.10.0", optional = true}
-webdriver-manager = {version = "^3.8.6", optional = true}
+selenium = { version = "^4.10.0", optional = true }
+webdriver-manager = { version = "^3.8.6", optional = true }
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.4.0"
