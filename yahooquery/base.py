@@ -730,6 +730,7 @@ class _YahooFinance(object):
                 "formatted": {"required": False, "default": False},
                 "scrIds": {"required": True, "default": None},
                 "count": {"required": False, "default": 25},
+                "start": {"required": False, "default": 0},
             },
         },
         "company360": {
@@ -963,7 +964,7 @@ class _YahooFinance(object):
     def default_query_params(self):
         """
         Dictionary containing default query parameters that are sent with
-        each request.  The dictionary contains four keys:  lang, region, 
+        each request.  The dictionary contains four keys:  lang, region,
         corsDomain, and crumb
 
         Notes
@@ -978,7 +979,7 @@ class _YahooFinance(object):
         if self.crumb is not None:
             params['crumb'] = self.crumb
         return params
-            
+
 
     def login(self, username, password):
         ys = YahooSelenium(username=username, password=password)
@@ -1216,4 +1217,3 @@ class _YahooFinance(object):
             data = json
         return data
 
- 
