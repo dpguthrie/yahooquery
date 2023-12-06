@@ -941,7 +941,7 @@ class _YahooFinance(object):
         self.password = kwargs.get("password", os.getenv("YF_PASSWORD", None))
         if self.username and self.password:
             self.login()
-            self._crumb = get_crumb(self.session)
+            self.crumb = get_crumb(self.session)
         else:
             host = self._country_params["corsDomain"]
             cookies, self.crumb = setup_session(host)
