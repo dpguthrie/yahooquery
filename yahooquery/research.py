@@ -1,10 +1,12 @@
+# stdlib
 import json
 from datetime import datetime, timedelta
 
+# third party
 import pandas as pd
 
 from .base import _YahooFinance
-from .utils import _convert_to_list
+from .utils import convert_to_list
 
 
 class Research(_YahooFinance):
@@ -189,7 +191,7 @@ class Research(_YahooFinance):
     def _construct_query(self, research_type, **kwargs):
         operand_list = []
         for k, v in kwargs.items():
-            v = _convert_to_list(v, comma_split=True)
+            v = convert_to_list(v, comma_split=True)
             if k not in self._QUERY_OPTIONS[research_type]:
                 raise ValueError(
                     "{} is an invalid argument for {}".format(k, research_type)

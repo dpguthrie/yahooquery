@@ -1,9 +1,16 @@
+# stdlib
+from typing import Dict, List
+
+# third party
+from requests.cookies import RequestsCookieJar
+
 try:
+    # third party
     from selenium import webdriver
     from selenium.common.exceptions import NoSuchElementException, TimeoutException
-    from selenium.webdriver.common.by import By
     from selenium.webdriver.chrome.options import Options
     from selenium.webdriver.chrome.service import Service as ChromeService
+    from selenium.webdriver.common.by import By
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.webdriver.support.ui import WebDriverWait
     from webdriver_manager.chrome import ChromeDriverManager
@@ -14,11 +21,10 @@ else:
     _has_selenium = True
 
 
-class YahooSelenium(object):
-
+class YahooFinanceHeadless:
     LOGIN_URL = "https://login.yahoo.com"
 
-    def __init__(self, username: str = None, password: str = None):
+    def __init__(self, username: str, password: str):
         self.username = username
         self.password = password
         chrome_options = Options()
@@ -32,7 +38,7 @@ class YahooSelenium(object):
             options=chrome_options,
         )
 
-    def yahoo_login(self):
+    def login(self):
         try:
             self.driver.execute_script("window.open('{}');".format(self.LOGIN_URL))
             self.driver.switch_to.window(self.driver.window_handles[-1])
@@ -45,21 +51,23 @@ class YahooSelenium(object):
             self.driver.find_element(By.XPATH, "//button[@id='login-signin']").click()
             cookies = self.driver.get_cookies()
             self.driver.quit()
-            return {'cookies': cookies}
+            self.cookies = self._create_cookie_jar(cookies)
+
         except TimeoutException:
             return (
                 "A timeout exception has occured.  Most likely it's due "
                 "to invalid login credentials.  Please try again."
             )
 
-    def get_cookies(self):
-        cookies = []
-        self.driver.get('https://es.finance.yahoo.com')
-        try:
-            self.driver.find_element(By.CLASS_NAME, "accept-all").click()            
-        except NoSuchElementException:
-            # Consent dialog was not found, keep going
-            pass
-        finally:
-            cookies.extend(self.driver.get_cookies())
-        return cookies
+    def _create_cookie_jar(cookies: List[Dict]):
+        cookie_jar = RequestsCookieJar()
+        for cookie in cookies:
+            cookie_dict = {
+                "name": cookie["name"],
+                "value": cookie["value"],
+                "domain": cookie["domain"],
+                "path": cookie["path"],
+                "expires": None,  # You can set the expiration if available
+            }
+            cookie_jar.set(**cookie_dict)
+        return cookie_jar

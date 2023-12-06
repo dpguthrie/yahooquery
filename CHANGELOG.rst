@@ -1,6 +1,18 @@
 Change Log
 ==========
 
+2.3.4
+-----
+## Update
+- Use a different url to try and obtain cookies (fc.yahoo.com no longer works)
+- Refactor how a session is initialized
+- Use the country as a way to make the request to obtain cookies be more location specific
+
+2.3.3
+-----
+## Update
+- Try and obtain cookies and a crumb during `Ticker` initialization so they can be used in further requests.
+
 2.3.2
 -----
 ## Update
