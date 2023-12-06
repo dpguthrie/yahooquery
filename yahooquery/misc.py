@@ -1,12 +1,7 @@
-# stdlib
-from datetime import datetime
-from typing import List
-
 # third party
 import pandas as pd
-import requests
 
-from .utils import initialize_session
+from .utils import get_crumb, initialize_session
 from .utils.countries import COUNTRIES
 
 BASE_URL = "https://query2.finance.yahoo.com"
@@ -25,7 +20,8 @@ def _make_request(
                     country, ", ".join(sorted(COUNTRIES.keys()))
                 )
             )
-    session, crumb = initialize_session(**kwargs)
+    session = initialize_session(**kwargs)
+    crumb = get_crumb(session)
     if crumb is not None:
         params["crumb"] = crumb
     r = getattr(session, method)(url, params=params, json=data)
