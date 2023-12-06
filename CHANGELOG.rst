@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2.3.5
+-----
+## Fix
+- Fix bad assignment to crumb when using username/password for premium access
+
 2.3.4
 -----
 ## Update
@@ -23,7 +28,7 @@ Change Log
 
 2.3.1
 -----
-## FIx
+## Fix
 - Fixes for history method
 
 2.3.0
