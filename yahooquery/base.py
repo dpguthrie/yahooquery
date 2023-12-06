@@ -6,8 +6,13 @@ from datetime import datetime
 from requests_futures.sessions import FuturesSession
 
 from tqdm import tqdm
-from yahooquery.login import YahooSelenium
-from yahooquery.utils import _convert_to_list, _init_session
+from yahooquery.headless import _has_selenium, YahooFinanceHeadless
+from yahooquery.utils import (
+    convert_to_list,
+    initialize_session,
+    get_crumb,
+    setup_session,
+)
 from yahooquery.utils.countries import COUNTRIES
 
 try:
@@ -17,7 +22,6 @@ except ImportError:
 
 
 class _YahooFinance(object):
-
     CHUNK = 1500
 
     FUNDAMENTALS_OPTIONS = {
@@ -493,9 +497,9 @@ class _YahooFinance(object):
         },
         "majorHoldersBreakdown": {"convert_dates": []},
         "pageViews": {"convert_dates": []},
-        "price": {"convert_dates": [
-            "postMarketTime", "preMarketTime", "regularMarketTime"
-        ]},
+        "price": {
+            "convert_dates": ["postMarketTime", "preMarketTime", "regularMarketTime"]
+        },
         "quoteType": {"convert_dates": ["firstTradeDateEpochUtc"]},
         "recommendationTrend": {"filter": "trend", "convert_dates": []},
         "secFilings": {"filter": "filings", "convert_dates": ["epochDate"]},
@@ -566,7 +570,7 @@ class _YahooFinance(object):
             "query": {
                 "formatted": {"required": False, "default": False},
                 "symbols": {"required": True, "default": None},
-            }
+            },
         },
         "news": {
             "path": "https://query2.finance.yahoo.com/v2/finance/news",
@@ -926,12 +930,17 @@ class _YahooFinance(object):
     def __init__(self, **kwargs):
         self.country = kwargs.get("country", "united states").lower()
         self.formatted = kwargs.pop("formatted", False)
-        self.session, self.crumb = _init_session(kwargs.pop("session", None), **kwargs)
+        self.session = initialize_session(kwargs.pop("session", None), **kwargs)
         self.progress = kwargs.pop("progress", False)
-        username = os.getenv("YF_USERNAME") or kwargs.get("username")
-        password = os.getenv("YF_PASSWORD") or kwargs.get("password")
-        if username and password:
-            self.login(username, password)
+        self.username = kwargs.get("username", os.getenv("YF_USERNAME", None))
+        self.password = kwargs.get("password", os.getenv("YF_PASSWORD", None))
+        if self.username and self.password:
+            self.login()
+            self._crumb = get_crumb(self.session)
+        else:
+            host = self._country_params["corsDomain"]
+            cookies, self.crumb = setup_session(host)
+            self.session.cookies = cookies
 
     @property
     def symbols(self):
@@ -942,7 +951,7 @@ class _YahooFinance(object):
 
     @symbols.setter
     def symbols(self, symbols):
-        self._symbols = _convert_to_list(symbols)
+        self._symbols = convert_to_list(symbols)
 
     @property
     def country(self):
@@ -963,7 +972,7 @@ class _YahooFinance(object):
     def default_query_params(self):
         """
         Dictionary containing default query parameters that are sent with
-        each request.  The dictionary contains four keys:  lang, region, 
+        each request.  The dictionary contains four keys:  lang, region,
         corsDomain, and crumb
 
         Notes
@@ -976,20 +985,16 @@ class _YahooFinance(object):
         """
         params = self._country_params
         if self.crumb is not None:
-            params['crumb'] = self.crumb
+            params["crumb"] = self.crumb
         return params
-            
 
-    def login(self, username, password):
-        ys = YahooSelenium(username=username, password=password)
-        d = ys.yahoo_login()
-        try:
-            [self.session.cookies.set(c["name"], c["value"]) for c in d["cookies"]]
-        except TypeError:
-            print(
-                "Invalid credentials provided.  Please check username and"
-                " password and try again"
-            )
+    def login(self):
+        if _has_selenium:
+            instance = YahooFinanceHeadless(self.username, self.password)
+            instance.login()
+            self.session.cookies = instance.cookies
+
+        return []
 
     def _chunk_symbols(self, key, params={}, chunk=None, **kwargs):
         current_symbols = self.symbols
@@ -1215,5 +1220,3 @@ class _YahooFinance(object):
         except TypeError:
             data = json
         return data
-
- 

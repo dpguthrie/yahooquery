@@ -15,7 +15,7 @@ class Screener(_YahooFinance):
         # if not all(i in kwargs for i in ['username', 'password']):
         #     self._get_crumb
         # if kwargs.get('symbols'):
-        #     self._symbols = _convert_to_list(kwargs.get('symbols'))
+        #     self._symbols = convert_to_list(kwargs.get('symbols'))
 
     def _construct_params(self, config, params):
         new_params = {}

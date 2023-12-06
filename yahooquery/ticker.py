@@ -4,7 +4,7 @@ import re
 import pandas as pd
 
 from yahooquery.base import _YahooFinance
-from yahooquery.utils import _convert_to_timestamp, _flatten_list, _history_dataframe
+from yahooquery.utils import convert_to_timestamp, flatten_list, _history_dataframe
 
 
 class Ticker(_YahooFinance):
@@ -99,7 +99,7 @@ class Ticker(_YahooFinance):
         if len(modules) == 1:
             kwargs.update({"addl_key": modules[0]})
         data = self._get_data(key="quoteSummary", params=params, **kwargs)
-        dates = _flatten_list(
+        dates = flatten_list(
             [self._MODULES_DICT[module]["convert_dates"] for module in modules]
         )
         return data if self.formatted else self._format_data(data, dates)
@@ -301,7 +301,7 @@ class Ticker(_YahooFinance):
         dict
         """
         if start:
-            start = _convert_to_timestamp(start)
+            start = convert_to_timestamp(start)
         return self._chunk_symbols(
             "news", params={"count": count, "start": start}, list_result=True
         )
@@ -584,7 +584,7 @@ class Ticker(_YahooFinance):
         frequency: str, default 'a', optional
             Specify either annual or quarterly.  Value should be 'a' or 'q'.
         """
-        types = _flatten_list(
+        types = flatten_list(
             [self.FUNDAMENTALS_OPTIONS[option] for option in self.FUNDAMENTALS_OPTIONS]
         )
         return self._financials("cash_flow", frequency, types=types, trailing=False)
@@ -1002,7 +1002,7 @@ class Ticker(_YahooFinance):
         return self._quote_summary_dataframe(
             "topHoldings", data_filter="sectorWeightings", from_dict=True
         )
-        
+
     @property
     def p_fair_value(self):
         return self._get_data("yfp_fair_value")
@@ -1026,7 +1026,7 @@ class Ticker(_YahooFinance):
         frequency: str, default 'a', optional
             Specify either annual or quarterly.  Value should be 'a' or 'q'.
         """
-        types = _flatten_list(
+        types = flatten_list(
             [self.FUNDAMENTALS_OPTIONS[option] for option in self.FUNDAMENTALS_OPTIONS]
         )
         return self._financials(
@@ -1213,13 +1213,13 @@ class Ticker(_YahooFinance):
             historical pricing data
         """
         df = self.history(start=start, end=end)
-        if 'dividends' in df:
-            return df[df['dividends'] != 0].loc[:, ['dividends']]
-        
-        return pd.DataFrame(
-            columns=['symbol', 'date', 'dividends']
-        ).set_index(['symbol', 'date'])['dividends']
-    
+        if "dividends" in df:
+            return df[df["dividends"] != 0].loc[:, ["dividends"]]
+
+        return pd.DataFrame(columns=["symbol", "date", "dividends"]).set_index(
+            ["symbol", "date"]
+        )["dividends"]
+
     def history(
         self,
         period="ytd",
@@ -1274,8 +1274,8 @@ class Ticker(_YahooFinance):
         config = self._CONFIG["chart"]
         intervals = config["query"]["interval"]["options"]
         if start or period is None or period.lower() == "max":
-            start = _convert_to_timestamp(start)
-            end = _convert_to_timestamp(end, start=False)
+            start = convert_to_timestamp(start)
+            end = convert_to_timestamp(end, start=False)
             params = {"period1": start, "period2": end}
         else:
             params = {"range": period.lower()}
@@ -1297,7 +1297,7 @@ class Ticker(_YahooFinance):
         params = {"interval": "1m"}
         today = datetime.today()
         dates = [
-            _convert_to_timestamp((today - timedelta(7 * x)).date()) for x in range(5)
+            convert_to_timestamp((today - timedelta(7 * x)).date()) for x in range(5)
         ]
         dataframes = []
         for i in range(len(dates) - 1):
@@ -1324,7 +1324,7 @@ class Ticker(_YahooFinance):
         try:
             df = pd.concat(d, names=["symbol", "date"], sort=False)
         except ValueError:
-            df = pd.DataFrame(columns=['high', 'low', 'volume', 'open', 'close'])
+            df = pd.DataFrame(columns=["high", "low", "volume", "open", "close"])
         else:
             if "dividends" in df.columns:
                 df["dividends"].fillna(0, inplace=True)
