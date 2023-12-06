@@ -1,6 +1,5 @@
 # stdlib
 import datetime
-import json
 import logging
 import random
 import re
@@ -13,7 +12,6 @@ from requests.exceptions import ConnectionError, RetryError, SSLError
 from requests.packages.urllib3.util.retry import Retry
 from requests_futures.sessions import FuturesSession
 from urllib3.exceptions import MaxRetryError
-
 
 logger = logging.getLogger(__name__)
 
@@ -1387,12 +1385,12 @@ def setup_session(host: str):
     return session.cookies, crumb
 
 
-def get_crumb(session) -> str:
+def get_crumb(session):
     try:
         response = session.get("https://query2.finance.yahoo.com/v1/test/getcrumb")
         return response.text
 
-    except (ConnectionError, RetryError) as e:
+    except (ConnectionError, RetryError):
         logger.critical(
             "Failed to obtain crumb.  Ability to retrieve data will be significantly "
             "limited."

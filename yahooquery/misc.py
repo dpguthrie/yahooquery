@@ -1,12 +1,13 @@
+# stdlib
 from datetime import datetime
 from typing import List
 
+# third party
 import pandas as pd
 import requests
 
-from .utils.countries import COUNTRIES
 from .utils import initialize_session
-
+from .utils.countries import COUNTRIES
 
 BASE_URL = "https://query2.finance.yahoo.com"
 

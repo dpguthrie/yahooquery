@@ -1,10 +1,13 @@
-from datetime import datetime, timedelta
+# stdlib
 import re
+from datetime import datetime, timedelta
 
+# third party
 import pandas as pd
 
+# first party
 from yahooquery.base import _YahooFinance
-from yahooquery.utils import convert_to_timestamp, flatten_list, _history_dataframe
+from yahooquery.utils import _history_dataframe, convert_to_timestamp, flatten_list
 
 
 class Ticker(_YahooFinance):

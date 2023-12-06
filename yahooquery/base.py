@@ -1,23 +1,28 @@
+# stdlib
 import os
 import time
 from concurrent.futures import as_completed
 from datetime import datetime
 
+# third party
 from requests_futures.sessions import FuturesSession
-
 from tqdm import tqdm
-from yahooquery.headless import _has_selenium, YahooFinanceHeadless
+
+# first party
+from yahooquery.headless import YahooFinanceHeadless, _has_selenium
 from yahooquery.utils import (
     convert_to_list,
-    initialize_session,
     get_crumb,
+    initialize_session,
     setup_session,
 )
 from yahooquery.utils.countries import COUNTRIES
 
 try:
+    # stdlib
     from urllib import parse
 except ImportError:
+    # third party
     import urlparse as parse
 
 

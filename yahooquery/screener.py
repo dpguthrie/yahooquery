@@ -1,11 +1,14 @@
+# stdlib
 import re
 
 from .base import _YahooFinance
 from .utils.screeners import SCREENERS
 
 try:
+    # stdlib
     from urllib import parse
 except ImportError:
+    # third party
     import urlparse as parse
 
 
