@@ -27,6 +27,7 @@ class YahooFinanceHeadless:
     def __init__(self, username: str, password: str):
         self.username = username
         self.password = password
+        self.cookies = RequestsCookieJar()
         chrome_options = Options()
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--no-sandbox")
@@ -51,7 +52,7 @@ class YahooFinanceHeadless:
             self.driver.find_element(By.XPATH, "//button[@id='login-signin']").click()
             cookies = self.driver.get_cookies()
             self.driver.quit()
-            self.cookies = self._create_cookie_jar(cookies)
+            self._add_cookies_to_jar(cookies)
 
         except TimeoutException:
             return (
@@ -59,8 +60,7 @@ class YahooFinanceHeadless:
                 "to invalid login credentials.  Please try again."
             )
 
-    def _create_cookie_jar(cookies: List[Dict]):
-        cookie_jar = RequestsCookieJar()
+    def _add_cookies_to_jar(self, cookies: List[Dict]):
         for cookie in cookies:
             cookie_dict = {
                 "name": cookie["name"],
@@ -69,5 +69,4 @@ class YahooFinanceHeadless:
                 "path": cookie["path"],
                 "expires": None,  # You can set the expiration if available
             }
-            cookie_jar.set(**cookie_dict)
-        return cookie_jar
+            self.cookies.set(**cookie_dict)
