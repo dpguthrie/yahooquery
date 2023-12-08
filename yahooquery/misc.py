@@ -1,7 +1,7 @@
 # third party
 import pandas as pd
 
-from .utils import get_crumb, initialize_session
+from .utils import get_crumb, initialize_session, setup_session
 from .utils.countries import COUNTRIES
 
 BASE_URL = "https://query2.finance.yahoo.com"
@@ -21,6 +21,7 @@ def _make_request(
                 )
             )
     session = initialize_session(**kwargs)
+    session = setup_session(session)
     crumb = get_crumb(session)
     if crumb is not None:
         params["crumb"] = crumb
