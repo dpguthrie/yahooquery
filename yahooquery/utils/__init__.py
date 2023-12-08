@@ -18,6 +18,10 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_TIMEOUT = 5
 
+CRUMB_FAILURE = (
+    "Failed to obtain crumb.  Ability to retrieve data will be significantly limited."
+)
+
 HEADERS = [
     {
         "upgrade-insecure-requests": "1",
@@ -1362,41 +1366,46 @@ def initialize_session(session=None, **kwargs):
     return session
 
 
-def setup_session(host: str):
-    url = f"https://{host}/quote/tsla"
-    session = requests.Session()
-    session.headers = random.choice(HEADERS)
+def setup_session(session: requests.Session):
+    url = f"https://finance.yahoo.com"
     try:
-        _ = session.get(url, allow_redirects=True)
+        response = session.get(url, allow_redirects=True)
     except SSLError:
         counter = 0
         while counter < 5:
             try:
                 session.headers = random.choice(HEADERS)
-                _ = session.get(url, verify=False)
+                response = session.get(url, verify=False)
                 break
             except SSLError:
                 counter += 1
 
-    if not session.cookies:
-        return None, None
+    if not isinstance(session, FuturesSession):
+        return session
 
-    crumb = get_crumb(session)
-    return session.cookies, crumb
+    _ = response.result()
+    return session
 
 
 def get_crumb(session):
     try:
         response = session.get("https://query2.finance.yahoo.com/v1/test/getcrumb")
-        return response.text
 
     except (ConnectionError, RetryError):
-        logger.critical(
-            "Failed to obtain crumb.  Ability to retrieve data will be significantly "
-            "limited."
-        )
+        logger.critical(CRUMB_FAILURE)
         # Cookies most likely not set in previous request
         return None
+
+    if isinstance(session, FuturesSession):
+        crumb = response.result().text
+    else:
+        crumb = response.text
+
+    if crumb is None or crumb == "" or "<html>" in crumb:
+        logger.critical(CRUMB_FAILURE)
+        return None
+
+    return crumb
 
 
 def flatten_list(ls):
