@@ -1367,7 +1367,7 @@ def initialize_session(session=None, **kwargs):
 
 
 def setup_session(session: requests.Session):
-    url = f"https://finance.yahoo.com"
+    url = "https://finance.yahoo.com"
     try:
         response = session.get(url, allow_redirects=True)
     except SSLError:
