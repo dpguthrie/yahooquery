@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "yahooquery"
-version = "2.3.5"
+version = "2.3.6"
 description = "Python wrapper for an unofficial Yahoo Finance API"
 authors = ["Doug Guthrie <douglas.p.guthrie@gmail.com>"]
 documentation = "https://yahooquery.dpguthrie.com"
