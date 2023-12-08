@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2.3.6
+-----
+## Fix
+- Use the previously instantiated session within the `Ticker` class (that may also contain proxies, other important session info) to retrieve both cookies and a crumb
+
 2.3.5
 -----
 ## Fix

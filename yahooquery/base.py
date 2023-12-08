@@ -933,19 +933,17 @@ class _YahooFinance(object):
     MODULES = _CONFIG["quoteSummary"]["query"]["modules"]["options"]
 
     def __init__(self, **kwargs):
-        self.country = kwargs.get("country", "united states").lower()
+        self.country = kwargs.pop("country", "united states").lower()
         self.formatted = kwargs.pop("formatted", False)
-        self.session = initialize_session(kwargs.pop("session", None), **kwargs)
         self.progress = kwargs.pop("progress", False)
-        self.username = kwargs.get("username", os.getenv("YF_USERNAME", None))
-        self.password = kwargs.get("password", os.getenv("YF_PASSWORD", None))
+        self.username = kwargs.pop("username", os.getenv("YF_USERNAME", None))
+        self.password = kwargs.pop("password", os.getenv("YF_PASSWORD", None))
+        self.session = initialize_session(kwargs.pop("session", None), **kwargs)
         if self.username and self.password:
             self.login()
-            self.crumb = get_crumb(self.session)
         else:
-            host = self._country_params["corsDomain"]
-            cookies, self.crumb = setup_session(host)
-            self.session.cookies = cookies
+            self.session = setup_session(self.session)
+        self.crumb = get_crumb(self.session)
 
     @property
     def symbols(self):
