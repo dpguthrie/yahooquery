@@ -1000,14 +1000,23 @@ class _YahooFinance(object):
         if _has_selenium:
             instance = YahooFinanceHeadless(self.username, self.password)
             instance.login()
-            self.session.cookies = instance.cookies
+            if instance.cookies:
+                self.session.cookies = instance.cookies
+                return
+
+            else:
+                logger.warning(
+                    "Unable to login and/or retrieve the appropriate cookies.  This is "
+                    "most likely due to Yahoo Finance instituting recaptcha, which "
+                    "this package does not support."
+                )
 
         else:
             logger.warning(
                 "You do not have the required libraries to use this feature.  Install "
                 "with the following: `pip install yahooquery[premium]`"
             )
-            self.session = setup_session(self.session, self._setup_url)
+        self.session = setup_session(self.session, self._setup_url)
 
     def _chunk_symbols(self, key, params={}, chunk=None, **kwargs):
         current_symbols = self.symbols
