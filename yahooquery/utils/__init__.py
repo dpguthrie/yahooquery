@@ -1385,7 +1385,7 @@ def setup_session(session: requests.Session, url: str = None):
         response = response.result()
 
     # check for and handle consent page:w
-    if response.url.find("consent"):
+    if response.url.find("consent") >= 0:
         logger.debug(f'Redirected to consent page: "{response.url}"')
 
         soup = BeautifulSoup(response.content, "html.parser")
@@ -1398,7 +1398,7 @@ def setup_session(session: requests.Session, url: str = None):
                 logger.critical(
                     f'Failed to find or extract "{param}" from response. Exception={exc}'
                 )
-                return
+                return session
 
         logger.debug(f"params: {params}")
 
