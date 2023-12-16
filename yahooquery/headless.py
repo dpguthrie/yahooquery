@@ -7,13 +7,11 @@ from requests.cookies import RequestsCookieJar
 try:
     # third party
     from selenium import webdriver
-    from selenium.common.exceptions import NoSuchElementException, TimeoutException
-    from selenium.webdriver.chrome.options import Options
-    from selenium.webdriver.chrome.service import Service as ChromeService
+    from selenium.common.exceptions import TimeoutException
+    from selenium.webdriver.chrome.service import Service
     from selenium.webdriver.common.by import By
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.webdriver.support.ui import WebDriverWait
-    from webdriver_manager.chrome import ChromeDriverManager
 except ImportError:
     # Selenium was not installed
     _has_selenium = False
@@ -28,16 +26,14 @@ class YahooFinanceHeadless:
         self.username = username
         self.password = password
         self.cookies = RequestsCookieJar()
-        chrome_options = Options()
+        chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--log-level=3")
         chrome_options.add_argument("--ignore-certificate-errors")
         chrome_options.add_argument("--ignore-ssl-errors")
-        self.driver = webdriver.Chrome(
-            service=ChromeService(ChromeDriverManager().install()),
-            options=chrome_options,
-        )
+        service = Service()
+        self.driver = webdriver.Chrome(service=service, options=chrome_options)
 
     def login(self):
         try:

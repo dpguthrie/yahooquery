@@ -7,6 +7,7 @@ import re
 # third party
 import pandas as pd
 import requests
+from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
 from requests.exceptions import ConnectionError, RetryError, SSLError
 from requests.packages.urllib3.util.retry import Retry
@@ -17,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 DEFAULT_TIMEOUT = 5
-
+DEFAULT_SESSION_URL = "https://finance.yahoo.com"
 CRUMB_FAILURE = (
     "Failed to obtain crumb.  Ability to retrieve data will be significantly limited."
 )
@@ -1366,8 +1367,8 @@ def initialize_session(session=None, **kwargs):
     return session
 
 
-def setup_session(session: requests.Session):
-    url = "https://finance.yahoo.com"
+def setup_session(session: requests.Session, url: str = None):
+    url = url or DEFAULT_SESSION_URL
     try:
         response = session.get(url, allow_redirects=True)
     except SSLError:
@@ -1380,10 +1381,39 @@ def setup_session(session: requests.Session):
             except SSLError:
                 counter += 1
 
-    if not isinstance(session, FuturesSession):
-        return session
+    if isinstance(session, FuturesSession):
+        response = response.result()
 
-    _ = response.result()
+    # check for and handle consent page:w
+    if response.url.find("consent"):
+        logger.debug(f'Redirected to consent page: "{response.url}"')
+
+        soup = BeautifulSoup(response.content, "html.parser")
+
+        params = {}
+        for param in ["csrfToken", "sessionId"]:
+            try:
+                params[param] = soup.find("input", attrs={"name": param})["value"]
+            except Exception as exc:
+                logger.critical(
+                    f'Failed to find or extract "{param}" from response. Exception={exc}'
+                )
+                return
+
+        logger.debug(f"params: {params}")
+
+        response = session.post(
+            "https://consent.yahoo.com/v2/collectConsent",
+            data={
+                "agree": ["agree", "agree"],
+                "consentUUID": "default",
+                "sessionId": params["sessionId"],
+                "csrfToken": params["csrfToken"],
+                "originalDoneUrl": url,
+                "namespace": "yahoo",
+            },
+        )
+
     return session
 
 

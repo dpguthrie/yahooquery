@@ -1,11 +1,8 @@
 """Python interface to unofficial Yahoo Finance API endpoints"""
 
 name = "yahooquery"
-__version__ = "2.3.6"
+__version__ = "2.3.7"
 
-from .research import Research  # noqa
-from .ticker import Ticker  # noqa
-from .screener import Screener  # noqa
 from .misc import (  # noqa
     get_currencies,
     get_exchanges,
@@ -13,3 +10,6 @@ from .misc import (  # noqa
     get_trending,
     search,
 )
+from .research import Research  # noqa
+from .screener import Screener  # noqa
+from .ticker import Ticker  # noqa
