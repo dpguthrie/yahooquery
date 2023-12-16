@@ -1,6 +1,23 @@
 Change Log
 ==========
 
+2.3.7
+-----
+## Add
+- Logic for handling setting up a session when a consent screen is encountered.  This is primarily seen in European countries
+  and should allow for the continued use of this package.
+- Keyword argument, `setup_url`, to the base `_YahooFinance` class that allows a user to override the url used in setting up the session.  As a default
+  the Yahoo Finance home page is used (https://finance.yahoo.com).  You can also create an environment variable, `YF_SETUP_URL` that will be used if set.
+  Example usage:
+  ```python
+  import yahooquery as yq
+
+  t = yq.Ticker('aapl', setup_url='https://finance.yahoo.com/quote/AAPL')
+  ```
+
+## Remove
+- Webdriver manager is no longer used internally.  Selenium Manager is now fully included with selenium `4.10.0`, so this package is no longer needed.
+
 2.3.6
 -----
 ## Fix
@@ -110,7 +127,7 @@ Change Log
   to adjust the timezone (:code:`adj_timezone`) to the ticker's timezone. It defaults
   to :code:`True`.
 - Further documentation of acceptable keyword arguments to the :code:`Ticker` class.
-- :code:`Ticker.news` is now a method.  It accepts two arguments:  :code:`count` - 
+- :code:`Ticker.news` is now a method.  It accepts two arguments:  :code:`count` -
   number of items to return; :code:`start` - start date to begin retrieving news items from
 - Bug fixes:  :code:`Ticker.history` method no longer returns extra rows when retrieving
   intraday data.
@@ -131,12 +148,12 @@ Change Log
   :code:`p_valuation_measures` and supply either :code:`a`, :code:`q`, or
   :code:`m` (annual, quarterly, monthly).  The data returned with these can
   be seen in the `Statistics` tab through the Yahoo Finance front-end.
-  
+
 .. image:: demo/valuation_measures.PNG
 
 2.2.2
 -----
-- Fix bug in retrieving cash flow / income statement data.  Most recent month was 
+- Fix bug in retrieving cash flow / income statement data.  Most recent month was
   combining with TTM. A new column was created in the dataframe called 'periodType'.
   Annual data will be shown as '12M', quarterly data will be shown as '3M', and
   trailing 12 month data will be shown as 'TTM'.

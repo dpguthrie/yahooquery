@@ -1,4 +1,5 @@
 # stdlib
+import logging
 import os
 import time
 from concurrent.futures import as_completed
@@ -24,6 +25,9 @@ try:
 except ImportError:
     # third party
     import urlparse as parse
+
+
+logger = logging.getLogger(__name__)
 
 
 class _YahooFinance(object):
@@ -938,11 +942,12 @@ class _YahooFinance(object):
         self.progress = kwargs.pop("progress", False)
         self.username = kwargs.pop("username", os.getenv("YF_USERNAME", None))
         self.password = kwargs.pop("password", os.getenv("YF_PASSWORD", None))
+        self._setup_url = kwargs.pop("setup_url", os.getenv("YF_SETUP_URL", None))
         self.session = initialize_session(kwargs.pop("session", None), **kwargs)
         if self.username and self.password:
             self.login()
         else:
-            self.session = setup_session(self.session)
+            self.session = setup_session(self.session, self._setup_url)
         self.crumb = get_crumb(self.session)
 
     @property
@@ -991,13 +996,27 @@ class _YahooFinance(object):
             params["crumb"] = self.crumb
         return params
 
-    def login(self):
+    def login(self) -> None:
         if _has_selenium:
             instance = YahooFinanceHeadless(self.username, self.password)
             instance.login()
-            self.session.cookies = instance.cookies
+            if instance.cookies:
+                self.session.cookies = instance.cookies
+                return
 
-        return []
+            else:
+                logger.warning(
+                    "Unable to login and/or retrieve the appropriate cookies.  This is "
+                    "most likely due to Yahoo Finance instituting recaptcha, which "
+                    "this package does not support."
+                )
+
+        else:
+            logger.warning(
+                "You do not have the required libraries to use this feature.  Install "
+                "with the following: `pip install yahooquery[premium]`"
+            )
+        self.session = setup_session(self.session, self._setup_url)
 
     def _chunk_symbols(self, key, params={}, chunk=None, **kwargs):
         current_symbols = self.symbols

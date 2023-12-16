@@ -1,3 +1,6 @@
+# stdlib
+import os
+
 # third party
 import pandas as pd
 
@@ -20,8 +23,9 @@ def _make_request(
                     country, ", ".join(sorted(COUNTRIES.keys()))
                 )
             )
+    setup_url = kwargs.pop("setup_url", os.getenv("YF_SETUP_URL", None))
     session = initialize_session(**kwargs)
-    session = setup_session(session)
+    session = setup_session(session, setup_url)
     crumb = get_crumb(session)
     if crumb is not None:
         params["crumb"] = crumb
