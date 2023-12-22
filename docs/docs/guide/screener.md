@@ -367,7 +367,7 @@ s = Screener()
 === "Details"
 
     - *Description*:  List of securities from a predefined screener(s)
-    - *Return*:  `pandas.DataFrame`
+    - *Return*:  `Dictionary`
     - *Arguments*
 
     | Argument   | Type   | Default   | Required   | Options                       |
