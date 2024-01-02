@@ -47,7 +47,7 @@ class YahooFinanceHeadless:
             )
             password_element.send_keys(self.password)
             self.driver.find_element(By.XPATH, "//button[@id='login-signin']").click()
-            cookies = self.driver.get_cookies()
+            self.cookies = self.driver.get_cookies()
             self.driver.quit()
             self._add_cookies_to_jar(cookies)
 
