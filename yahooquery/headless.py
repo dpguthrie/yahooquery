@@ -49,7 +49,7 @@ class YahooFinanceHeadless:
             self.driver.find_element(By.XPATH, "//button[@id='login-signin']").click()
             self.cookies = self.driver.get_cookies()
             self.driver.quit()
-            self._add_cookies_to_jar(cookies)
+            self._add_cookies_to_jar(self.cookies)
 
         except TimeoutException:
             return (
