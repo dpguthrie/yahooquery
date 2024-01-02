@@ -39,16 +39,17 @@ class YahooFinanceHeadless:
         try:
             self.driver.execute_script("window.open('{}');".format(self.LOGIN_URL))
             self.driver.switch_to.window(self.driver.window_handles[-1])
-            self.driver.find_element(By.ID, "login-username").send_keys(self.username)
+            #self.driver.find_element(By.ID, "login-username").send_keys(self.username)
+            self.driver.find_element(By.XPATH, "//input[@id='login-username']").send_keys(self.username)
             self.driver.find_element(By.XPATH, "//input[@id='login-signin']").click()
             password_element = WebDriverWait(self.driver, 10).until(
                 EC.presence_of_element_located((By.ID, "login-passwd"))
             )
             password_element.send_keys(self.password)
             self.driver.find_element(By.XPATH, "//button[@id='login-signin']").click()
-            cookies = self.driver.get_cookies()
+            self.cookies = self.driver.get_cookies()
             self.driver.quit()
-            self._add_cookies_to_jar(cookies)
+            self._add_cookies_to_jar(self.cookies)
 
         except TimeoutException:
             return (
