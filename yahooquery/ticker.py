@@ -1330,9 +1330,9 @@ class Ticker(_YahooFinance):
             df = pd.DataFrame(columns=["high", "low", "volume", "open", "close"])
         else:
             if "dividends" in df.columns:
-                df["dividends"].fillna(0, inplace=True)
+                df.fillna({"dividends": 0}, inplace=True)
             if "splits" in df.columns:
-                df["splits"].fillna(0, inplace=True)
+                df.fillna({"splits": 0}, inplace=True)
         return df
 
     def _adjust_ohlc(self, df):
