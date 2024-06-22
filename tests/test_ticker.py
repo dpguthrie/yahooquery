@@ -141,15 +141,17 @@ def test_p_get_financial_data(ticker):
 
 
 @pytest.mark.parametrize(
-    "period, interval",
+    "period, interval, prepost",
     [
-        (p, i)
-        for p, i in zip(
-            ["1d", "1mo", "1y", "5y", "max"], ["1m", "1m", "1d", "1wk", "3mo"]
+        (p, i, prepost)
+        for p, i, prepost in zip(
+            ["1d", "1mo", "1y", "5y", "max"],
+            ["1m", "1m", "1d", "1wk", "3mo"],
+            [True, False, True, False, False],
         )
     ],
 )
-def test_history(ticker, period, interval):
+def test_history(ticker, period, interval, prepost):
     assert isinstance(ticker.history(period, interval), pd.DataFrame)
 
 

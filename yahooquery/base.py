@@ -684,6 +684,7 @@ class _YahooFinance(object):
                 "events": {"required": False, "default": "div,split"},
                 "numberOfPoints": {"required": False, "default": None},
                 "formatted": {"required": False, "default": False},
+                "includePrePost": {"required": False, "default": None},
             },
         },
         "options": {

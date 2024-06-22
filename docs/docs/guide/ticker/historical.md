@@ -16,6 +16,7 @@
     | end      | Specific ending date                     | `str` or `datetime.datetime` |           | optional   | If a string is passed, use the format `YYYY-MM-DD`
     | adj_timezone      | Adjust datetime to the specific symbol's timezone                     | `bool` | `True`       | optional   | `True`<br>`False`
     | adj_ohlc      | Calculates an adjusted open, high, low and close prices according to split and dividend information             | `bool` | `False`       | optional   | `True`<br>`False`
+    | prepost | Include Pre and Post market data | `bool` | `False`       | optional   | `True`<br>`False`
 
     !!! tip "One Minute Interval Data"
         The Yahoo Finance API restricts the amount of one minute interval data to seven days per request.  However, the data availability extends to 30 days.  The following will allow the user to retrieve the last 30 days of one minute interval data, with the one caveat that **4 requests are made in 7 day ranges to retrieve the desired data**:
