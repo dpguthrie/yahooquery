@@ -823,7 +823,8 @@ class TestHistoryDataframe:
             name=pd.Timestamp("2022-11-7 15:30", tz="UTC"),
         )
         assert_series_equal(df.iloc[i][:-1], expected)
-        assert pd.isna(df.iloc[i][-1])
+        series = df.iloc[i]
+        assert pd.isna(series.iloc[-1])
         yield df
 
     def test_intraday(
