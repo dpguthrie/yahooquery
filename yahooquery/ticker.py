@@ -1061,7 +1061,7 @@ class Ticker(_YahooFinance):
             "cash_flow", frequency, True, types=types, trailing=trailing
         )
 
-    def p_balance_sheet(self, frequency="a", trailing=True):
+    def p_balance_sheet(self, frequency="a"):
         """Balance Sheet
 
         Retrieves balance sheet data for most recent four quarters or most
@@ -1072,9 +1072,6 @@ class Ticker(_YahooFinance):
         frequency: str, default 'A', optional
             Specify either annual or quarterly balance sheet.  Value should
             be 'a' or 'q'.
-        trailing: bool, default True, optional
-            Specify whether or not you'd like trailing twelve month (TTM)
-            data returned
 
         Notes
         -----
@@ -1085,9 +1082,7 @@ class Ticker(_YahooFinance):
         -------
         pandas.DataFrame
         """
-        return self._financials(
-            "balance_sheet", frequency, premium=True, trailing=trailing
-        )
+        return self._financials("balance_sheet", frequency, premium=True)
 
     def p_cash_flow(self, frequency="a", trailing=True):
         """Cash Flow
