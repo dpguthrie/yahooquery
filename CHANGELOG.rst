@@ -10,6 +10,7 @@ Change Log
 
 ## Add
 - `curl_cffi` to dependencies instead of `requests` for session management
+- Ability to input verification code for login when selenium is used
 
 2.3.7
 -----
