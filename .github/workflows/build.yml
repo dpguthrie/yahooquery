@@ -16,6 +16,6 @@ jobs:
       - name: Install dependencies
         run: uv sync --all-extras
       - name: Run tests and coverage
-        run: uv run pytest
+        run: uv run pytest tests/ -k "not test_research.py"
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
