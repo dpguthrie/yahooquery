@@ -23,5 +23,3 @@ jobs:
         run: |
           uv build
           uv publish
-        env:
-          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_KEY }}
