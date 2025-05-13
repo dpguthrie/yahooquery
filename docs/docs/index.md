@@ -5,9 +5,6 @@
     <em>Python wrapper for an unofficial Yahoo Finance API</em>
 </p>
 <p align="center">
-    <a href="https://travis-ci.com/dpguthrie/yahooquery" target="_blank">
-        <img src="https://travis-ci.com/dpguthrie/yahooquery.svg?branch=master" alt="Build Status">
-    </a>
     <a href="https://codecov.io/gh/dpguthrie/yahooquery" target="_blank">
         <img src="https://img.shields.io/codecov/c/github/dpguthrie/yahooquery" alt="Coverage">
     </a>

@@ -14,9 +14,9 @@ try:
     from selenium.webdriver.support.ui import WebDriverWait
 except ImportError:
     # Selenium was not installed
-    _has_selenium = False
+    has_selenium = False
 else:
-    _has_selenium = True
+    has_selenium = True
 
 
 class YahooFinanceHeadless:
@@ -32,6 +32,7 @@ class YahooFinanceHeadless:
         chrome_options.add_argument("--log-level=3")
         chrome_options.add_argument("--ignore-certificate-errors")
         chrome_options.add_argument("--ignore-ssl-errors")
+        chrome_options.set_capability("pageLoadStrategy", "eager")
         service = Service()
         self.driver = webdriver.Chrome(service=service, options=chrome_options)
 
@@ -46,6 +47,24 @@ class YahooFinanceHeadless:
             )
             password_element.send_keys(self.password)
             self.driver.find_element(By.XPATH, "//button[@id='login-signin']").click()
+
+            # Yahoo may ask you to verify your login
+            if not self.driver.find_elements(By.ID, "header-profile-button"):
+                WebDriverWait(self.driver, 10).until(
+                    EC.presence_of_element_located((By.CLASS_NAME, "validate-btn"))
+                )
+
+                self.driver.find_elements(By.CLASS_NAME, "validate-btn")[0].click()
+                verification_code = input(
+                    "Enter verification code sent to your email or phone number: "
+                )
+                self.driver.find_element(By.ID, "verification-code-field").send_keys(
+                    verification_code
+                )
+                self.driver.find_element(
+                    By.XPATH, '//*[@id="verify-code-button"]'
+                ).click()
+
             cookies = self.driver.get_cookies()
             self.driver.quit()
             self._add_cookies_to_jar(cookies)

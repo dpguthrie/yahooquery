@@ -15,7 +15,7 @@ from yahooquery.constants import (
     CONFIG,
     COUNTRIES,
 )
-from yahooquery.headless import YahooFinanceHeadless, _has_selenium
+from yahooquery.headless import YahooFinanceHeadless, has_selenium
 from yahooquery.session_management import get_crumb, initialize_session
 from yahooquery.utils import convert_to_list
 
@@ -84,7 +84,7 @@ class _YahooFinance:
         return params
 
     def login(self) -> None:
-        if _has_selenium:
+        if has_selenium:
             instance = YahooFinanceHeadless(self.username, self.password)
             instance.login()
             if instance.cookies:

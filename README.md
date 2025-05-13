@@ -5,9 +5,6 @@
     <em>Python wrapper for an unofficial Yahoo Finance API</em>
 </p>
 <p align="center">
-    <a href="https://travis-ci.com/dpguthrie/yahooquery" target="_blank">
-        <img src="https://travis-ci.com/dpguthrie/yahooquery.svg?branch=master" alt="Build Status">
-    </a>
     <a href="https://codecov.io/gh/dpguthrie/yahooquery" target="_blank">
         <img src="https://img.shields.io/codecov/c/github/dpguthrie/yahooquery" alt="Coverage">
     </a>
@@ -44,7 +41,7 @@ Some features of yahooquery:
 
 ## Requirements
 
-Python 3.9+
+Python 3.9+ - **Versions on or after 2.4.0 require python 3.9+**
 
 - [Pandas](https://pandas.pydata.org) - Fast, powerful, flexible and easy to use open source data analysis and manipulation tool
 - [Requests](https://requests.readthedocs.io/en/master/) - The elegant and simple HTTP library for Python, built for human beings.
