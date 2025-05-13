@@ -7,7 +7,15 @@ import pandas as pd
 
 # first party
 from yahooquery.base import _YahooFinance
-from yahooquery.utils import _history_dataframe, convert_to_timestamp, flatten_list
+from yahooquery.constants import (
+    CONFIG,
+    CORPORATE_EVENTS,
+    FUND_DETAILS,
+    FUNDAMENTALS_OPTIONS,
+    FUNDAMENTALS_TIME_ARGS,
+    MODULES_DICT,
+)
+from yahooquery.utils import convert_to_timestamp, flatten_list, history_dataframe
 
 
 class Ticker(_YahooFinance):
@@ -23,10 +31,6 @@ class Ticker(_YahooFinance):
     -----------------
     asynchronous: bool, default False, optional
         Defines whether the requests are made synchronously or asynchronously.
-    backoff_factor: float, default 0.3, optional
-        A factor, in seconds, to apply between attempts after a second try.
-        Done only when there is a failed request and error code is in the
-        status_forcelist
     country: str, default 'united states', optional
         This allows you to alter the following query parameters that are
         sent with each request:  lang, region, and corsDomain.
@@ -40,10 +44,6 @@ class Ticker(_YahooFinance):
         This only matters when asynchronous=True
     proxies: dict, default None, optional
         Allows for the session to use a proxy when making requests
-    retry: int, default 5, optional
-        Number of times to retry on a failed request
-    status_forcelist: list, default [404, 429, 500, 502, 503, 504], optional
-        A set of integer HTTP status codes taht we should force a retry on
     timeout: int, default 5, optional
         Stop waiting for a response after a given number of seconds
     user_agent: str, default random.choice, optional
@@ -90,11 +90,12 @@ class Ticker(_YahooFinance):
     """
 
     def __init__(self, symbols, **kwargs):
-        super(Ticker, self).__init__(**kwargs)
+        validate = kwargs.pop("validate", False)
+        super().__init__(**kwargs)
         self.symbols = symbols
         self.invalid_symbols = None
-        if kwargs.get("validate"):
-            self.validation
+        if validate:
+            self.symbols, self.invalid_symbols = self.validate_symbols()
 
     def _quote_summary(self, modules):
         kwargs = {}
@@ -103,14 +104,14 @@ class Ticker(_YahooFinance):
             kwargs.update({"addl_key": modules[0]})
         data = self._get_data(key="quoteSummary", params=params, **kwargs)
         dates = flatten_list(
-            [self._MODULES_DICT[module]["convert_dates"] for module in modules]
+            [MODULES_DICT[module]["convert_dates"] for module in modules]
         )
         return data if self.formatted else self._format_data(data, dates)
 
     def _quote_summary_dataframe(self, module, **kwargs):
         data = self._quote_summary([module])
         if not kwargs.get("data_filter"):
-            data_filter = self._MODULES_DICT[module]["filter"]
+            data_filter = MODULES_DICT[module]["filter"]
             kwargs.update({"data_filter": data_filter})
         return self._to_dataframe(data, **kwargs)
 
@@ -164,7 +165,7 @@ class Ticker(_YahooFinance):
         Only returns JSON
         """
         return self._quote_summary(
-            self._CONFIG["quoteSummary"]["query"]["modules"]["options"]
+            CONFIG["quoteSummary"]["query"]["modules"]["options"]
         )
 
     def get_modules(self, modules):
@@ -185,16 +186,14 @@ class Ticker(_YahooFinance):
         ValueError
             If invalid module is specified
         """
-        all_modules = self._CONFIG["quoteSummary"]["query"]["modules"]["options"]
+        all_modules = CONFIG["quoteSummary"]["query"]["modules"]["options"]
         if not isinstance(modules, list):
             modules = re.findall(r"[a-zA-Z]+", modules)
         if any(elem not in all_modules for elem in modules):
             raise ValueError(
                 """
                 One of {} is not a valid value.  Valid values are {}.
-            """.format(
-                    ", ".join(modules), ", ".join(all_modules)
-                )
+            """.format(", ".join(modules), ", ".join(all_modules))
             )
         return self._quote_summary(modules)
 
@@ -493,7 +492,7 @@ class Ticker(_YahooFinance):
         self, financials_type, frequency=None, premium=False, types=None, trailing=True
     ):
         try:
-            time_dict = self.FUNDAMENTALS_TIME_ARGS[frequency[:1].lower()]
+            time_dict = FUNDAMENTALS_TIME_ARGS[frequency[:1].lower()]
             prefix = time_dict["prefix"]
             period_type = time_dict["period_type"]
         except KeyError as e:
@@ -502,13 +501,13 @@ class Ticker(_YahooFinance):
             prefix = ""
             period_type = ""
         key = "fundamentals_premium" if premium else "fundamentals"
-        types = types or self._CONFIG[key]["query"]["type"]["options"][financials_type]
+        types = types or CONFIG[key]["query"]["type"]["options"][financials_type]
         if trailing:
-            prefixed_types = ["{}{}".format(prefix, t) for t in types] + [
-                "trailing{}".format(t) for t in types
+            prefixed_types = [f"{prefix}{t}" for t in types] + [
+                f"trailing{t}" for t in types
             ]
         else:
-            prefixed_types = ["{}{}".format(prefix, t) for t in types]
+            prefixed_types = [f"{prefix}{t}" for t in types]
         data = self._get_data(
             key, {"type": ",".join(prefixed_types)}, **{"list_result": True}
         )
@@ -588,7 +587,7 @@ class Ticker(_YahooFinance):
             Specify either annual or quarterly.  Value should be 'a' or 'q'.
         """
         types = flatten_list(
-            [self.FUNDAMENTALS_OPTIONS[option] for option in self.FUNDAMENTALS_OPTIONS]
+            [FUNDAMENTALS_OPTIONS[option] for option in FUNDAMENTALS_OPTIONS]
         )
         return self._financials("cash_flow", frequency, types=types, trailing=False)
 
@@ -623,7 +622,7 @@ class Ticker(_YahooFinance):
     @property
     def corporate_events(self):
         return self._financials(
-            "cash_flow", frequency=None, types=self.CORPORATE_EVENTS, trailing=False
+            "cash_flow", frequency=None, types=CORPORATE_EVENTS, trailing=False
         )
 
     @property
@@ -648,7 +647,7 @@ class Ticker(_YahooFinance):
         """
         return self._financials("valuation", "q")
 
-    def balance_sheet(self, frequency="a", trailing=True):
+    def balance_sheet(self, frequency="a"):
         """Balance Sheet
 
         Retrieves balance sheet data for most recent four quarters or most
@@ -659,15 +658,12 @@ class Ticker(_YahooFinance):
         frequency: str, default 'a', optional
             Specify either annual or quarterly balance sheet.  Value should
             be 'a' or 'q'.
-        trailing: bool, default True, optional
-            Specify whether or not you'd like trailing twelve month (TTM)
-            data returned
 
         Returns
         -------
         pandas.DataFrame
         """
-        return self._financials("balance_sheet", frequency, trailing=trailing)
+        return self._financials("balance_sheet", frequency)
 
     def cash_flow(self, frequency="a", trailing=True):
         """Cash Flow
@@ -878,7 +874,7 @@ class Ticker(_YahooFinance):
         """
         data_dict = self._quote_summary(["topHoldings"])
         for symbol in self.symbols:
-            for key in self._FUND_DETAILS:
+            for key in FUND_DETAILS:
                 try:
                     del data_dict[symbol][key]
                 except TypeError:
@@ -1030,7 +1026,7 @@ class Ticker(_YahooFinance):
             Specify either annual or quarterly.  Value should be 'a' or 'q'.
         """
         types = flatten_list(
-            [self.FUNDAMENTALS_OPTIONS[option] for option in self.FUNDAMENTALS_OPTIONS]
+            [FUNDAMENTALS_OPTIONS[option] for option in FUNDAMENTALS_OPTIONS]
         )
         return self._financials(
             "cash_flow", frequency, premium=True, types=types, trailing=False
@@ -1065,7 +1061,7 @@ class Ticker(_YahooFinance):
             "cash_flow", frequency, True, types=types, trailing=trailing
         )
 
-    def p_balance_sheet(self, frequency="a", trailing=True):
+    def p_balance_sheet(self, frequency="a"):
         """Balance Sheet
 
         Retrieves balance sheet data for most recent four quarters or most
@@ -1076,9 +1072,6 @@ class Ticker(_YahooFinance):
         frequency: str, default 'A', optional
             Specify either annual or quarterly balance sheet.  Value should
             be 'a' or 'q'.
-        trailing: bool, default True, optional
-            Specify whether or not you'd like trailing twelve month (TTM)
-            data returned
 
         Notes
         -----
@@ -1089,9 +1082,7 @@ class Ticker(_YahooFinance):
         -------
         pandas.DataFrame
         """
-        return self._financials(
-            "balance_sheet", frequency, premium=True, trailing=trailing
-        )
+        return self._financials("balance_sheet", frequency, premium=True)
 
     def p_cash_flow(self, frequency="a", trailing=True):
         """Cash Flow
@@ -1125,7 +1116,7 @@ class Ticker(_YahooFinance):
             "cash_flow",
             frequency=None,
             premium=True,
-            types=self.CORPORATE_EVENTS,
+            types=CORPORATE_EVENTS,
             trailing=False,
         )
 
@@ -1274,7 +1265,7 @@ class Ticker(_YahooFinance):
             `datatime.datetime` object giving the time of the last trade
             that the 'close' price relates to.
         """
-        config = self._CONFIG["chart"]
+        config = CONFIG["chart"]
         intervals = config["query"]["interval"]["options"]
         if start or period is None or period.lower() == "max":
             start = convert_to_timestamp(start)
@@ -1320,7 +1311,7 @@ class Ticker(_YahooFinance):
         for symbol in self._symbols:
             if "timestamp" in data[symbol]:
                 daily = params["interval"][-1] not in ["m", "h"]
-                d[symbol] = _history_dataframe(data[symbol], daily, adj_timezone)
+                d[symbol] = history_dataframe(data[symbol], daily, adj_timezone)
             else:
                 d[symbol] = data[symbol]
         d = {k: v for k, v in d.items() if isinstance(v, pd.DataFrame)}
@@ -1330,9 +1321,9 @@ class Ticker(_YahooFinance):
             df = pd.DataFrame(columns=["high", "low", "volume", "open", "close"])
         else:
             if "dividends" in df.columns:
-                df["dividends"].fillna(0, inplace=True)
+                df.fillna({"dividends": 0}, inplace=True)
             if "splits" in df.columns:
-                df["splits"].fillna(0, inplace=True)
+                df.fillna({"splits": 0}, inplace=True)
         return df
 
     def _adjust_ohlc(self, df):
@@ -1366,12 +1357,12 @@ class Ticker(_YahooFinance):
 
     def _option_dataframe(self, data, symbol):
         dataframes = []
-        for optionType in ["calls", "puts"]:
+        for option_type in ["calls", "puts"]:
             df = pd.concat(
-                [pd.DataFrame(data[i][optionType]) for i in range(len(data))],
+                [pd.DataFrame(data[i][option_type]) for i in range(len(data))],
                 sort=False,
             )
-            df["optionType"] = optionType
+            df["optionType"] = option_type
             dataframes.append(df)
         df = pd.concat(dataframes, sort=False)
         df["symbol"] = symbol

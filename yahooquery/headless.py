@@ -14,9 +14,9 @@ try:
     from selenium.webdriver.support.ui import WebDriverWait
 except ImportError:
     # Selenium was not installed
-    _has_selenium = False
+    has_selenium = False
 else:
-    _has_selenium = True
+    has_selenium = True
 
 
 class YahooFinanceHeadless:
@@ -32,12 +32,13 @@ class YahooFinanceHeadless:
         chrome_options.add_argument("--log-level=3")
         chrome_options.add_argument("--ignore-certificate-errors")
         chrome_options.add_argument("--ignore-ssl-errors")
+        chrome_options.set_capability("pageLoadStrategy", "eager")
         service = Service()
         self.driver = webdriver.Chrome(service=service, options=chrome_options)
 
     def login(self):
         try:
-            self.driver.execute_script("window.open('{}');".format(self.LOGIN_URL))
+            self.driver.execute_script(f"window.open('{self.LOGIN_URL}');")
             self.driver.switch_to.window(self.driver.window_handles[-1])
             self.driver.find_element(By.ID, "login-username").send_keys(self.username)
             self.driver.find_element(By.XPATH, "//input[@id='login-signin']").click()
@@ -46,6 +47,7 @@ class YahooFinanceHeadless:
             )
             password_element.send_keys(self.password)
             self.driver.find_element(By.XPATH, "//button[@id='login-signin']").click()
+
             cookies = self.driver.get_cookies()
             self.driver.quit()
             self._add_cookies_to_jar(cookies)

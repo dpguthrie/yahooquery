@@ -1,8 +1,8 @@
 import os
+
 import pytest
 
 from yahooquery import Research
-
 
 RESEARCH = [
     Research(username=os.getenv("YF_USERNAME"), password=os.getenv("YF_PASSWORD"))
