@@ -44,7 +44,7 @@ Some features of yahooquery:
 
 ## Requirements
 
-Python 2.7, 3.5+
+Python 3.9+
 
 - [Pandas](https://pandas.pydata.org) - Fast, powerful, flexible and easy to use open source data analysis and manipulation tool
 - [Requests](https://requests.readthedocs.io/en/master/) - The elegant and simple HTTP library for Python, built for human beings.
@@ -68,6 +68,11 @@ Otherwise, omit the premium argument:
 
 ```bash
 pip install yahooquery
+```
+
+You can also install with uv if you have that installed:
+```bash
+uv pip install yahooquery
 ```
 
 ## Example

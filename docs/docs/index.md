@@ -74,6 +74,15 @@ Otherwise, omit the premium argument:
     <a href="#" data-terminal-control="">restart ↻</a>
 </div>
 
+Or install with `uv`:
+
+<div class="termynal" data-termynal data-ty-typeDelay="40" data-ty-lineDelay="200">
+    <span data-ty="input">uv pip install yahooquery</span>
+    <span data-ty="progress"></span>
+    <span data-ty>Successfully installed yahooquery</span>
+    <a href="#" data-terminal-control="">restart ↻</a>
+</div>
+
 ## Example
 
 The majority of the data available through the unofficial Yahoo Finance API is related to a company, which is represented in yahooquery as a `Ticker`.  You can instantiate the `Ticker` class by passing the company's ticker symbol.  For instance, to get data for :fontawesome-brands-apple:, pass `aapl` as the first argument to the `Ticker` class:

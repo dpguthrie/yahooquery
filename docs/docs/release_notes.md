@@ -1,5 +1,99 @@
 # Release Notes
 
+2.4.0
+-----
+## Update
+- Update to use uv for packaging and publishing
+- Folder, file structure
+- `validate_symbols` method now returns a tuple of valid and invalid symbols
+
+## Add
+- `curl_cffi` to dependencies instead of `requests` for session management
+
+2.3.7
+-----
+## Add
+- Logic for handling setting up a session when a consent screen is encountered.  This is primarily seen in European countries
+  and should allow for the continued use of this package.
+- Keyword argument, `setup_url`, to the base `_YahooFinance` class that allows a user to override the url used in setting up the session.  As a default
+  the Yahoo Finance home page is used (https://finance.yahoo.com).  You can also create an environment variable, `YF_SETUP_URL` that will be used if set.
+  Example usage:
+  ```python
+  import yahooquery as yq
+
+  t = yq.Ticker('aapl', setup_url='https://finance.yahoo.com/quote/AAPL')
+  ```
+
+## Remove
+- Webdriver manager is no longer used internally.  Selenium Manager is now fully included with selenium `4.10.0`, so this package is no longer needed.
+
+2.3.6
+-----
+## Fix
+- Use the previously instantiated session within the `Ticker` class (that may also contain proxies, other important session info) to retrieve both cookies and a crumb
+
+2.3.5
+-----
+## Fix
+- Fix bad assignment to crumb when using username/password for premium access
+
+2.3.4
+-----
+## Update
+- Use a different url to try and obtain cookies (fc.yahoo.com no longer works)
+- Refactor how a session is initialized
+- Use the country as a way to make the request to obtain cookies be more location specific
+
+2.3.3
+-----
+## Update
+- Try and obtain cookies and a crumb during `Ticker` initialization so they can be used in further requests.
+
+2.3.2
+-----
+## Update
+- Update quote summary endpoint from v10 to v6.  The v10 endpoint currently requires a crumb as a query parameter, which is not something this library does not currently support.
+
+## Fix
+- Bug related to retrieving screen IDs with a number
+
+2.3.1
+-----
+## Fix
+- Fixes for history method
+
+2.3.0
+-----
+## Added
+- `dividend_history` method that returns historical dividends paid for a given symbol(s)
+
+## Fixed
+- `history` method has been refactored pretty heavily with the help of @maread99 (Thank you!).  Timezone info is now included in the `date` column.  Also, a dataframe will always be returned regardless of bad symbols existing.  Previously, a dictionary was returned with the json response for the bad symbol(s) and dataframes for successful responses.
+
+2.2.15
+------
+- Updated the data available from the cash flow statement
+
+2.2.14
+------
+- Updated the financials dataframes (cash_flow, income_statement, balance_sheet, all_financial_data,
+  get_financial_data) to include another column titled "currencyCode".  This will identify the currency
+  used in the financial statement.
+
+2.2.13
+------
+- Fix bug related to dividends and stock splits.  The merge statement to combine the pandas dataframes
+  was using a left join instead of an outer join, which caused stock splits to drop.
+
+2.2.11
+------
+- Fix bug with async requests and :code:`symbols` as a query parameter
+
+2.2.9
+-----
+- Fix internal method :code:`_format_data` in the :code:`_YahooFinance` class to account for dates held in lists
+- Use flit to publish package to pypi.  Additionally, make selenium an optional package to install through :code:`pip install yahooquery[premium]`
+
 ## 2.2.8
 
 - `Ticker`, `Screener`, and `Research` classes now accept the keyword argument `progress`.  If set to `True`, a progress bar will be displayed when downloading data.  The default value is `False`.
