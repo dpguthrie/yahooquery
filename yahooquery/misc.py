@@ -1,11 +1,10 @@
 # stdlib
-import os
 
 # third party
 import pandas as pd
 
-from .utils import get_crumb, initialize_session, setup_session
-from .utils.countries import COUNTRIES
+from yahooquery.constants import COUNTRIES
+from yahooquery.session_management import initialize_session
 
 BASE_URL = "https://query2.finance.yahoo.com"
 
@@ -17,18 +16,13 @@ def _make_request(
         country = country.lower()
         try:
             params.update(COUNTRIES[country])
-        except KeyError:
+        except KeyError as err:
             raise KeyError(
                 "{} is not a valid option.  Valid options include {}".format(
                     country, ", ".join(sorted(COUNTRIES.keys()))
                 )
-            )
-    setup_url = kwargs.pop("setup_url", os.getenv("YF_SETUP_URL", None))
+            ) from err
     session = initialize_session(**kwargs)
-    session = setup_session(session, setup_url)
-    crumb = get_crumb(session)
-    if crumb is not None:
-        params["crumb"] = crumb
     r = getattr(session, method)(url, params=params, json=data)
     json = r.json()
     if response_field:
@@ -70,7 +64,7 @@ def search(
 
 def get_currencies():
     """Get a list of currencies"""
-    url = "{}/v1/finance/currencies".format(BASE_URL)
+    url = f"{BASE_URL}/v1/finance/currencies"
     return _make_request(url, response_field="currencies", country="United States")
 
 
@@ -94,7 +88,7 @@ def get_market_summary(country="United States"):
     -------
 
     """
-    url = "{}/v6/finance/quote/marketSummary".format(BASE_URL)
+    url = f"{BASE_URL}/v6/finance/quote/marketSummary"
     return _make_request(url, response_field="marketSummaryResponse", country=country)
 
 
@@ -109,11 +103,11 @@ def get_trending(country="United States"):
     """
     try:
         region = COUNTRIES[country.lower()]["region"]
-    except KeyError:
+    except KeyError as err:
         raise KeyError(
             "{} is not a valid option.  Valid options include {}".format(
                 country, ", ".join(COUNTRIES.keys())
             )
-        )
-    url = "{}/v1/finance/trending/{}".format(BASE_URL, region)
+        ) from err
+    url = f"{BASE_URL}/v1/finance/trending/{region}"
     return _make_request(url, response_field="finance", country=country)[0]

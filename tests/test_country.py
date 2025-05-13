@@ -1,8 +1,7 @@
 import pytest
 
 from yahooquery import Ticker
-from yahooquery.utils.countries import COUNTRIES
-
+from yahooquery.constants import COUNTRIES
 
 TICKERS = [Ticker("aapl", country="brazil")]
 

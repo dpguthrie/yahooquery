@@ -1,14 +1,13 @@
 import datetime
+import itertools
 import os
 
-import itertools
-import pytest
 import pandas as pd
-from pandas.testing import assert_index_equal, assert_frame_equal, assert_series_equal
+import pytest
+from pandas.testing import assert_frame_equal, assert_index_equal, assert_series_equal
 
 from yahooquery import Ticker
-from yahooquery.utils.__init__ import _history_dataframe
-
+from yahooquery.utils import history_dataframe
 
 TICKERS = [
     Ticker(
@@ -32,7 +31,8 @@ FINANCIALS = [
     "p_valuation_measures",
 ]
 
-SEPERATE_ENDPOINTS = FINANCIALS + [
+SEPERATE_ENDPOINTS = [
+    *FINANCIALS,
     "option_chain",
     "history",
     "all_modules",
@@ -154,7 +154,7 @@ def test_history(ticker, period, interval):
 
 
 def test_dividend_history(ticker):
-    df = ticker.dividend_history(start='1970-01-01')
+    df = ticker.dividend_history(start="1970-01-01")
     assert isinstance(df, pd.DataFrame)
 
 
@@ -185,23 +185,23 @@ def test_adj_ohlc(ticker):
 
 
 class TestHistoryDataframe:
-    """Tests for `utils.__init__._history_dataframe` and dependencies."""
+    """Tests for `utils.history_dataframe` and dependencies."""
 
     @pytest.fixture
     def tz_us(self):
-        yield 'America/New_York'
+        yield "America/New_York"
 
     @pytest.fixture
     def tz_oz(self):
-        yield 'Australia/Sydney'
+        yield "Australia/Sydney"
 
     @pytest.fixture
     def tz_hk(self):
-        yield 'Asia/Hong_Kong'
+        yield "Asia/Hong_Kong"
 
     @pytest.fixture
     def utc(self):
-        yield 'UTC'
+        yield "UTC"
 
     @pytest.fixture
     def timestamps_daily(self, utc, tz_oz, tz_us, tz_hk):
@@ -250,20 +250,20 @@ class TestHistoryDataframe:
 
         expected_utc = pd.DatetimeIndex(
             [
-                '2022-11-04 13:30:00',
-                '2022-11-07 14:30:00',
-                '2022-11-08 14:30:00',
-                '2022-11-09 14:30:00',
-                '2022-11-10 14:30:00',
-                '2022-11-11 14:30:00',
-                '2022-11-14 14:30:00',
-                '2022-11-15 14:30:00',
-                '2022-11-16 14:30:00',
-                '2022-11-17 14:30:00',
-                '2022-11-18 14:30:00',
-                '2022-11-21 14:30:00',
-                '2022-11-22 14:30:00',
-                '2022-11-23 14:30:00',
+                "2022-11-04 13:30:00",
+                "2022-11-07 14:30:00",
+                "2022-11-08 14:30:00",
+                "2022-11-09 14:30:00",
+                "2022-11-10 14:30:00",
+                "2022-11-11 14:30:00",
+                "2022-11-14 14:30:00",
+                "2022-11-15 14:30:00",
+                "2022-11-16 14:30:00",
+                "2022-11-17 14:30:00",
+                "2022-11-18 14:30:00",
+                "2022-11-21 14:30:00",
+                "2022-11-22 14:30:00",
+                "2022-11-23 14:30:00",
             ],
             tz=utc,
         )
@@ -291,20 +291,20 @@ class TestHistoryDataframe:
 
         expected_oz = pd.DatetimeIndex(
             [
-                '2022-11-05 00:30:00',
-                '2022-11-08 01:30:00',
-                '2022-11-09 01:30:00',
-                '2022-11-10 01:30:00',
-                '2022-11-11 01:30:00',
-                '2022-11-12 01:30:00',
-                '2022-11-15 01:30:00',
-                '2022-11-16 01:30:00',
-                '2022-11-17 01:30:00',
-                '2022-11-18 01:30:00',
-                '2022-11-19 01:30:00',
-                '2022-11-22 01:30:00',
-                '2022-11-23 01:30:00',
-                '2022-11-24 01:30:00',
+                "2022-11-05 00:30:00",
+                "2022-11-08 01:30:00",
+                "2022-11-09 01:30:00",
+                "2022-11-10 01:30:00",
+                "2022-11-11 01:30:00",
+                "2022-11-12 01:30:00",
+                "2022-11-15 01:30:00",
+                "2022-11-16 01:30:00",
+                "2022-11-17 01:30:00",
+                "2022-11-18 01:30:00",
+                "2022-11-19 01:30:00",
+                "2022-11-22 01:30:00",
+                "2022-11-23 01:30:00",
+                "2022-11-24 01:30:00",
             ],
             tz=tz_oz,
         )
@@ -332,20 +332,20 @@ class TestHistoryDataframe:
 
         expected_us = pd.DatetimeIndex(
             [
-                '2022-11-04 09:30:00',
-                '2022-11-07 09:30:00',
-                '2022-11-08 09:30:00',
-                '2022-11-09 09:30:00',
-                '2022-11-10 09:30:00',
-                '2022-11-11 09:30:00',
-                '2022-11-14 09:30:00',
-                '2022-11-15 09:30:00',
-                '2022-11-16 09:30:00',
-                '2022-11-17 09:30:00',
-                '2022-11-18 09:30:00',
-                '2022-11-21 09:30:00',
-                '2022-11-22 09:30:00',
-                '2022-11-23 09:30:00',
+                "2022-11-04 09:30:00",
+                "2022-11-07 09:30:00",
+                "2022-11-08 09:30:00",
+                "2022-11-09 09:30:00",
+                "2022-11-10 09:30:00",
+                "2022-11-11 09:30:00",
+                "2022-11-14 09:30:00",
+                "2022-11-15 09:30:00",
+                "2022-11-16 09:30:00",
+                "2022-11-17 09:30:00",
+                "2022-11-18 09:30:00",
+                "2022-11-21 09:30:00",
+                "2022-11-22 09:30:00",
+                "2022-11-23 09:30:00",
             ],
             tz=tz_us,
         )
@@ -373,20 +373,20 @@ class TestHistoryDataframe:
 
         expected_hk = pd.DatetimeIndex(
             [
-                '2022-11-04 21:30',
-                '2022-11-07 22:30',
-                '2022-11-08 22:30',
-                '2022-11-09 22:30',
-                '2022-11-10 22:30',
-                '2022-11-11 22:30',
-                '2022-11-14 22:30',
-                '2022-11-15 22:30',
-                '2022-11-16 22:30',
-                '2022-11-17 22:30',
-                '2022-11-18 22:30',
-                '2022-11-21 22:30',
-                '2022-11-22 22:30',
-                '2022-11-23 22:30',
+                "2022-11-04 21:30",
+                "2022-11-07 22:30",
+                "2022-11-08 22:30",
+                "2022-11-09 22:30",
+                "2022-11-10 22:30",
+                "2022-11-11 22:30",
+                "2022-11-14 22:30",
+                "2022-11-15 22:30",
+                "2022-11-16 22:30",
+                "2022-11-17 22:30",
+                "2022-11-18 22:30",
+                "2022-11-21 22:30",
+                "2022-11-22 22:30",
+                "2022-11-23 22:30",
             ],
             tz=tz_hk,
         )
@@ -454,8 +454,8 @@ class TestHistoryDataframe:
         """
         indices = (2, 8)
         amount = 0.12
-        d = {str(tss[i]): {'amount': amount, 'date': tss[i]} for i in indices}
-        expected = [amount if i in indices else float('nan') for i in range(14)]
+        d = {str(tss[i]): {"amount": amount, "date": tss[i]} for i in indices}
+        expected = [amount if i in indices else float("nan") for i in range(14)]
         return d, expected
 
     @pytest.fixture
@@ -483,9 +483,9 @@ class TestHistoryDataframe:
         indice = 11
         ts = tss[indice]
         d = {
-            str(ts): {'data': ts, 'numerator': 3, 'denominator': 1, 'splitRatio': '3:1'}
+            str(ts): {"data": ts, "numerator": 3, "denominator": 1, "splitRatio": "3:1"}
         }
-        expected = [3 if i == indice else float('nan') for i in range(14)]
+        expected = [3 if i == indice else float("nan") for i in range(14)]
         return d, expected
 
     @pytest.fixture
@@ -502,22 +502,22 @@ class TestHistoryDataframe:
     ):
         """Get mock data for a symbol from which to create dataframe.
 
-        Return can be passed as `data` parameter of `_history_dataframe`.
+        Return can be passed as `data` parameter of `history_dataframe`.
         """
         if last_trade is None:
             last_trade = 1669237204
-            expected_ts = pd.Timestamp('2022-11-23 21:00:04', tz="UTC")
+            expected_ts = pd.Timestamp("2022-11-23 21:00:04", tz="UTC")
             assert pd.Timestamp.fromtimestamp(last_trade, tz="UTC") == expected_ts
         meta = {
-            'regularMarketTime': last_trade,
-            'exchangeTimezoneName': tz,
+            "regularMarketTime": last_trade,
+            "exchangeTimezoneName": tz,
         }
 
         indicators = {"quote": [quote.copy()]}
         if adjclose is not None:
             indicators["adjclose"] = [{"adjclose": adjclose}]
 
-        events = {"fake_event": {'1667568600': {"fake_event_key": 66.6}}}
+        events = {"fake_event": {"1667568600": {"fake_event_key": 66.6}}}
         for key, event_data in zip(("dividends", "splits"), (dividends, splits)):
             if event_data is None:
                 continue
@@ -543,9 +543,9 @@ class TestHistoryDataframe:
             dict(open=13, high=15, low=12, close=14, volume=61, adjclose=14.25),
             name=indice,
         )
-        assert_series_equal(df.iloc[i][:-2], expected)
-        assert pd.isna(df.iloc[i][-2])  # no dividends
-        assert df.iloc[i][-1] == 3  # splits
+        assert_series_equal(df.iloc[i].iloc[:-2], expected)
+        assert pd.isna(df.iloc[i].iloc[-2])  # no dividends
+        assert df.iloc[i].iloc[-1] == 3  # splits
         return df
 
     @pytest.fixture
@@ -624,7 +624,7 @@ class TestHistoryDataframe:
         """Test for expected returns for mock data reflecting a daily period."""
 
         def f(data, adj_timezone):
-            return _history_dataframe(data, daily=True, adj_timezone=adj_timezone)
+            return history_dataframe(data, daily=True, adj_timezone=adj_timezone)
 
         tss = timestamps_daily[0]
         quote_, _ = quote
@@ -683,7 +683,7 @@ class TestHistoryDataframe:
         data = self.build_mock_data(tss, tz_us, quote[0], last_trade=live_indice)
 
         # verify live indice has utc timezone when adj_timezone True
-        rtrn = _history_dataframe(data, daily=True, adj_timezone=False)
+        rtrn = history_dataframe(data, daily=True, adj_timezone=False)
         expected_li = pd.Timestamp("2022-11-23 19:31", tz=utc).to_pydatetime()
         expected_index = expected_days[:-1]
         expected_index = expected_index.insert(len(expected_index), expected_li)
@@ -691,7 +691,7 @@ class TestHistoryDataframe:
         assert_frame_equal(rtrn, expected_df)
 
         # verify live indice has local timezone when adj_timezone True
-        rtrn = _history_dataframe(data, daily=True, adj_timezone=True)
+        rtrn = history_dataframe(data, daily=True, adj_timezone=True)
         expected_li = pd.Timestamp("2022-11-23 14:31", tz=tz_us).to_pydatetime()
         expected_index = expected_index[:-1].insert(
             len(expected_index) - 1, expected_li
@@ -713,7 +713,7 @@ class TestHistoryDataframe:
         tss.append(live_indice)
 
         data = self.build_mock_data(tss, tz_us, quote[0], last_trade=live_indice)
-        rtrn = _history_dataframe(data, daily=True, adj_timezone=False)
+        rtrn = history_dataframe(data, daily=True, adj_timezone=False)
 
         # create expected
         expected_template = expected_daily_us_bare
@@ -760,20 +760,20 @@ class TestHistoryDataframe:
 
         expected_index_utc = pd.DatetimeIndex(
             [
-                '2022-11-04 13:30:00',
-                '2022-11-04 14:30:00',
-                '2022-11-04 15:30:00',
-                '2022-11-04 16:30:00',
-                '2022-11-04 17:30:00',
-                '2022-11-04 18:30:00',
-                '2022-11-04 19:30:00',
-                '2022-11-07 14:30:00',
-                '2022-11-07 15:30:00',
-                '2022-11-07 16:30:00',
-                '2022-11-07 17:30:00',
-                '2022-11-07 18:30:00',
-                '2022-11-07 19:30:00',
-                '2022-11-07 20:30:00',
+                "2022-11-04 13:30:00",
+                "2022-11-04 14:30:00",
+                "2022-11-04 15:30:00",
+                "2022-11-04 16:30:00",
+                "2022-11-04 17:30:00",
+                "2022-11-04 18:30:00",
+                "2022-11-04 19:30:00",
+                "2022-11-07 14:30:00",
+                "2022-11-07 15:30:00",
+                "2022-11-07 16:30:00",
+                "2022-11-07 17:30:00",
+                "2022-11-07 18:30:00",
+                "2022-11-07 19:30:00",
+                "2022-11-07 20:30:00",
             ],
             tz=utc,
         )
@@ -838,7 +838,7 @@ class TestHistoryDataframe:
         """Test for expected returns for mock data reflecting a daily period."""
 
         def f(data, adj_timezone):
-            return _history_dataframe(data, daily=False, adj_timezone=adj_timezone)
+            return history_dataframe(data, daily=False, adj_timezone=adj_timezone)
 
         tz = tz_us
         tss, _ = timestamps_intraday
