@@ -127,10 +127,14 @@ def test_bad_financials_arg():
 
 
 def test_get_financial_data(ticker):
-    assert (
-        ticker.get_financial_data("GrossProfit NetIncome TotalAssets ForwardPeRatio")
-        is not None
+    result = ticker.get_financial_data(
+        "GrossProfit NetIncome TotalAssets ForwardPeRatio"
     )
+    assert result is not None
+    if isinstance(result, str):
+        assert "unavailable" in result.lower()
+    else:
+        assert isinstance(result, pd.DataFrame)
 
 
 def test_p_get_financial_data(ticker):
