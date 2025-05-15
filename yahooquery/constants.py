@@ -1,3 +1,5 @@
+import time
+
 BROWSERS = {
     "chrome99": {
         "sec-ch-ua": '" Not A;Brand";v="99", "Chromium";v="99", "Google Chrome";v="99"',
@@ -742,7 +744,7 @@ CONFIG = {
         "response_field": "timeseries",
         "query": {
             "period1": {"required": True, "default": 493590046},
-            "period2": {"required": True, "default": None},
+            "period2": {"required": True, "default": int(time.time())},
             "type": {
                 "required": True,
                 "default": None,
@@ -757,7 +759,7 @@ CONFIG = {
         "response_field": "timeseries",
         "query": {
             "period1": {"required": True, "default": 493590046},
-            "period2": {"required": True, "default": None},
+            "period2": {"required": True, "default": int(time.time())},
             "type": {
                 "required": True,
                 "default": None,

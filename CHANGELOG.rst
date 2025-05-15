@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2.4.1
+-----
+## Fix
+- Fix bug related to `period2` in `fundamentals` endpoint
+
 2.4.0
 -----
 ## Update

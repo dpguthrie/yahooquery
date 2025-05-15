@@ -1,6 +1,6 @@
 [project]
 name = "yahooquery"
-version = "2.4.0"
+version = "2.4.1"
 description = "Python wrapper for an unofficial Yahoo Finance API"
 authors = [
     {name = "Doug Guthrie", email = "douglas.p.guthrie@gmail.com"}
