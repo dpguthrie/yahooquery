@@ -1,6 +1,21 @@
 Change Log
 ==========
 
+2.4.1
+-----
+## Fix
+- Fix bug related to `period2` in `fundamentals` endpoint
+
+2.4.0
+-----
+## Update
+- Update to use uv for packaging and publishing
+- Folder, file structure
+- `validate_symbols` method now returns a tuple of valid and invalid symbols
+
+## Add
+- `curl_cffi` to dependencies instead of `requests` for session management
+
 2.3.7
 -----
 ## Add

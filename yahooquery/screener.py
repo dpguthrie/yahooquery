@@ -1,24 +1,14 @@
 # stdlib
 import re
+from urllib import parse
 
-from .base import _YahooFinance
-from .utils.screeners import SCREENERS
-
-try:
-    # stdlib
-    from urllib import parse
-except ImportError:
-    # third party
-    import urlparse as parse
+from yahooquery.base import _YahooFinance
+from yahooquery.constants import SCREENERS
 
 
 class Screener(_YahooFinance):
     def __init__(self, **kwargs):
-        super(Screener, self).__init__(**kwargs)
-        # if not all(i in kwargs for i in ['username', 'password']):
-        #     self._get_crumb
-        # if kwargs.get('symbols'):
-        #     self._symbols = convert_to_list(kwargs.get('symbols'))
+        super().__init__(**kwargs)
 
     def _construct_params(self, config, params):
         new_params = {}
@@ -45,7 +35,7 @@ class Screener(_YahooFinance):
     def _get_symbol(self, response, params, **kwargs):
         query_params = dict(parse.parse_qsl(parse.urlsplit(response.url).query))
         screener_id = query_params["scrIds"]
-        key = next((k for k in SCREENERS if SCREENERS[k]["id"] == screener_id))
+        key = next(k for k in SCREENERS if SCREENERS[k]["id"] == screener_id)
         return key
 
     def _check_screen_ids(self, screen_ids):
@@ -77,6 +67,6 @@ class Screener(_YahooFinance):
             screen_ids = ['most_actives', 'day_gainers']
         count (int): Number of items to return, default=25
         """
-        screen_ids = self._check_screen_ids(screen_ids)
-        scrIds = [SCREENERS[screener]["id"] for screener in screen_ids]
-        return self._get_data("screener", params={"scrIds": scrIds, "count": count})
+        valid_screen_ids = self._check_screen_ids(screen_ids)
+        screen_ids = [SCREENERS[screener]["id"] for screener in valid_screen_ids]
+        return self._get_data("screener", params={"scrIds": screen_ids, "count": count})

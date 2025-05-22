@@ -5,8 +5,8 @@ from datetime import datetime, timedelta
 # third party
 import pandas as pd
 
-from .base import _YahooFinance
-from .utils import convert_to_list
+from yahooquery.base import _YahooFinance
+from yahooquery.utils import convert_to_list
 
 
 class Research(_YahooFinance):
@@ -183,7 +183,7 @@ class Research(_YahooFinance):
     }
 
     def __init__(self, **kwargs):
-        super(Research, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def _construct_date(self, n=0):
         return (datetime.now() - timedelta(days=n)).strftime("%Y-%m-%d")
@@ -193,9 +193,7 @@ class Research(_YahooFinance):
         for k, v in kwargs.items():
             v = convert_to_list(v, comma_split=True)
             if k not in self._QUERY_OPTIONS[research_type]:
-                raise ValueError(
-                    "{} is an invalid argument for {}".format(k, research_type)
-                )
+                raise ValueError(f"{k} is an invalid argument for {research_type}")
             options = self._QUERY_OPTIONS[research_type][k]["options"]
             options = list(options.keys()) if isinstance(options, dict) else options
             if any(elem not in options for elem in v):
@@ -203,7 +201,7 @@ class Research(_YahooFinance):
                     "{} is an invalid option for {}.".format(", ".join(v), k)
                 )
             if not self._QUERY_OPTIONS[research_type][k]["multiple"] and len(v) > 1:
-                raise ValueError("Please provide only one value for {}".format(k))
+                raise ValueError(f"Please provide only one value for {k}")
             operand_list.append(self._construct_operand(k, v, research_type))
         if len(operand_list) == 0:
             return {}

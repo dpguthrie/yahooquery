@@ -1,14 +1,21 @@
-name: Publish Yahooquery
+name: Publish
+
 on:
-  push:
-    tags:
-      - "v*.*.*"
+  release:
+    types: [created]
+
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
-      - uses: actions/checkout@v3
-      - name: Build and publish to pypi
-        uses: JRubics/poetry-publish@v1.17
-        with:
-          pypi_token: ${{ secrets.PYPI_KEY }}
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Build and publish
+        run: |
+          uv build
+          uv publish

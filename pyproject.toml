@@ -1,37 +1,53 @@
-[tool.poetry]
+[project]
 name = "yahooquery"
-version = "2.3.7"
+version = "2.4.1"
 description = "Python wrapper for an unofficial Yahoo Finance API"
-authors = ["Doug Guthrie <douglas.p.guthrie@gmail.com>"]
+authors = [
+    {name = "Doug Guthrie", email = "douglas.p.guthrie@gmail.com"}
+]
 documentation = "https://yahooquery.dpguthrie.com"
 keywords = ["python", "API", "finance", "stocks", "Yahoo Finance"]
-license = "MIT"
+license = {text = "MIT"}
 readme = "README.md"
+requires-python = ">=3.9,<4.0"
+dependencies = [
+    "curl-cffi>=0.10.0",
+    "pandas>=2.2.0",
+    "requests-futures>=1.0.1",
+    "tqdm>=4.65.0",
+    "lxml>=4.9.3",
+    "beautifulsoup4>=4.12.2",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.8.1,<4.0"
-requests = "^2.31.0"
-pandas = "^2.0.3"
-requests-futures = "^1.0.1"
-tqdm = "^4.65.0"
-lxml = "^4.9.3"
-selenium = {version = "^4.10.0", optional = true}
-beautifulsoup4 = "^4.12.2"
-
-[tool.poetry.dev-dependencies]
-pytest = "^7.4.0"
-isort = "^5.0.0"
-flake8 = "^6.0.0"
-mypy = "^1.4.1"
-pytest-cov = "^4.1.0"
-black = "^23.7.0"
-pre-commit = "^3.3.3"
-ipython = "^8.0.0"
-mkdocs-material = "^9.1.18"
+[project.optional-dependencies]
+premium = ["selenium>=4.32.0"]
+dev = [
+    "pytest>=8.3.0",
+    "ruff>=0.11.0",
+    "pytest-cov>=6.1.0",
+    "pre-commit>=4.2.0",
+    "mkdocs-material>=9.6.0",
+]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry.extras]
-premium = ["selenium"]
+[tool.ruff]
+line-length = 88
+target-version = "py39"
+select = ["E", "F", "I", "N", "W", "B", "UP", "PL", "RUF"]
+ignore = []
+
+[tool.ruff.isort]
+known-first-party = ["yahooquery"]
+import-heading-firstparty = "first party"
+import-heading-future = "future"
+import-heading-local = "local"
+import-heading-stdlib = "stdlib"
+import-heading-thirdparty = "third party"
+multi-line-output = 3
+include-trailing-comma = true
+force-grid-wrap = 0
+use-parentheses = true
+line-length = 88

@@ -5,9 +5,6 @@
     <em>Python wrapper for an unofficial Yahoo Finance API</em>
 </p>
 <p align="center">
-    <a href="https://travis-ci.com/dpguthrie/yahooquery" target="_blank">
-        <img src="https://travis-ci.com/dpguthrie/yahooquery.svg?branch=master" alt="Build Status">
-    </a>
     <a href="https://codecov.io/gh/dpguthrie/yahooquery" target="_blank">
         <img src="https://img.shields.io/codecov/c/github/dpguthrie/yahooquery" alt="Coverage">
     </a>
@@ -69,6 +66,15 @@ Otherwise, omit the premium argument:
 
 <div class="termynal" data-termynal data-ty-typeDelay="40" data-ty-lineDelay="700">
     <span data-ty="input">pip install yahooquery</span>
+    <span data-ty="progress"></span>
+    <span data-ty>Successfully installed yahooquery</span>
+    <a href="#" data-terminal-control="">restart ↻</a>
+</div>
+
+Or install with `uv`:
+
+<div class="termynal" data-termynal data-ty-typeDelay="40" data-ty-lineDelay="200">
+    <span data-ty="input">uv pip install yahooquery</span>
     <span data-ty="progress"></span>
     <span data-ty>Successfully installed yahooquery</span>
     <a href="#" data-terminal-control="">restart ↻</a>
