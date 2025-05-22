@@ -117,7 +117,7 @@ class Ticker(_YahooFinance):
 
     def _to_dataframe(self, data, **kwargs):
         if not self.formatted:
-            dataframes = []
+            dataframes = {}
             for symbol in self.symbols:
                 try:
                     final_data = (
@@ -136,14 +136,14 @@ class Ticker(_YahooFinance):
                         df.columns = [symbol]
                     else:
                         df = pd.DataFrame(final_data)
-                    dataframes.append(df)
+                    dataframes[symbol]=df
             try:
                 if kwargs.get("from_dict", False):
-                    df = pd.concat(dataframes, axis=1)
+                    df = pd.concat(dataframes.values(), axis=1)
                 else:
                     df = pd.concat(
-                        dataframes,
-                        keys=self.symbols,
+                        dataframes.values(),
+                        keys= dataframes.keys(),
                         names=["symbol", "row"],
                         sort=False,
                     )
